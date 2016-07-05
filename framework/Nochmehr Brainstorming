@@ -1,0 +1,76 @@
+Color red (255 , 0 , 0);
+glm :: vec3 position (0 ,0); <- 3D Vektor mit 2 Komponenten. Die Prüfer wussten was sie taten.
+
+std :: shared_ptr <Sphere> s1 = std :: make_shared < Sphere >( position , 1.2 , red , " sphere0 " );
+std :: shared_ptr <Shape>  s2 = std :: make_shared < Sphere >( position , 1.2 , red , " sphere1 " );
+
+s1 - > print ( std :: cout );
+s2 - > print ( std :: cout );
+
+Ausgabe:
+
+ sphere0 
+(255,0,0)
+Center: (0, 0, 0) , Radius: (1.2) 
+ sphere1 
+(255,0,0)
+Center: (0, 0, 0) , Radius: (1.2) 
+
+The Static Way: 
+Object Obj1;
+created during compile time and therefore lives for the duration of the program
+
+ 
+The Dynamic Way:
+Object *Obj1 = new Object;
+they are created at run-time 
+
+Beide dynamisch (Da "new") können während Laufzeit gelöscht werden. 
+
+virtual:
+
+makin' a lil' Shape
+makin' a lil' Sphere
+makin' a lil' Shape
+makin' a lil' Sphere
+
+ It's tellin' ya somethin' 'bout it: 
+ Ma Name's  sphere0 
+ and I look like (255,0,0)
+I'm livin in 
+ (0, 0, 0) , I'm (1.2) tall
+
+ It's tellin' ya somethin' 'bout it: 
+ Ma Name's  sphere1 
+ and I look like (255,0,0)
+I'm livin in 
+ (0, 0, 0) , I'm (1.2) tall
+Killing Sphere
+Killing Shape
+Killing Sphere
+Killing Shape
+
+sonst:
+
+makin' a lil' Shape
+makin' a lil' Sphere
+makin' a lil' Shape
+makin' a lil' Sphere
+
+ It's tellin' ya somethin' 'bout it: 
+ Ma Name's  sphere0 
+ and I look like (255,0,0)
+I'm livin in 
+ (0, 0, 0) , I'm (1.2) tall
+
+ It's tellin' ya somethin' 'bout it: 
+ Ma Name's  sphere1 
+ and I look like (255,0,0)
+I'm livin in 
+ (0, 0, 0) , I'm (1.2) tall
+Killing Sphere
+Killing Shape
+Killing Shape
+
+unterschied: beim zerstören wird die shape, nicht extra die sphere zerstört.
+
