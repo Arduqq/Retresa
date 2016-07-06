@@ -55,7 +55,7 @@ glm::vec3 const& Box::getmax() const
 	return max_;
 }
 
-bool Box::intersect(Ray const& ray, float t) 
+/*bool Box::intersect(Ray const& ray, float t) 
 {
 glm::vec3 dirfrac{1.0f,1.0f,1.0f};
 
@@ -88,4 +88,4 @@ if (tmin > tmax)
 t = tmin;
 return true;
 
-}
+}*/

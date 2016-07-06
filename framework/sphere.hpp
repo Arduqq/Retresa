@@ -3,7 +3,7 @@
 
 #include "shape.hpp"
 #include "ray.hpp"
-
+#include "vektoroperations.hpp"
 #include <glm/vec3.hpp>
 
 class Sphere: public Shape
@@ -21,7 +21,7 @@ public:
 	float     const& getrad() const;
 	void setctr(glm::vec3 ctr);
 	void setrad(float     rad);
-	bool intersect(Ray const& ray, float distance) override;
+	Hit intersect(Ray const& ray, float distance) override;
 
 private: 
 	glm::vec3 ctr_;

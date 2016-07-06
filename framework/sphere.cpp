@@ -1,6 +1,5 @@
 #include "sphere.hpp"
 #include <math.h>
-#include "vektoroperations.hpp"
 
 Sphere::Sphere():
 	Shape(),
@@ -50,19 +49,19 @@ float const& Sphere::getrad() const
 	return rad_;
 }
 
-bool Sphere::intersect(Ray const& ray, float distance) 
+Hit Sphere::intersect(Ray const& ray, float distance) 
 {
-	bool sphereHit;
+	Hit sphereHit;
 	glm::vec3 b = cross(ctr_ - ray.origin,ray.direction)/absolute(ray.direction);
 
 	if(absolute(b) < rad_ )
 	{
-		sphereHit=true;
+		sphereHit.impact=true;
 		float a = sqrt((rad_*rad_) - (absolute(b)*absolute(b)));
 		glm::vec3 p {ctr_+b};
 		glm::vec3 intersectPoint{ray.origin + ((1-a) * ray.direction)};
 	}
-	else sphereHit=false;
+	else sphereHit.impact=false;
 
 	return sphereHit;
 }

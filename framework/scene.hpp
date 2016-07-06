@@ -8,7 +8,7 @@
 
 struct Scene
 {
-std::vector<std::shared_ptr<Shape>> shapes;
+std::vector<shared_ptr<Shape>> shapes;
 //std::vector<shared_ptr<Light>> lights;
 };
 
