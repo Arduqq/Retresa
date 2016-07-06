@@ -1,5 +1,6 @@
 #include "sphere.hpp"
 #include <math.h>
+#include "vektoroperations.hpp"
 
 Sphere::Sphere():
 	Shape(),
@@ -49,35 +50,19 @@ float const& Sphere::getrad() const
 	return rad_;
 }
 
-/*glm::vec3 cross(glm::vec3 v1, glm::vec3 v2)
-{
-	glm::vec3 res;
-	res.x=(v1.y * v2.z) - (v1.z * v2.y);
-	res.y=(v1.z * v2.x) - (v1.x * v2.z);
-	res.z=(v1.x * v2.y) - (v1.y * v2.x);
-	return res;
-}
-float betrag(glm::vec3 v)
-{
-	return sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
-}*/
-
 bool Sphere::intersect(Ray const& ray, float distance) 
 {
 	bool sphereHit;
+	glm::vec3 b = cross(ctr_ - ray.origin,ray.direction)/absolute(ray.direction);
 
-	/*float xO = ray.origin.x;
-	float yO = ray.origin.y;
-	float zO = ray.origin.z;
-
-	float xD = ray.direction.x;
-	float yD = ray.direction.y;
-	float zD = ray.direction.z;
-
-	float d = 
-
-
-	sqrt (rad;*/
+	if(absolute(b) < rad_ )
+	{
+		sphereHit=true;
+		float a = sqrt((rad_*rad_) - (absolute(b)*absolute(b)));
+		glm::vec3 p {ctr_+b};
+		glm::vec3 intersectPoint{ray.origin + ((1-a) * ray.direction)};
+	}
+	else sphereHit=false;
 
 	return sphereHit;
 }
