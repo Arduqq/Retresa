@@ -1,6 +1,6 @@
-#define CATCH_CONFIG_RUNNER
+//#define CATCH_CONFIG_RUNNER
 
-#include <catch.hpp>
+//#include <catch.hpp>
 #include "box.hpp"
 #include "sphere.hpp"
 #include "shape.hpp"
@@ -128,5 +128,45 @@ TEST_CASE("boxintersect", "[box]")
 int main(int argc, char *argv[])
 {
   /*return Catch::Session().run(argc, argv);*/
+	Ray ronny1(glm::vec3{0,0,0},glm::vec3{0,0,1});
+	Ray ronny2(glm::vec3{0,0,0},glm::vec3{1,1,1});
+	Ray ronny3(glm::vec3{0,0,0},glm::vec3{-1,-1,-1});
+	Ray ronny4(glm::vec3{1,1,1},glm::vec3{-1,-1,-1});
+
+	Sphere s1(glm::vec3{0,0,3},1);
+	Sphere s2(glm::vec3{4,4,4},1);
+	Sphere s3(glm::vec3{-2,-2,-2},1);
+	Sphere s4(glm::vec3{-3,-3,-3},1);
+
+	Hit hit1 = s1.intersect(ronny1,1);
+	Hit hit2 = s2.intersect(ronny2,1);
+	Hit hit3 = s3.intersect(ronny3,1);
+	Hit hit4 = s4.intersect(ronny4,1);
+
+	std::cout<<"\n"<<hit1.impact<<std::endl;
+	std::cout<<"\n"<<hit2.impact<<std::endl;
+	std::cout<<"\n"<<hit3.impact<<std::endl;
+	std::cout<<"\n"<<hit4.impact<<std::endl;
+
+	Ray ronny5(glm::vec3{0,0,0},glm::vec3{0,0,1});
+	Ray ronny6(glm::vec3{0,0,0},glm::vec3{1,1,1});
+	Ray ronny7(glm::vec3{0,0,0},glm::vec3{-1,-1,-1});
+	Ray ronny8(glm::vec3{1,1,1},glm::vec3{-1,-1,-1});
+
+	Sphere s5(glm::vec3{4,4,10},6);
+	Sphere s6(glm::vec3{4,4,6},3);
+	Sphere s7(glm::vec3{-5,-4,-5},2);
+	Sphere s8(glm::vec3{-3,-4,-3},2);
+
+	Hit hit5 = s5.intersect(ronny5,1);
+	Hit hit6 = s6.intersect(ronny6,1);
+	Hit hit7 = s7.intersect(ronny7,1);
+	Hit hit8 = s8.intersect(ronny8,1);
+
+	std::cout<<"\n"<<hit5.impact<<std::endl;
+	std::cout<<"\n"<<hit6.impact<<std::endl;
+	std::cout<<"\n"<<hit7.impact<<std::endl;
+	std::cout<<"\n"<<hit8.impact<<std::endl;
+	
 	return 0;
 }

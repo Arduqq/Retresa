@@ -4,6 +4,7 @@
 #include "color.hpp"
 #include "pixel.hpp"
 #include "ppmwriter.hpp"
+#include "sphere.hpp"
 #include <string>
 #include <glm/glm.hpp>
 
