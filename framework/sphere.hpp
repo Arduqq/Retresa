@@ -3,7 +3,7 @@
 
 #include "shape.hpp"
 #include "ray.hpp"
-#include "vektoroperations.hpp"
+
 #include <glm/vec3.hpp>
 
 class Sphere: public Shape

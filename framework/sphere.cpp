@@ -1,4 +1,5 @@
 #include "sphere.hpp"
+#include "vektoroperations.hpp"
 #include <math.h>
 
 Sphere::Sphere():
@@ -48,7 +49,7 @@ float const& Sphere::getrad() const
 {
 	return rad_;
 }
-glm::vec3 cross(glm::vec3 v1, glm::vec3 v2)
+/*glm::vec3 cross(glm::vec3 v1, glm::vec3 v2)
 {
 	glm::vec3 res;
 	res.x=(v1.y * v2.z) - (v1.z * v2.y);
@@ -59,7 +60,7 @@ glm::vec3 cross(glm::vec3 v1, glm::vec3 v2)
 float absolute(glm::vec3 v)
 {
 	return sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
-}
+}*/
 Hit Sphere::intersect(Ray const& ray, float distance) 
 {
 	Hit sphereHit;
@@ -72,8 +73,8 @@ Hit Sphere::intersect(Ray const& ray, float distance)
 		glm::vec3 p {ctr_+b};
 		glm::vec3 intersectPoint{ray.origin + ((1-a) * ray.direction)};
 		sphereHit.point = intersectPoint;
-		Ray normal{intersectPoint,intersectPoint - ctr_};
-		sphereHit.normal = normal;
+		sphereHit.normal = glm::normalize(intersectPoint - ctr_);
+		sphereHit.shape = this;
 	}
 	else sphereHit.impact=false;
 
