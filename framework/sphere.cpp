@@ -61,7 +61,7 @@ float absolute(glm::vec3 v)
 {
 	return sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
 }*/
-Hit Sphere::intersect(Ray const& ray, float distance) 
+Hit Sphere::intersect(Ray const& ray) 
 {
 	Hit sphereHit;
 	glm::vec3 b = cross(ctr_ - ray.origin,ray.direction)/absolute(ray.direction);

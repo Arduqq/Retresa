@@ -25,7 +25,7 @@ void Renderer::render()
       std::cout<<x<<" "<<y<<std::endl;
       Ray ronny = cam.calculateRay(x,y);
 
-      Hit hit = s.intersect(ronny,1);//Ray{glm::vec3{x,y,0},glm::vec3{0,0,-1}},1);
+      Hit hit = s.intersect(ronny);//Ray{glm::vec3{x,y,0},glm::vec3{0,0,-1}},1);
       if (hit.impact)
       {
         float dunkel = 0;//  = absolute(hit.point - ronny.origin);
