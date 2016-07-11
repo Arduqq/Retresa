@@ -1,6 +1,7 @@
 #include "renderer.hpp"
 #include "vektoroperations.hpp"
 #include <iostream>
+#include "camera.hpp"
 //#define DEBUG false
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file):
   width_(w),
@@ -12,33 +13,33 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file):
 
 void Renderer::render()
 {
-  const std::size_t checkersize = 20;
-  Sphere s{glm::vec3{300.0,300.0,2.0},250.0};
+  Camera cam{glm::vec3{0,1,0},glm::vec3{0,0,2},glm::vec3{0,0,-1},height_,width_};
+
+  Sphere s{glm::vec3{0.0,0.0,0.0},1.0};
+  
   for (unsigned y = 0; y < height_; ++y) 
   {
     for (unsigned x = 0; x < width_; ++x) 
     {
-#if 0
-      Ray ray = scene_.camera.calc_eye_ray(x,y);
-      p.color = raytrace(ray, 3);
-#else
-      std::cout<<x<<" "<<y<<std::endl;
-      
       Pixel p(x,y);
+      std::cout<<x<<" "<<y<<std::endl;
+      Ray ronny = cam.calculateRay(x,y);
 
-      Hit hit = s.intersect(Ray{glm::vec3{x,y,0},glm::vec3{0,0,-1}},1);
+      Hit hit = s.intersect(ronny,1);//Ray{glm::vec3{x,y,0},glm::vec3{0,0,-1}},1);
       if (hit.impact)
       {
-        float dunkel = absolute(hit.point-glm::vec3{x,y,0})/100;
+        float dunkel = 0;//  = absolute(hit.point - ronny.origin);
         glm::vec3 debugNormal = 0.5f * hit.normal + glm::vec3(0.5);
-        p.color = Color(debugNormal.x, debugNormal.y, debugNormal.z);
-        //p.color = Color(dunkel,dunkel,dunkel);
+        //p.color = Color(debugNormal.x, debugNormal.y, debugNormal.z);
+        p.color = Color(dunkel,dunkel,dunkel);
       } 
       else 
       {
-        p.color = Color(0.0, 0.0, 0.0);
+        p.color = Color(1.0, 0.0, 0.0);
       }
-#endif
+
+
+
       write(p);
     }
   }
