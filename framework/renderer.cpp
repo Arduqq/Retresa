@@ -2,6 +2,7 @@
 #include "vektoroperations.hpp"
 #include <iostream>
 #include "camera.hpp"
+#include <math.h>
 //#define DEBUG false
 Renderer::Renderer(unsigned w, unsigned h, std::string const& file):
   width_(w),
@@ -13,29 +14,35 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file):
 
 void Renderer::render()
 {
-  Camera cam{glm::vec3{0,1,0},glm::vec3{0,0,2},glm::vec3{0,0,-1},height_,width_};
-
-  Sphere s{glm::vec3{0.0,0.0,0.0},1.0};
+  Camera cam{glm::vec3{0,1,0},glm::vec3{0,0,200},glm::vec3{0,0,-1},height_,width_};
+  
+  Sphere s{glm::vec3{0.0,0.0,400},100};
   
   for (unsigned y = 0; y < height_; ++y) 
   {
     for (unsigned x = 0; x < width_; ++x) 
     {
+
       Pixel p(x,y);
-      std::cout<<x<<" "<<y<<std::endl;
+      
       Ray ronny = cam.calculateRay(x,y);
 
       Hit hit = s.intersect(ronny);//Ray{glm::vec3{x,y,0},glm::vec3{0,0,-1}},1);
       if (hit.impact)
       {
-        float dunkel = 0;//  = absolute(hit.point - ronny.origin);
-        glm::vec3 debugNormal = 0.5f * hit.normal + glm::vec3(0.5);
-        //p.color = Color(debugNormal.x, debugNormal.y, debugNormal.z);
-        p.color = Color(dunkel,dunkel,dunkel);
+        glm::vec3 light{0,200,300};
+
+        float helle = absolute(hit.point - ronny.origin)/200;
+
+        //Ray ralf{hit.point, light - hit.point};
+        //Hit hit2 = s.intersect(ralf);
+    
+        p.color = Color(1-helle,1-helle,1-helle);
+        
       } 
       else 
       {
-        p.color = Color(1.0, 0.0, 0.0);
+        p.color = Color(0.0, 0.0, 0.0);
       }
 
 
@@ -43,6 +50,7 @@ void Renderer::render()
       write(p);
     }
   }
+
   ppm_.save(filename_);
 }
 
