@@ -5,11 +5,12 @@
 #include <memory>
 #include "shape.hpp"
 #include "hit.hpp"
+#include "light.hpp"
 
 struct Scene
 {
 std::vector<shared_ptr<Shape>> shapes;
-//std::vector<shared_ptr<Light>> lights;
+std::vector<shared_ptr<Light>> lights;
 };
 
 #endif

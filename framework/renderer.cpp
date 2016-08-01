@@ -19,10 +19,16 @@ void Renderer::render()
   glm::vec3 dir{0,0,-1}; 
   Camera cam{up, eye, dir ,height_ ,width_};
   
-  //for (float i= 0; i<1000; i+=50)
+  //for (float i= 0; i<500; i+=10)
   {
   //std::cout<<i;
-  Sphere s{glm::vec3{0.0,0.0,-300},200};
+  //std::vector<shared_ptr<Shape>>
+  //std::vector<Sphere> s{{glm::vec3{0.0,0.0,-500},100},{glm::vec3{0.0,200,-400},100},{glm::vec3{200,0.0,-400},100},{glm::vec3{0.0,-200,-400},100},{glm::vec3{-200,0.0,-400},100}};
+  std::shared_ptr<Sphere> s = std::make_shared <Sphere> (glm::vec3{0.0,0.0,-500},200);
+  /*Sphere s[1] = {glm::vec3{0.0,200,-300},200};
+  Sphere s[2] = {glm::vec3{200,0.0,-300},200};
+  Sphere s[3] = {glm::vec3{0.0,-200,-300},200};
+  Sphere s[4] = {glm::vec3{-200,0.0,-300},200};*/
   
   for (unsigned y = 0; y < height_; ++y) 
   {
@@ -32,25 +38,8 @@ void Renderer::render()
       Pixel p(x,y);
       
       Ray ronny = cam.calculateRay(x,y);
-      //std::cout<<ronny.origin.x<<" "<<ronny.origin.y<<" "<<ronny.origin.z<<" - "<<ronny.direction.x<<" "<<ronny.direction.y<<" "<<ronny.direction.z;
-      Hit hit = s.intersect(ronny);
-      if (hit.impact)
-      {
-        glm::vec3 light{0,-400,-100};
 
-        Ray ralf{hit.point, light - hit.point}; //beleuchtet?
-        Hit hit2 = s.intersect(ralf);
-
-        glm::vec3 debugNormal = 0.5f * hit.normal + glm::vec3(0.5);
-        if(!hit2.impact) p.color = Color(debugNormal.x,debugNormal.y,debugNormal.z);
-        else p.color = Color(debugNormal.x/5,debugNormal.y/5,debugNormal.z/5);
-      } 
-      else 
-      {
-        p.color = Color(0.0, 0.0, 0.0);
-      }
-
-
+      p.color = raytrace(ronny,s,1);
 
       write(p);
     }
@@ -59,6 +48,30 @@ void Renderer::render()
   ppm_.save(filename_);
 }
 
+Color Renderer::raytrace(Ray const& ronny, std::shared_ptr<Sphere> const& s,unsigned int depth) const
+{
+  Color c{0,0,0};
+  for (int obj = 0; obj<5 ; obj++)
+    {
+      Hit hit = s->intersect(ronny);
+      if (hit.impact)
+      {
+        //glm::vec3 light{0,0,-250};
+
+        //Ray ralf{hit.point, light - hit.point}; //beleuchtet?
+        //Hit hit2 = s[obj].intersect(ralf);
+
+        glm::vec3 debugNormal = 0.5f * hit.normal + glm::vec3(0.5);
+        c = Color(debugNormal.x,debugNormal.y,debugNormal.z);
+      } 
+      else 
+      {
+        //p.color = Color(0.0, 0.0, 0.0);
+      }
+      
+    }
+  return c;
+}
 void Renderer::write(Pixel const& p)
 {
   // flip pixels, because of opengl glDrawPixels
