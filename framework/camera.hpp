@@ -19,10 +19,9 @@ public:
 	{
 		int x = xInp - (width/2);
 		int y = yInp - (height/2);
-//Ray{glm::vec3{x,y,0},glm::vec3{0,0,-1}
 
-		dir = glm::vec3{0,0,-1};
-		return (Ray{eye, glm::normalize(eye - glm::vec3{x,y,0}) } );
+		Ray ronny{eye, glm::normalize(glm::vec3{x, y, 0} - eye) };
+		return ronny;
 	}
 
 private:

@@ -33,11 +33,11 @@ float Sphere::volume() const
 std::ostream & Sphere::print ( std :: ostream & os ) const
 {
 	Shape::print(os);
-	os <<"I'm livin in \n ("
+	os <<"CTR: ("
 	<< ctr_.x << ", "
 	<< ctr_.y << ", "
-	<< ctr_.z << ") , I'm ("
-	<< rad_ << ") tall"<<std::endl;
+	<< ctr_.z << ") , RAD: ("
+	<< rad_ << ") "<<std::endl;
 }
 
 glm::vec3 const& Sphere::getctr() const
@@ -57,13 +57,13 @@ Hit Sphere::intersect(Ray const& ray)
 	glm::vec3 l = ray.direction;
 	glm::vec3 o = ray.origin;
 	glm::vec3 c = ctr_;
-	float r = rad_;
+	float	  r = rad_;
 	float underroot = ( skalar(l , (o - c)) * skalar(l , (o - c))) - ((absolute(o - c) * absolute(o - c))) + (r*r); //=der bums unter der wurzel
-	if( underroot >= 0 )
+	if( underroot > 0 )
 	{
 		float root = std::min(sqrt(underroot),-sqrt(underroot));
 		float d = (- skalar(l , (o - c))) + root;
-		if(1)//d >=0) //strahl schneidet in positiver richtung
+		if(d >= 0) //strahl schneidet in positiver richtung
 		{
 			sphereHit.impact = true;
 			sphereHit.shape = this;
@@ -71,32 +71,6 @@ Hit Sphere::intersect(Ray const& ray)
 			sphereHit.normal = glm::normalize(sphereHit.point - ctr_);
 		}
 	}
-
-
-
-
-
-
-
-	/*
-	glm::vec3 b = cross(ctr_ - ray.origin,ray.direction)/absolute(ray.direction); //abstand zwichen ctr und ray
-
-	if(absolute(b) < rad_ ) //kleinster abstand kleiner als radius => innen.
-	{
-		float a = sqrt((rad_*rad_) - (absolute(b)*absolute(b))); 
-		glm::vec3 intersectPoint{ray.origin + ((1-a) * ray.direction)};
-		sphereHit.point = intersectPoint;
-		glm::vec3 p = (intersectPoint - ray.origin)/ray.direction;
-		std::cout<< p.x <<" "<< p.y <<" "<< p.z <<" ";
-		if(p.x < 0 and p.y < 0 and p.z < 0) //parameter p > 0 heißt, dinge hinter der cam zB bleiben ignored
-        {
-        	sphereHit.impact = true;
-        	sphereHit.normal = glm::normalize(intersectPoint - ctr_);
-			sphereHit.shape = this;
-
-        }
-
-	}*/
 
 	return sphereHit;
 }
