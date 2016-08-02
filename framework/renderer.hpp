@@ -16,7 +16,7 @@ public:
   Renderer(Scene const& scene, unsigned w, unsigned h, std::string const& file);
 
   void render();
-  Color raytrace(Ray const& ronny,std::shared_ptr<Sphere> const& s, unsigned int depth) const;
+  Color raytrace(Ray const& ronny,std::shared_ptr<Shape> const& s, unsigned int depth) const;
   // Color shade(OptionalHit const&, Ray const&, unsigned depth) const
   void write(Pixel const& p);
 
@@ -34,4 +34,4 @@ private:
   PpmWriter ppm_;
 };
 
-#endif // #ifndef BUW_RENDERER_HPP
+#endif 

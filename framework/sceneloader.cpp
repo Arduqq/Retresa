@@ -10,13 +10,13 @@
 
 
 
-Scene Scene::loadscene(std::string const& input) {
+void Scene::loadscene(std::string const& input) {
   std::string line;
   std::ifstream myfile (input);//"../Material.sdf");
 
   std::map<std::string, Material> materials;
 
-  Scene loadScene;
+  sizeShape = 0;
 
   if (myfile.is_open())
   {
@@ -57,9 +57,9 @@ Scene Scene::loadscene(std::string const& input) {
             ss>>r;
             //ss>>mat;
 
-            Sphere sphere{glm::vec3{x,y,z},r,name,mat};
-
-            std::cout<<"Loaded Sphere: "<<sphere<<" - Success"<<std::endl;
+            shapes.push_back(std::make_shared<Sphere>(glm::vec3{x,y,z},r,name,mat)); // neues Object in scene schreiben
+            sizeShape++;
+            std::cout<<"Loaded shape nr " <<sizeShape<<". (Sphere) "<<*shapes[sizeShape-1]<<" - Success"<<std::endl;
           }
           else if (shapeType == "box")
           {
@@ -113,6 +113,7 @@ Scene Scene::loadscene(std::string const& input) {
             //tbi
             break;
           }
+        else std::cout<< "Dinge hinter 'define' wurden nicht erkannt";
         }
         else if (keyword == "render")
         {
@@ -129,5 +130,4 @@ Scene Scene::loadscene(std::string const& input) {
 
   else std::cout << "Unable to open file"; 
 
-  return loadScene;
 }

@@ -11,12 +11,13 @@
 
 struct Scene
 {
-std::vector<std::shared_ptr<Shape>> shapes;
-std::vector<std::shared_ptr<Light>> lights;
-std::vector<std::shared_ptr<Material>> materials;
-std::shared_ptr <Camera> cam;
+	unsigned int sizeShape;
+	std::vector<std::shared_ptr<Shape>> shapes;
+	std::vector<std::shared_ptr<Light>> lights;
+	std::vector<std::shared_ptr<Material>> materials;
+	std::shared_ptr <Camera> cam;
 
-Scene loadscene(std::string const& input);
+	void loadscene(std::string const& input);
 };
 
 #endif
