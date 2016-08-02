@@ -1,14 +1,19 @@
 #include <thread>
 #include <renderer.hpp>
 #include <fensterchen.hpp>
+#include <scene.hpp>
 
 int main(int argc, char* argv[])
 {
   unsigned const width = 600;
   unsigned const height = 600;
-  std::string const filename = "./checkerboard.ppm";
+  std::string const OPfilename = "./checkerboard.ppm";
+  std::string const IPfilename = "./SCENE.sdf";
 
-  Renderer app(width, height, filename);
+  Scene bigPicture;
+  bigPicture.loadscene(IPfilename);
+
+  Renderer app(bigPicture, width, height, OPfilename);
 
   std::thread thr([&app]() { app.render(); });
 

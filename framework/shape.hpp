@@ -18,6 +18,9 @@ public:
 	std::string const& getname() const;
 	Material const& getmat() const;
 
+	void  setname(std::string const& s);
+	void  setmat(Material  const&    m);
+
 	virtual float area()   const = 0;
 	virtual float volume() const = 0;
 	virtual Hit intersect(Ray const & ray) = 0;

@@ -8,11 +8,12 @@
 #include <string>
 #include <glm/glm.hpp>
 #include <memory>
+#include <scene.hpp>
 
 class Renderer
 {
 public:
-  Renderer(/*Scene const& scene,*/ unsigned w, unsigned h, std::string const& file);
+  Renderer(Scene const& scene, unsigned w, unsigned h, std::string const& file);
 
   void render();
   Color raytrace(Ray const& ronny,std::shared_ptr<Sphere> const& s, unsigned int depth) const;
@@ -25,7 +26,7 @@ public:
   }
 
 private:
-  //Scene scene_;
+  Scene scene_;
   unsigned width_;
   unsigned height_;
   std::vector<Color> colorbuffer_;

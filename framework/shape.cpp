@@ -25,12 +25,21 @@ Material const& Shape::getmat() const
 {
   return mat_;
 }
+void  Shape::setname(std::string const& s)
+{
+	name_=s;
+}
+void  Shape::setmat( Material const&    m)
+{
+	mat_=m;
+}
+
 std::ostream& operator<<(std::ostream& os, Shape const& s)
 {
   return s.print(os);
 }
 std::ostream & Shape::print ( std :: ostream & os ) const 
 {
-  os << "\n It's tellin' ya somethin' 'bout it: \n Ma Name's " << name_ << std::endl <<" and I look like "<< mat_;
+  os << "Name: " << name_ << std::endl <<" Material: "<< mat_;
   return os;
 }

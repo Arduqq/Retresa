@@ -33,10 +33,10 @@ float Sphere::volume() const
 std::ostream & Sphere::print ( std :: ostream & os ) const
 {
 	Shape::print(os);
-	os <<"CTR: ("
+	os <<"Location: ("
 	<< ctr_.x << ", "
 	<< ctr_.y << ", "
-	<< ctr_.z << ") , RAD: ("
+	<< ctr_.z << ") , Radius: ("
 	<< rad_ << ") "<<std::endl;
 }
 

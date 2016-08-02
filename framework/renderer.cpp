@@ -4,7 +4,8 @@
 #include "camera.hpp"
 #include <math.h>
 
-Renderer::Renderer(unsigned w, unsigned h, std::string const& file):
+Renderer::Renderer(Scene const& scene, unsigned w, unsigned h, std::string const& file):
+  scene_(scene),
   width_(w),
   height_(h), 
   colorbuffer_(w*h, Color(0.0, 0.0, 0.0)), 
@@ -14,17 +15,17 @@ Renderer::Renderer(unsigned w, unsigned h, std::string const& file):
 
 void Renderer::render()
 {
+  //for (float i= 0; i<500; i+=10)
+  {
   glm::vec3 up{0,1,0};
-  glm::vec3 eye{0,0,100};
+  glm::vec3 eye{0,0,500};
   glm::vec3 dir{0,0,-1}; 
   Camera cam{up, eye, dir ,height_ ,width_};
   
-  //for (float i= 0; i<500; i+=10)
-  {
   //std::cout<<i;
   //std::vector<shared_ptr<Shape>>
   //std::vector<Sphere> s{{glm::vec3{0.0,0.0,-500},100},{glm::vec3{0.0,200,-400},100},{glm::vec3{200,0.0,-400},100},{glm::vec3{0.0,-200,-400},100},{glm::vec3{-200,0.0,-400},100}};
-  std::shared_ptr<Sphere> s = std::make_shared <Sphere> (glm::vec3{0.0,0.0,-500},200);
+  std::shared_ptr<Sphere> s = std::make_shared <Sphere> (glm::vec3{0.0,0.0,-600},200);
   /*Sphere s[1] = {glm::vec3{0.0,200,-300},200};
   Sphere s[2] = {glm::vec3{200,0.0,-300},200};
   Sphere s[3] = {glm::vec3{0.0,-200,-300},200};
@@ -50,6 +51,7 @@ void Renderer::render()
 
 Color Renderer::raytrace(Ray const& ronny, std::shared_ptr<Sphere> const& s,unsigned int depth) const
 {
+  depth --;
   Color c{0,0,0};
   for (int obj = 0; obj<5 ; obj++)
     {
