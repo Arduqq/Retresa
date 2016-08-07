@@ -14,6 +14,8 @@ public:
 
 	Hit intersect(Ray const& ronny) override;
 
+	void setEdges(glm::vec3 const& PV, glm::vec3 const& N, glm::vec3 const& O, float W, float L);
+
 	std::ostream & print ( std :: ostream & os ) const override;
 
 private:
