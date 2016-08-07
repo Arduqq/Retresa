@@ -1,4 +1,5 @@
 #include "box.hpp"
+#include "surface.hpp"
 
 Box::Box():
 	Shape(),
@@ -55,37 +56,15 @@ glm::vec3 const& Box::getmax() const
 	return max_;
 }
 
-/*bool Box::intersect(Ray const& ray, float t) 
+Hit Box::intersect(Ray const& ray) 
 {
-glm::vec3 dirfrac{1.0f,1.0f,1.0f};
+	Hit hit;
+	/*Surface s1{};
+	Surface s2{};
+	Surface s3{};
+	Surface s4{};
+	Surface s5{};
+	Surface s6{};*/
+	return hit;
 
-dirfrac.x = 1.0f / ray.direction.x;
-dirfrac.y = 1.0f / ray.direction.y;
-dirfrac.z = 1.0f / ray.direction.z;
-
-float t1 = (min_.x - ray.origin.x)*dirfrac.x;
-float t2 = (max_.x - ray.origin.x)*dirfrac.x;
-float t3 = (min_.y - ray.origin.y)*dirfrac.y;
-float t4 = (max_.y - ray.origin.y)*dirfrac.y;
-float t5 = (min_.z - ray.origin.z)*dirfrac.z;
-float t6 = (max_.z - ray.origin.z)*dirfrac.z;
-
-float tmin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
-float tmax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
-
-if (tmax < 0)
-{
-    t = tmax;
-    return false;
 }
-
-if (tmin > tmax)
-{
-    t = tmax;
-    return false;
-}
-
-t = tmin;
-return true;
-
-}*/

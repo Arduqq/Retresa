@@ -15,8 +15,7 @@ Renderer::Renderer(Scene const& scene, unsigned w, unsigned h, std::string const
 
 void Renderer::render()
 {
-  //for (float i= 0; i<500; i+=10)
-  {
+
   glm::vec3 up{0,1,0};
   glm::vec3 eye{0,0,500};
   glm::vec3 dir{0,0,-1}; 
@@ -30,28 +29,25 @@ void Renderer::render()
       Pixel p(x,y);
       
       Ray ronny = cam.calculateRay(x,y);
-      for(unsigned int i = 0; i < scene_.sizeShape; i++)
-      {
-        if(scene_.shapes[i] != nullptr)
-        {
-          p.color = raytrace(ronny,scene_.shapes[0],1);
-        }
-        else std::cout<< "scene_.shapes["<<i<<"] == nullptr"<<std::endl;
-        write(p);
-      }
       
+      p.color = raytrace(ronny,1);
+
+      write(p);
     }
   }
-}
+
   ppm_.save(filename_);
 }
 
-Color Renderer::raytrace(Ray const& ronny, std::shared_ptr<Shape> const& s,unsigned int depth) const
+Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 {
-  depth --;
-  Color c{0,0,0};
-
-      Hit hit = s->intersect(ronny);
+depth --;
+  
+  for(unsigned int i = 0; i < scene_.sizeShape; i++)
+  {
+    if(scene_.shapes[i] != nullptr)
+    {
+      Hit hit = scene_.shapes[i]->intersect(ronny);
       if (hit.impact)
       {
         //glm::vec3 light{0,0,-250};
@@ -60,13 +56,22 @@ Color Renderer::raytrace(Ray const& ronny, std::shared_ptr<Shape> const& s,unsig
         //Hit hit2 = s[obj].intersect(ralf);
 
         glm::vec3 debugNormal = 0.5f * hit.normal + glm::vec3(0.5);
-        c = Color(debugNormal.x,debugNormal.y,debugNormal.z);
+        Color c = Color(debugNormal.x,debugNormal.y,debugNormal.z);
+        return c;
       } 
       else 
       {
         //p.color = Color(0.0, 0.0, 0.0);
       }
-  return c;
+
+
+
+    }
+    else std::cout<< "scene_.shapes["<<i<<"] == nullptr"<<std::endl;
+  }
+
+
+  
 }
 void Renderer::write(Pixel const& p)
 {

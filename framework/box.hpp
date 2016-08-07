@@ -14,7 +14,7 @@ public:
 
 	float area()   const override;
 	float volume() const override;
-	//bool intersect (Ray const& ray, float t) override;
+	Hit intersect (Ray const& ray) override;
 
 	const glm::vec3 &getmin() const;
 	const glm::vec3 &getmax() const;
