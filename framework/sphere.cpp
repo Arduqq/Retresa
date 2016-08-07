@@ -22,14 +22,6 @@ Sphere::~Sphere()
 	std::cout<<"Killing Sphere"<<std::endl;
 }
 
-float Sphere::area() const
-{
-	return 4*M_PI*rad_*rad_;
-}  
-float Sphere::volume() const
-{
-	return (4*M_PI*rad_*rad_*rad_)/3;
-}
 std::ostream & Sphere::print ( std :: ostream & os ) const
 {
 	Shape::print(os);

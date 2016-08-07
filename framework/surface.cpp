@@ -7,6 +7,26 @@ Surface::Surface(glm::vec3 const& _positionVector, glm::vec3 const& _orientation
 	norm{_norm},
 	length{_length},
 	width{_width}{}
+	
+Surface::Surface(glm::vec3 const& _positionVector, glm::vec3 const& _orientation, glm::vec3 const& _norm, float _length, float _width, std::string const& _name, Material const& _mat):
+	positionVector{_positionVector},
+	orientation{_orientation},
+	norm{_norm},
+	length{_length},
+	width{_width},
+	name{_name},
+	mat{_mat}{}
+
+
+std::ostream & Surface::print ( std :: ostream & os ) const
+{
+	Shape::print(os);
+	os <<"Location: ("
+	<< positionVector.x << ", "
+	<< positionVector.y << ", "
+	<< positionVector.z << ") , Length: ("
+	<< length << ") "<<std::endl;
+}
 
 Hit Surface::intersect(Ray const& ray) 
 {

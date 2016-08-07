@@ -10,13 +10,20 @@ class Surface: public Shape
 public:
 	Surface(glm::vec3 const& positionVector, glm::vec3 const& orientation, glm::vec3 const& norm, float length, float width);
 
+	Surface(glm::vec3 const& positionVector, glm::vec3 const& orientation, glm::vec3 const& norm, float length, float width, std::string const& name, Material const& mat);
+
 	Hit intersect(Ray const& ronny) override;
+
+	std::ostream & print ( std :: ostream & os ) const override;
 
 private:
 	glm::vec3 positionVector;
 	glm::vec3 orientation;
 	float length;
 	float width;
+
+	Material mat;
+	std::string name;
 
 	glm::vec3 p1;
 	glm::vec3 p2;

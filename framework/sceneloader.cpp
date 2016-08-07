@@ -4,11 +4,10 @@
 #include <string>
 #include "scene.hpp"
 #include "sphere.hpp"
+#include "surface.hpp"
 #include <map>
 #include <memory>
 #include <sstream>
-
-
 
 void Scene::loadscene(std::string const& input) {
   std::string line;
@@ -60,6 +59,30 @@ void Scene::loadscene(std::string const& input) {
             shapes.push_back(std::make_shared<Sphere>(glm::vec3{x,y,z},r,name,mat)); // neues Object in scene schreiben
             sizeShape++;
             std::cout<<"Loaded shape nr " <<sizeShape<<". (Sphere) "<<*shapes[sizeShape-1]<<" - Success"<<std::endl;
+          }
+          else if (shapeType == "surface")
+          {
+            std::string name;
+            float x1,y1,z1,x2,y2,z2,x3,y3,z3,l,w;
+            Material mat;
+
+            ss>>name;
+            ss>>x1;
+            ss>>y1;
+            ss>>z1;
+            ss>>x2;
+            ss>>y2;
+            ss>>z2;
+            ss>>x3;
+            ss>>y3;
+            ss>>z3;
+            ss>>l;
+            ss>>w;
+            //ss mat
+
+            shapes.push_back(std::make_shared<Surface>(glm::vec3 {x1,y1,z1}, glm::vec3 {x2,y2,z2}, glm::vec3 {x3,y3,z3}, l, w, name, mat));
+            sizeShape++;
+            std::cout<<"Loaded shape nr " <<sizeShape<<". (Surface) "<<*shapes[sizeShape-1]<<" - Success"<<std::endl;
           }
           else if (shapeType == "box")
           {
