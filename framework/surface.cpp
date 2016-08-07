@@ -55,17 +55,14 @@ Hit Surface::intersect(Ray const& ray)
 			-(norm.z*(ray.origin.z - positionVector.z))) / denominator;
 		if(distance > 0)
 		{ 
-			if(true)//unendlich groß
-			{	
+			hit.point  = ray.origin + (distance * ray.direction);
+			{
+				if( skalar(p2-p1, hit.point-p1) >= 0 and skalar(p3-p2, hit.point-p2) >= 0 and skalar(p4-p3, hit.point-p3) >= 0 and skalar(p1-p4, hit.point-p4) >= 0)
+				{
 				hit.impact = true;
-				hit.point  = ray.origin + (distance * ray.direction);
 				hit.normal = norm;
 				hit.shape  = this;
-			}
-			else
-			{
-
-
+				}
 			}
 		}
 	}
