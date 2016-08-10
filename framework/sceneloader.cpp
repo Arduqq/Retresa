@@ -1,10 +1,10 @@
-// reading a text file
 #include <iostream>
 #include <fstream>
 #include <string>
 #include "scene.hpp"
 #include "sphere.hpp"
 #include "surface.hpp"
+#include "box.hpp"
 #include <map>
 #include <memory>
 #include <sstream>
@@ -28,7 +28,10 @@ void Scene::loadscene(std::string const& input) {
 
       ss>>keyword;
 
-      if(keyword == "#"){break;}
+      if(keyword == "#")
+        {
+          break;
+        }
 
       if(keyword == "define")
       {
@@ -76,18 +79,31 @@ void Scene::loadscene(std::string const& input) {
             ss>>x3;
             ss>>y3;
             ss>>z3;
-            ss>>l;
-            ss>>w;
+
             //ss mat
 
-            shapes.push_back(std::make_shared<Surface>(glm::vec3 {x1,y1,z1}, glm::vec3 {x2,y2,z2}, glm::vec3 {x3,y3,z3}, l, w, name, mat));
+            shapes.push_back(std::make_shared<Surface>(glm::vec3 {x1,y1,z1}, glm::vec3 {x2,y2,z2}, glm::vec3 {x3,y3,z3}, name, mat));
             sizeShape++;
             std::cout<<"Loaded shape nr " <<sizeShape<<". (Surface) "<<*shapes[sizeShape-1]<<" - Success"<<std::endl;
           }
           else if (shapeType == "box")
           {
+            std::string name;
+            float x1,y1,z1,x2,y2,z2;
+            Material mat;
 
-            //tbi
+            ss>>name;
+            ss>>x1;
+            ss>>y1;
+            ss>>z1;
+            ss>>x2;
+            ss>>y2;
+            ss>>z2;
+            //ss mat
+
+            shapes.push_back(std::make_shared<Box>(glm::vec3 {x1,y1,z1}, glm::vec3 {x2,y2,z2}, name, mat));
+            sizeShape++;
+            std::cout<<"Loaded shape nr " <<sizeShape<<". (Box) "<<*shapes[sizeShape-1]<<" - Success"<<std::endl;
           }
 
         }

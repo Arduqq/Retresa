@@ -54,9 +54,9 @@ depth --;
 
         //Ray ralf{hit.point, light - hit.point}; //beleuchtet?
         //Hit hit2 = s[obj].intersect(ralf);
-
+        float a = absolute(ronny.origin - hit.point)/2000; 
         glm::vec3 debugNormal = 0.5f * hit.normal + glm::vec3(0.5);
-        Color c = Color(debugNormal.x,debugNormal.y,debugNormal.z);
+        Color c = Color(a*debugNormal.x,a*debugNormal.y,a*debugNormal.z);
         return c;
       } 
       else 

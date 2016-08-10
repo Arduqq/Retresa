@@ -12,9 +12,7 @@ int main(int argc, char* argv[])
 
   Scene bigPicture;
   bigPicture.loadscene(IPfilename);
-
   Renderer app(bigPicture, width, height, OPfilename);
-
   std::thread thr([&app]() { app.render(); });
 
   Window win(glm::ivec2(width,height));
@@ -23,6 +21,11 @@ int main(int argc, char* argv[])
     if (win.isKeyPressed(GLFW_KEY_ESCAPE)) {
       win.stop();
     }
+      if (win.isKeyPressed(GLFW_KEY_ENTER))
+      {
+          //aktualisieren
+      }
+      
 
     glDrawPixels( width, height, GL_RGB, GL_FLOAT
                 , app.colorbuffer().data());

@@ -23,6 +23,10 @@ inline float skalar(glm::vec3 const& a,glm::vec3 const& b)
 {
 	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
+inline float winkel(glm::vec3 const& a,glm::vec3 const& b)
+{
+	return acos(skalar(a,b)/(absolute(a)*absolute(b)));
+}
 /*inline glm::vec3 pointOnLine(Ray r, glm::vec3 p)
 {
 	glm::vec3 d = r.direction;
