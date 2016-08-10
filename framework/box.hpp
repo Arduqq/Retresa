@@ -2,6 +2,9 @@
 #define BOX_HPP
 
 #include "shape.hpp"
+#include "surface.hpp"
+#include <vector>
+#include <memory>
 #include <glm/vec3.hpp>
 
 class Box: public Shape
@@ -13,6 +16,7 @@ public:
 	~Box();
 
 	Hit intersect (Ray const& ray) override;
+	void setSurfaces(glm::vec3 const& min, glm::vec3 const& max);
 
 	const glm::vec3 &getmin() const;
 	const glm::vec3 &getmax() const;
@@ -23,6 +27,7 @@ public:
 private: 
 	glm::vec3 min_;
 	glm::vec3 max_;
+	std::vector<std::shared_ptr<Surface>> surfaces_;
 };
 
 #endif
