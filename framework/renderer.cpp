@@ -38,7 +38,7 @@ void Renderer::render()
 
   ppm_.save(filename_);
 }
-
+/*
 Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 {
 depth --;
@@ -72,7 +72,44 @@ depth --;
 
 
   
+}*/
+
+Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
+{
+  depth --;
+
+  Hit hit = scene_.shapes[0]->intersect(ronny);
+  
+  for(unsigned int i = 0; i < scene_.sizeShape; i++)
+  {
+    if(scene_.shapes[i] != nullptr)
+    {
+      Hit newHit = scene_.shapes[i]->intersect(ronny);
+
+        if(newHit.impact && glm::length(newHit.point - ronny.origin) < glm::length(hit.point - ronny.origin))
+        {
+          hit = newHit;
+        }
+    }
+    else std::cout<< "scene_.shapes["<<i<<"] == nullptr"<<std::endl;
+  }
+
+  if (hit.impact)
+      {
+        //glm::vec3 light{0,0,-250};
+        //Ray ralf{hit.point, light - hit.point}; //beleuchtet?
+        //Hit hit2 = s[obj].intersect(ralf);
+        float a = absolute(ronny.origin - hit.point)/2000; 
+        glm::vec3 debugNormal = 0.5f * hit.normal + glm::vec3(0.5);
+        Color c = Color(a*debugNormal.x,a*debugNormal.y,a*debugNormal.z);
+        return c;
+      } 
+      else 
+      {
+        //p.color = Color(0.0, 0.0, 0.0);
+      }  
 }
+
 void Renderer::write(Pixel const& p)
 {
   // flip pixels, because of opengl glDrawPixels

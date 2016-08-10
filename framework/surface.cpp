@@ -62,6 +62,7 @@ Hit Surface::intersect(Ray const& ray)
 				hit.impact = true;
 				hit.normal = norm;
 				hit.shape  = this;
+				hit.distance=glm::length(hit.point - ray.origin);
 				}
 			}
 		}

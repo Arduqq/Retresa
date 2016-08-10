@@ -61,6 +61,7 @@ Hit Sphere::intersect(Ray const& ray)
 			sphereHit.shape = this;
 			sphereHit.point = glm::vec3{o + d * l};
 			sphereHit.normal = glm::normalize(sphereHit.point - ctr_);
+			sphereHit.distance=absolute(sphereHit.point - ray.origin);
 		}
 	}
 

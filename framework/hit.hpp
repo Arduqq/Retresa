@@ -9,19 +9,22 @@ struct Hit
 {
   Hit():
     impact{false},
+    distance{0},
     point{glm::vec3{0,0,0}},
     normal{glm::vec3{1,0,0}},
     shape{nullptr}
   {}
 
-  Hit(bool i, glm::vec3 const& p, glm::vec3 const& n, Shape* s):
+  Hit(bool i, float d, glm::vec3 const& p, glm::vec3 const& n, Shape* s):
     impact{i},
+    distance{d},
     point{p},
     normal{n},
     shape{s}
   {}
 
   bool impact;
+  float distance;
   glm::vec3 point;
   glm::vec3 normal;
   Shape* shape;
