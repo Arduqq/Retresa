@@ -66,6 +66,10 @@ Hit Box::intersect(Ray const& ray)
 	for(short i = 1 ; i < 6 ; i++)
 	{
 		Hit newHit = surfaces_[i]->intersect(ray);
+        if(!hit.impact)
+        {
+            hit = newHit;
+        }
 		if(newHit.impact && glm::length(newHit.point - ray.origin) < glm::length(hit.point - ray.origin))
 		{
 			hit = newHit;

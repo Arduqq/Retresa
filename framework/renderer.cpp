@@ -39,7 +39,7 @@ void Renderer::render()
   ppm_.save(filename_);
 }
 
-
+/*
 Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 {
 depth --;
@@ -68,8 +68,8 @@ depth --;
   }
   
 }
+*/
 
-/*
 
 Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 {
@@ -83,7 +83,7 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
     {
       Hit newHit = scene_.shapes[i]->intersect(ronny);
 
-        if(newHit.impact && glm::length(newHit.point - ronny.origin) < glm::length(hit.point - ronny.origin))
+        if(!hit.impact || (newHit.impact && glm::length(newHit.point - ronny.origin) < glm::length(hit.point - ronny.origin)))
         {
           hit = newHit;
         }
@@ -105,7 +105,7 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
       {
         //p.color = Color(0.0, 0.0, 0.0);
       }  
-}*/
+}
 
 void Renderer::write(Pixel const& p)
 {
