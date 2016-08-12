@@ -60,6 +60,17 @@ glm::vec3 const& Box::getmax() const
 	return max_;
 }
 
+void Box::minimum(glm::vec3 const& min)
+{
+    min_ = min;
+}
+ 
+void Box::maximum(glm::vec3 const& max)
+{
+    max_ = max;
+}
+ 
+
 Hit Box::intersect(Ray const& ray) 
 {
 	Hit hit = surfaces_[0]->intersect(ray);

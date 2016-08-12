@@ -1,8 +1,6 @@
 #ifndef LIGHTS_HPP
 #define LIGHTS_HPP
 
-//#include "color.hpp"
-
 struct Light
 {
 
@@ -17,7 +15,7 @@ struct Light
 	color{1.0,1.0,1.0},
 	intensity{100}{}
 
-	Light(std::string const& n, float i,Color const& c, glm::vec3 const& v ):
+	Light(std::string const& n, glm::vec3 const& v, Color const& c,float i):
 	name{n},
 	pos{v},
 	color{c},
@@ -25,7 +23,7 @@ struct Light
 
 	friend std::ostream& operator<<(std::ostream& os, Light const& l)
 	{
-		os << " Name: " << l.name << " Position: (" << l.pos.x << ", "<< l.pos.y << ","<< l.pos.z << " Color: " << 
+		os << " Name: " << l.name << " Position: (" << l.pos.x << ", "<< l.pos.y << ","<< l.pos.z << ") Color: (" << 
 		l.color.r <<", "<<l.color.g <<", "<<l.color.b <<") Intensity: "<< l.intensity;
 
 		return os;

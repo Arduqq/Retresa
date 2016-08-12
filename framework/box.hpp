@@ -20,7 +20,10 @@ public:
 
 	const glm::vec3 &getmin() const;
 	const glm::vec3 &getmax() const;
-
+	
+	void minimum(glm::vec3 const& min);
+	void maximum(glm::vec3 const& max);
+ 
 	std::ostream & print ( std :: ostream & os ) const override;
 
 

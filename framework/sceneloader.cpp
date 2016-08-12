@@ -15,7 +15,7 @@ void Scene::loadscene(std::string const& input) {
 
   std::map<std::string, Material> materials;
 
-  sizeShape = 0;
+  sizeShape = sizeLight = 0;
 
   if (myfile.is_open())
   {
@@ -30,7 +30,7 @@ void Scene::loadscene(std::string const& input) {
 
       if(keyword == "#")
         {
-          break;
+          continue;
         }
 
       if(keyword == "define")
@@ -131,21 +131,25 @@ void Scene::loadscene(std::string const& input) {
           }
         else if(objClass == "light")
           {
-            Light light;
+            std::string name;
+            float x,y,z,r,g,b,intensity;
 
-            ss<<light.name;
+            ss>>name;
 
-            ss<<light.pos.x;
-            ss<<light.pos.y;
-            ss<<light.pos.z;
+            ss>>x;
+            ss>>y;
+            ss>>z;
 
-            ss<<light.color.r;
-            ss<<light.color.g;
-            ss<<light.color.b;
+            ss>>r;
+            ss>>g;
+            ss>>b;
 
-            ss<<light.intensity;
+            ss>>intensity;
+            
+            lights.push_back(std::make_shared<Light>(name, glm::vec3{x,y,z}, Color{r,g,b}, intensity));
 
-            std::cout<< "Loaded Light: "<<light<<" - Success"<<std::endl;
+            sizeLight ++;
+            std::cout<< "Loaded Light NR "<<sizeLight<<" "<<*lights[sizeLight-1]<<" - Success"<<std::endl;
           }
         else if(objClass == "camera")
           {

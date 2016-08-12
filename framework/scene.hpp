@@ -12,6 +12,7 @@
 struct Scene
 {
 	unsigned int sizeShape;
+	unsigned int sizeLight;
 	unsigned int width;
 	unsigned int height;
 	std::vector<std::shared_ptr<Shape>> shapes;

@@ -15,96 +15,94 @@ Renderer::Renderer(Scene const& scene, unsigned w, unsigned h, std::string const
 
 void Renderer::render()
 {
-
   glm::vec3 up{0,1,0};
   glm::vec3 eye{0,0,500};
   glm::vec3 dir{0,0,-1}; 
   Camera cam{up, eye, dir ,height_ ,width_};
-  
-  for (unsigned y = 0; y < height_; ++y) 
+
+  if(scene_.sizeShape > 0)
   {
-    for (unsigned x = 0; x < width_; ++x) 
+    for (unsigned y = 0; y < height_; ++y) 
     {
-
-      Pixel p(x,y);
-      
-      Ray ronny = cam.calculateRay(x,y);
-      
-      p.color = raytrace(ronny,1);
-
-      write(p);
-    }
-  }
-
-  ppm_.save(filename_);
-}
-
-/*
-Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
-{
-depth --;
-  
-  for(unsigned int i = 0; i < scene_.sizeShape; i++)
-  {
-    if(scene_.shapes[i] != nullptr)
-    {
-      Hit hit = scene_.shapes[i]->intersect(ronny);
-      if (hit.impact)
+      for (unsigned x = 0; x < width_; ++x) 
       {
-        //glm::vec3 light{0,0,-250};
-        //Ray ralf{hit.point, light - hit.point}; //beleuchtet?
-        //Hit hit2 = s[obj].intersect(ralf);
-        float a = absolute(ronny.origin - hit.point)/2000; 
-        glm::vec3 debugNormal = 0.5f * hit.normal + glm::vec3(0.5);
-        Color c = Color(a*debugNormal.x,a*debugNormal.y,a*debugNormal.z);
-        return c;
-      } 
-      else 
-      {
-        //p.color = Color(0.0, 0.0, 0.0);
+        Pixel p(x,y);
+        
+        Ray ronny = cam.calculateRay(x,y);
+        
+        p.color = raytrace(ronny,1);
+
+        write(p);
       }
     }
-    else std::cout<< "scene_.shapes["<<i<<"] == nullptr"<<std::endl;
   }
-  
+  else
+  {
+    std::cout<<"Es wurden keine Objekte geladen."<<std::endl;
+  }
+  ppm_.save(filename_);
 }
-*/
-
 
 Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 {
   depth --;
 
-  Hit hit = scene_.shapes[0]->intersect(ronny);
+  Hit hit = calculateHit(ronny);
+
+  if (hit.impact)
+      {
+        float a = absolute(ronny.origin - hit.point)/2000; 
+        if(!illuminated(hit.point))
+          {
+            a = a / 2;
+          }
+        glm::vec3 debugNormal = 0.5f * hit.normal + glm::vec3(0.5);
+        Color c = Color(a*debugNormal.x,a*debugNormal.y,a*debugNormal.z);
+        return c;
+      } 
+
+}
+Hit Renderer::calculateHit(Ray const& rafa) const
+{
+  Hit hit = scene_.shapes[0]->intersect(rafa);
   
   for(unsigned int i = 1; i < scene_.sizeShape; i++)
   {
     if(scene_.shapes[i] != nullptr)
     {
-      Hit newHit = scene_.shapes[i]->intersect(ronny);
+      Hit newHit = scene_.shapes[i]->intersect(rafa);
 
-        if(!hit.impact || (newHit.impact && glm::length(newHit.point - ronny.origin) < glm::length(hit.point - ronny.origin)))
+        if(!hit.impact || (newHit.impact && glm::length(newHit.point - rafa.origin) < glm::length(hit.point - rafa.origin)))
         {
           hit = newHit;
         }
     }
     else std::cout<< "scene_.shapes["<<i<<"] == nullptr"<<std::endl;
   }
+  return hit;
+}
 
-  if (hit.impact)
-      {
-        //glm::vec3 light{0,0,-250};
-        //Ray ralf{hit.point, light - hit.point}; //beleuchtet?
-        //Hit hit2 = s[obj].intersect(ralf);
-        float a = absolute(ronny.origin - hit.point)/2000; 
-        glm::vec3 debugNormal = 0.5f * hit.normal + glm::vec3(0.5);
-        Color c = Color(a*debugNormal.x,a*debugNormal.y,a*debugNormal.z);
-        return c;
-      } 
-      else 
-      {
-        //p.color = Color(0.0, 0.0, 0.0);
-      }  
+bool Renderer::illuminated(glm::vec3 const& point) const
+{
+  for(unsigned i =0; i < scene_.sizeLight; i++)
+  {
+    Ray robert{point,scene_.lights[i]->pos - point};
+
+    Hit isilluminated = calculateHit(robert);
+
+    if(!isilluminated.impact)
+    {
+      return true;
+    }
+    else if(glm::length(point - scene_.lights[i]->pos) < glm::length(point - isilluminated.point))
+    {
+      return true;
+    }
+    else 
+    {
+      return false;
+    }
+  }
 }
 
 void Renderer::write(Pixel const& p)
