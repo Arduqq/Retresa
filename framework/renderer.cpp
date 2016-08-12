@@ -38,7 +38,8 @@ void Renderer::render()
 
   ppm_.save(filename_);
 }
-/*
+
+
 Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 {
 depth --;
@@ -51,7 +52,6 @@ depth --;
       if (hit.impact)
       {
         //glm::vec3 light{0,0,-250};
-
         //Ray ralf{hit.point, light - hit.point}; //beleuchtet?
         //Hit hit2 = s[obj].intersect(ralf);
         float a = absolute(ronny.origin - hit.point)/2000; 
@@ -63,16 +63,13 @@ depth --;
       {
         //p.color = Color(0.0, 0.0, 0.0);
       }
-
-
-
     }
     else std::cout<< "scene_.shapes["<<i<<"] == nullptr"<<std::endl;
   }
-
-
   
-}*/
+}
+
+/*
 
 Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 {
@@ -80,7 +77,7 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 
   Hit hit = scene_.shapes[0]->intersect(ronny);
   
-  for(unsigned int i = 0; i < scene_.sizeShape; i++)
+  for(unsigned int i = 1; i < scene_.sizeShape; i++)
   {
     if(scene_.shapes[i] != nullptr)
     {
@@ -108,7 +105,7 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
       {
         //p.color = Color(0.0, 0.0, 0.0);
       }  
-}
+}*/
 
 void Renderer::write(Pixel const& p)
 {

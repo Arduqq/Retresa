@@ -163,7 +163,7 @@ void Scene::loadscene(std::string const& input) {
           std::cout<<"Unable to read some Things. Check ur Stuff!"<<std::endl;
         }
       }
-      std::cout<<"successfolly loaded " << sizeShape << " Objects in Scene."<<std::endl;
+      std::cout<<"successfully loaded " << sizeShape << " Objects in Scene."<<std::endl;
 
     myfile.close();
   }

@@ -63,7 +63,7 @@ glm::vec3 const& Box::getmax() const
 Hit Box::intersect(Ray const& ray) 
 {
 	Hit hit = surfaces_[0]->intersect(ray);
-	for(unsigned short i = 1 ; i < 6 ; i++)
+	for(short i = 1 ; i < 6 ; i++)
 	{
 		Hit newHit = surfaces_[i]->intersect(ray);
 		if(newHit.impact && glm::length(newHit.point - ray.origin) < glm::length(hit.point - ray.origin))
@@ -73,7 +73,6 @@ Hit Box::intersect(Ray const& ray)
 	}
 
 	hit.shape  = this;
-
+	
 	return hit;
-
 }
