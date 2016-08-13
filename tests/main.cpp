@@ -115,27 +115,7 @@ TEST_CASE("Spherecenter","[center]"){
     REQUIRE(Approx(4.5f) == s3.getctr().y);
     REQUIRE(Approx(-2.3f) == s3.getctr().z);
 }
- 
-TEST_CASE("SphereSetCenter","[setcenter]"){
- 
-    Sphere s1{};
-    s1.setctr({1.0f, 1.0f, 1.0f});
-    REQUIRE(Approx(1.0f) == s1.getctr().x);
-    REQUIRE(Approx(1.0f) == s1.getctr().y);
-    REQUIRE(Approx(1.0f) == s1.getctr().z);
- 
-    Sphere s2{{0.6f, 1.9f, 1.1f}, 4.2f};
-    s2.setctr({1.3f, 2.6f, 1.2f});
-    REQUIRE(Approx(1.3f) == s2.getctr().x);
-    REQUIRE(Approx(2.6f) == s2.getctr().y);
-    REQUIRE(Approx(1.2f) == s2.getctr().z);
- 
-    Sphere s3 {{3.3f, 4.5f, -2.3f}, 4.2f};
-    s3.setctr({2.3f, 3.6f, -4.4f});
-    REQUIRE(Approx(2.3f) == s3.getctr().x);
-    REQUIRE(Approx(3.6f) == s3.getctr().y);
-    REQUIRE(Approx(-4.4f) == s3.getctr().z);   
-}
+
  
 TEST_CASE("Sphereradius","[radius]"){
  
@@ -150,21 +130,7 @@ TEST_CASE("Sphereradius","[radius]"){
     REQUIRE(Approx(5.3f) == s3.getrad());
    
 }
- 
-TEST_CASE("SphereSetRadius","[SetRadius]"){
- 
-    Sphere s1{};
-    s1.setrad(4.2f);
-    REQUIRE(Approx(4.2f) == s1.getrad());
- 
-    Sphere s2{{0.6f, 1.9f, 1.1f}, 4.2f};
-    s2.setrad(-1.3f);
-    REQUIRE(Approx(-1.3f) == s2.getrad());
- 
-    Sphere s3 {{3.3f, 4.5f, -2.3f}, 4.2f};
-    s3.setrad(3.5f);
-    REQUIRE(Approx(3.5f) == s3.getrad());
-}
+
  
 TEST_CASE("Material","[three]")
 {
@@ -252,49 +218,9 @@ TEST_CASE ("intersectRaySphere","[intersect]" )
   REQUIRE(!b.intersect(triffter4, x));
 }*/
  
- 
+
  
 int main(int argc, char *argv[])
 {
-    Ray ronny1(glm::vec3{0,0,0},glm::vec3{0,0,1});
-    Ray ronny2(glm::vec3{0,0,0},glm::vec3{1,1,1});
-    Ray ronny3(glm::vec3{0,0,0},glm::vec3{-1,-1,-1});
-    Ray ronny4(glm::vec3{1,1,1},glm::vec3{-1,-1,-1});
- 
-    Sphere s1(glm::vec3{0,0,3},1);
-    Sphere s2(glm::vec3{4,4,4},1);
-    Sphere s3(glm::vec3{-2,-2,-2},1);
-    Sphere s4(glm::vec3{-3,-3,-3},1);
- 
-    Hit hit1 = s1.intersect(ronny1);
-    Hit hit2 = s2.intersect(ronny2);
-    Hit hit3 = s3.intersect(ronny3);
-    Hit hit4 = s4.intersect(ronny4);
- 
-    std::cout<<"\n"<<hit1.impact<<std::endl;
-    std::cout<<"\n"<<hit2.impact<<std::endl;
-    std::cout<<"\n"<<hit3.impact<<std::endl;
-    std::cout<<"\n"<<hit4.impact<<std::endl;
- 
-    Ray ronny5(glm::vec3{0,0,0},glm::vec3{0,0,1});
-    Ray ronny6(glm::vec3{0,0,0},glm::vec3{1,1,1});
-    Ray ronny7(glm::vec3{0,0,0},glm::vec3{-1,-1,-1});
-    Ray ronny8(glm::vec3{1,1,1},glm::vec3{-1,-1,-1});
- 
-    Sphere s5(glm::vec3{4,4,10},6);
-    Sphere s6(glm::vec3{4,4,6},3);
-    Sphere s7(glm::vec3{-5,-4,-5},2);
-    Sphere s8(glm::vec3{-3,-4,-3},2);
- 
-    Hit hit5 = s5.intersect(ronny5);
-    Hit hit6 = s6.intersect(ronny6);
-    Hit hit7 = s7.intersect(ronny7);
-    Hit hit8 = s8.intersect(ronny8);
- 
-    std::cout<<"\n"<<hit5.impact<<std::endl;
-    std::cout<<"\n"<<hit6.impact<<std::endl;
-    std::cout<<"\n"<<hit7.impact<<std::endl;
-    std::cout<<"\n"<<hit8.impact<<std::endl;
-   
     return Catch::Session().run(argc, argv);
 }

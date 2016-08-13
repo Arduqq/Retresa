@@ -1,25 +1,18 @@
 #include "sphere.hpp"
 #include "vektoroperations.hpp"
 #include <math.h>
+#include <string>
 
 Sphere::Sphere():
-	Shape(),
-	ctr_{0.0f,0.0f,0.0f},
-	rad_{1}
-	{std::cout<<"makin' a lil' Sphere"<<std::endl;}
+	Shape{"Sphere",{}}, rad_{0.0f}, ctr_{0.0f,0.0f,0.0f}{
+	}
 Sphere::Sphere(glm::vec3 const& ctr, float rad):
-	Shape(),
-	ctr_{ctr},
-	rad_{rad}
-	{std::cout<<"makin' a lil' Sphere"<<std::endl;}
+	Shape{"Sphere",{}}, rad_{rad}, ctr_{ctr}{
+	}
 Sphere::Sphere(glm::vec3 const& ctr, float rad, std::string const& name, Material const& mat):
-	Shape(name, mat),
-	ctr_{ctr},
-	rad_{rad}
-	{std::cout<<"makin' a lil' Sphere"<<std::endl;}
-Sphere::~Sphere()
-{
-	std::cout<<"Killing Sphere"<<std::endl;
+	Shape{name,mat}, rad_{rad}, ctr_{ctr}{
+	}
+Sphere::~Sphere(){
 }
 
 std::ostream & Sphere::print ( std :: ostream & os ) const

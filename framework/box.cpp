@@ -7,7 +7,6 @@ Box::Box():
 	max_{0.0f,0.0f,0.0f}
 	{
 		setSurfaces(min_, max_);
-		std::cout<<"makin' a lil' Box"<<std::endl;
 	}
 Box::Box(glm::vec3 const& min, glm::vec3 const& max):
 	Shape(),
@@ -15,7 +14,6 @@ Box::Box(glm::vec3 const& min, glm::vec3 const& max):
 	max_{max}
 	{
 		setSurfaces(min_, max_);
-		std::cout<<"makin' a lil' Box"<<std::endl;
 	}
 Box::Box(glm::vec3 const& min, glm::vec3 const& max, std::string const& name, Material const& mat):
 	Shape(name, mat),
@@ -23,7 +21,6 @@ Box::Box(glm::vec3 const& min, glm::vec3 const& max, std::string const& name, Ma
 	max_{max}
 	{
 		setSurfaces(min_, max_);
-		std::cout<<"makin' a lil' Box"<<std::endl;
 	}
 Box::~Box()
 {

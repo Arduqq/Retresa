@@ -23,8 +23,10 @@ struct Light
 
 	friend std::ostream& operator<<(std::ostream& os, Light const& l)
 	{
-		os << " Name: " << l.name << " Position: (" << l.pos.x << ", "<< l.pos.y << ","<< l.pos.z << ") Color: (" << 
-		l.color.r <<", "<<l.color.g <<", "<<l.color.b <<") Intensity: "<< l.intensity;
+		os << "Name: " << l.name <<"\n" 
+		<< "Position: (" << l.pos.x << ", "<< l.pos.y << ","<< l.pos.z << ")\n" 
+		<< "Color: (" << l.color.r <<", "<<l.color.g <<", "<<l.color.b <<")\n"
+		<<"Intensity: "<< l.intensity<<"\n";
 
 		return os;
 	}
