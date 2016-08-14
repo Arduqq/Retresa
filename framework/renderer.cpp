@@ -15,11 +15,6 @@ Renderer::Renderer(Scene const& scene, unsigned w, unsigned h, std::string const
 
 void Renderer::render()
 {
-  glm::vec3 up{0,1,0};
-  glm::vec3 eye{0,0,500};
-  glm::vec3 dir{0,0,-1}; 
-  Camera cam{up, eye, dir ,height_ ,width_};
-
   if(scene_.sizeShape > 0)
   {
     for (unsigned y = 0; y < height_; ++y) 
@@ -28,7 +23,7 @@ void Renderer::render()
       {
         Pixel p(x,y);
         
-        Ray ronny = cam.calculateRay(x,y);
+        Ray ronny = scene_.cam->calculateRay(x,y);
         
         p.color = raytrace(ronny,1);
 
@@ -51,7 +46,7 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 
   if (hit.impact)
       {
-        float a = absolute(ronny.origin - hit.point)/2000; 
+        float a = 1; 
         if(!illuminated(hit.point))
           {
             a = a / 2;

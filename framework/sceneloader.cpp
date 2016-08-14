@@ -153,8 +153,24 @@ void Scene::loadscene(std::string const& input) {
           }
         else if(objClass == "camera")
           {
-            //tbi
-            break;
+            float ex, ey, ez, dx, dy, dz, u;
+            unsigned int h,w;
+
+            ss>>ex;
+            ss>>ey;
+            ss>>ez;
+
+            ss>>dx;
+            ss>>dy;
+            ss>>dz;
+
+            ss>>u;
+            ss>>h;
+            ss>>w;
+
+            cam = std::make_shared<Camera>(glm::vec3{ex, ey, ez}, glm::vec3{dx, dy, dz}, u, h, w);
+
+            std::cout<< "Loaded Camera. Eye: ("<<ex<<", "<<ey<<", "<<ez<<") Direction: ("<<dx<<", "<<dy<<", "<<dz<<") Up: "<<u<<" - Success"<<std::endl;
           }
         else std::cout<< "Dinge hinter 'define' wurden nicht erkannt";
         }
