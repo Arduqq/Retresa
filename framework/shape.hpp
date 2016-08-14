@@ -26,7 +26,7 @@ public:
 	virtual std::ostream & print ( std :: ostream & os ) const ;
 	
 
-private:
+protected:
 	std::string name_;
 	Material mat_;
 };

@@ -28,10 +28,7 @@ void Scene::loadscene(std::string const& input) {
 
       ss>>keyword;
 
-      if(keyword == "#")
-        {
-          continue;
-        }
+      if(keyword == "#"){}
 
       if(keyword == "define")
       {
@@ -48,27 +45,25 @@ void Scene::loadscene(std::string const& input) {
 
           if (shapeType == "sphere") //alles was hinter shape steht
           {
-            std::string name;
+            std::string name,mat_name;
             float x,y,z,r;
             Material mat;
-
             ss>>name;
             ss>>x;
             ss>>y;
             ss>>z;
             ss>>r;
-            //ss>>mat;
-
+            ss>>mat_name;
+            mat=materials.find(mat_name)->second; 
             shapes.push_back(std::make_shared<Sphere>(glm::vec3{x,y,z},r,name,mat)); // neues Object in scene schreiben
             sizeShape++;
-            std::cout<<"Loaded shape nr " <<sizeShape<<". (Sphere) "<<*shapes[sizeShape-1]<<" - Success"<<std::endl;
+            std::cout<<"Loaded shape #" <<sizeShape<<". (Sphere) "<<*shapes[sizeShape-1]<<" - Success\n"<<std::endl;
           }
           else if (shapeType == "surface")
           {
-            std::string name;
+            std::string name,mat_name;
             float x1,y1,z1,x2,y2,z2,x3,y3,z3,l,w;
             Material mat;
-
             ss>>name;
             ss>>x1;
             ss>>y1;
@@ -79,19 +74,17 @@ void Scene::loadscene(std::string const& input) {
             ss>>x3;
             ss>>y3;
             ss>>z3;
-
-            //ss mat
-
+            ss>>mat_name;
+            mat=materials.find(mat_name)->second; 
             shapes.push_back(std::make_shared<Surface>(glm::vec3 {x1,y1,z1}, glm::vec3 {x2,y2,z2}, glm::vec3 {x3,y3,z3}, name, mat));
             sizeShape++;
-            std::cout<<"Loaded shape nr " <<sizeShape<<". (Surface) "<<*shapes[sizeShape-1]<<" - Success"<<std::endl;
+            std::cout<<"Loaded shape #" <<sizeShape<<". (Surface) "<<*shapes[sizeShape-1]<<" - Success\n"<<std::endl;
           }
           else if (shapeType == "box")
           {
-            std::string name;
+            std::string name,mat_name;
             float x1,y1,z1,x2,y2,z2;
             Material mat;
-
             ss>>name;
             ss>>x1;
             ss>>y1;
@@ -99,11 +92,11 @@ void Scene::loadscene(std::string const& input) {
             ss>>x2;
             ss>>y2;
             ss>>z2;
-            //ss mat
-
+            ss>>mat_name;
+            mat=materials.find(mat_name)->second; 
             shapes.push_back(std::make_shared<Box>(glm::vec3 {x1,y1,z1}, glm::vec3 {x2,y2,z2}, name, mat));
             sizeShape++;
-            std::cout<<"Loaded shape nr " <<sizeShape<<". (Box) "<<*shapes[sizeShape-1]<<" - Success"<<std::endl;
+            std::cout<<"Loaded shape #" <<sizeShape<<". (Box) "<<*shapes[sizeShape-1]<<" - Success\n"<<std::endl;
           }
 
         }
@@ -127,7 +120,7 @@ void Scene::loadscene(std::string const& input) {
             ss >> mat.m_;
 
             materials[mat.name_] = mat;
-            std::cout<<"Loaded Material: "<<mat<<" - Success"<<std::endl;
+            std::cout<<"Loaded Material: "<<mat<<" - Success\n"<<std::endl;
           }
         else if(objClass == "light")
           {
@@ -149,7 +142,7 @@ void Scene::loadscene(std::string const& input) {
             lights.push_back(std::make_shared<Light>(name, glm::vec3{x,y,z}, Color{r,g,b}, intensity));
 
             sizeLight ++;
-            std::cout<< "Loaded Light NR "<<sizeLight<<" "<<*lights[sizeLight-1]<<" - Success"<<std::endl;
+            std::cout<< "Loaded Light #"<<sizeLight<<" "<<*lights[sizeLight-1]<<" - Success\n"<<std::endl;
           }
         else if(objClass == "camera")
           {
@@ -172,7 +165,7 @@ void Scene::loadscene(std::string const& input) {
 
             std::cout<< "Loaded Camera. Eye: ("<<ex<<", "<<ey<<", "<<ez<<") Direction: ("<<dx<<", "<<dy<<", "<<dz<<") Up: "<<u<<" - Success"<<std::endl;
           }
-        else std::cout<< "Dinge hinter 'define' wurden nicht erkannt";
+        else std::cout<< "Dinge hinter 'define' wurden nicht erkannt\n";
         }
         else if (keyword == "render")
         {
@@ -180,10 +173,10 @@ void Scene::loadscene(std::string const& input) {
         }
         else
         {
-          std::cout<<"Unable to read some Things. Check ur Stuff!"<<std::endl;
+          std::cout<<"Unable to read some Things. Check ur Stuff!\n"<<std::endl;
         }
       }
-      std::cout<<"successfully loaded " << sizeShape << " Objects in Scene."<<std::endl;
+      std::cout<<"successfully loaded " << sizeShape << " Objects in Scene.\n"<<std::endl;
 
     myfile.close();
   }
