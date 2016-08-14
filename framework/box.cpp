@@ -24,7 +24,7 @@ Box::Box(glm::vec3 const& min, glm::vec3 const& max, std::string const& name, Ma
 	}
 Box::~Box()
 {
-	std::cout<<"Killing Box"<<std::endl;
+	std::cout<<"Delete Box"<<std::endl;
 }
 void Box::setSurfaces(glm::vec3 const& min, glm::vec3 const& max)
 {

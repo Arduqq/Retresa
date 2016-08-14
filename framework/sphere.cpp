@@ -13,7 +13,9 @@ Sphere::Sphere(glm::vec3 const& ctr, float rad, std::string const& name, Materia
 	Shape{name,mat}, rad_{rad}, ctr_{ctr}{
 	}
 Sphere::~Sphere(){
-}
+	
+	std::cout<<"Delete Sphere"<<std::endl;
+    }
 
 std::ostream & Sphere::print ( std :: ostream & os ) const
 {
