@@ -28,7 +28,10 @@ void Scene::loadscene(std::string const& input) {
 
       ss>>keyword;
 
-      if(keyword == "#"){}
+      if(keyword == "#" or keyword == " " or keyword == "")
+      {
+        continue;
+      }
 
       if(keyword == "define")
       {

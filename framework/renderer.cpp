@@ -47,7 +47,7 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
   if (hit.impact)
       {
         float a = 1; 
-        if(!illuminated(hit.point))
+        if(!illuminate(hit.point))
           {
             a = a / 2;
           }
@@ -77,7 +77,7 @@ Hit Renderer::calculateHit(Ray const& rafa) const
   return hit;
 }
 
-bool Renderer::illuminated(glm::vec3 const& point) const
+bool Renderer::illuminate(glm::vec3 const& point) const
 {
   for(unsigned i =0; i < scene_.sizeLight; i++)
   {

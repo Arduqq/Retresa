@@ -42,10 +42,3 @@ struct Material
 };
 #endif
 
-
-/*Implementieren Sie ein Struct Material. Es soll die Membervariablen name
-vom Typ string, ka, kd, ks vom Typ color und m vom Typ float besitzen.
-Die Klasse soll Standard- und User-Konstruktor besitzen. Implementieren Sie
-außerdem den Streamoperator (operator<<) zur Ausgabe. Ersetzen Sie den
-Color-Member in der Shape durch einen Material-Member und passen Sie die
-Getter an. Commiten Sie ihre Änderungen.*/

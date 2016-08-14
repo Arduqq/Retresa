@@ -18,7 +18,7 @@ public:
   void render();
   Color raytrace(Ray const& ronny, unsigned int depth) const;
   Hit calculateHit(Ray const& rafa) const;
-  bool illuminated(glm::vec3 const& point) const;
+  bool illuminate(glm::vec3 const& point) const;
   // Color shade(OptionalHit const&, Ray const&, unsigned depth) const
   void write(Pixel const& p);
 
