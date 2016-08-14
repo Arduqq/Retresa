@@ -46,13 +46,28 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 
   if (hit.impact)
       {
-        float a = 1; 
+        Color c{0,0,0};
+        if(true)//illuminate(hit.point))
+        {
+          Material mat{hit.shape->getmat()};
+
+          c.r = -scene_.lights[0]->intensity * mat.kd_.r * (skalar(glm::normalize(hit.normal),glm::normalize(hit.point - scene_.lights[0]->pos)) );
+          c.g = -scene_.lights[0]->intensity * mat.kd_.g * (skalar(glm::normalize(hit.normal),glm::normalize(hit.point - scene_.lights[0]->pos)) );
+          c.b = -scene_.lights[0]->intensity * mat.kd_.b * (skalar(glm::normalize(hit.normal),glm::normalize(hit.point - scene_.lights[0]->pos)) );
+         
+
+        }
+        else
+        {
+         
+        }
+        /*float a = 1; 
         if(!illuminate(hit.point))
           {
             a = a / 2;
           }
         glm::vec3 debugNormal = 0.5f * hit.normal + glm::vec3(0.5);
-        Color c = Color(a*debugNormal.x,a*debugNormal.y,a*debugNormal.z);
+        Color c = Color(a*debugNormal.x,a*debugNormal.y,a*debugNormal.z);*/
         return c;
       } 
 

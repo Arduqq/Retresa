@@ -13,7 +13,7 @@ struct Light
 	name{"Default"},
 	pos{0.0,0.0,0.0},
 	color{1.0,1.0,1.0},
-	intensity{100}{}
+	intensity{1}{}
 
 	Light(std::string const& n, glm::vec3 const& v, Color const& c,float i):
 	name{n},

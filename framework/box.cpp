@@ -74,16 +74,13 @@ Hit Box::intersect(Ray const& ray)
 	for(short i = 1 ; i < 6 ; i++)
 	{
 		Hit newHit = surfaces_[i]->intersect(ray);
-        if(!hit.impact)
-        {
-            hit = newHit;
-        }
-		if(newHit.impact && glm::length(newHit.point - ray.origin) < glm::length(hit.point - ray.origin))
+
+		if(!hit.impact || newHit.impact && glm::length(newHit.point - ray.origin) < glm::length(hit.point - ray.origin))
 		{
 			hit = newHit;
 		}
 	}
-
+	//hit.normal = ((hit.shape->getp1() + hit.shape->getp3())/2) - ((min_+max_)/2);
 	hit.shape  = this;
 	
 	return hit;
