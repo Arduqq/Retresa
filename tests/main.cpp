@@ -120,7 +120,7 @@ TEST_CASE("Spherecenter","[center]"){
 TEST_CASE("Sphereradius","[radius]"){
  
     Sphere s1{};
-    REQUIRE(Approx(1.0f) == s1.getrad());
+    REQUIRE(Approx(0.0f) == s1.getrad());
  
     Sphere s2 {{0.6f, 1.9f, 1.1f}, -4.2f};
     REQUIRE(Approx(-4.2f) == s2.getrad());
@@ -140,12 +140,12 @@ TEST_CASE("Material","[three]")
     Material mb{"b",MatCol,MatCol,MatCol,1};
  
  
-    Box bochs {glm::vec3 {1,2,3}, glm::vec3 {4,5,6}, "Box", ma};
-    Sphere kgl {glm::vec3 {-1,-2,-3}, 1,"Kugel", mb};
+    Box b1 {glm::vec3 {1,2,3}, glm::vec3 {4,5,6}, "Box", ma};
+    Sphere s1 {glm::vec3 {-1,-2,-3}, 1,"Kugel", mb};
  
-    Material m1 = kgl.getmat();
-    Material m2 = bochs.getmat();
-    REQUIRE(kgl.getname()=="Kugel");
+    Material m1 = s1.getmat();
+    Material m2 = b1.getmat();
+    REQUIRE(s1.getname()=="Kugel");
     REQUIRE(m1.name_== "b");
     REQUIRE(m1.ka_  == MatCol);
     REQUIRE(m1.kd_  == MatCol);
@@ -153,7 +153,7 @@ TEST_CASE("Material","[three]")
     REQUIRE(m1.m_   == 1);
  
  
-    REQUIRE(bochs.getname()=="Box");
+    REQUIRE(b1.getname()=="Box");
     REQUIRE(m2.name_== "a");
     REQUIRE(m2.ka_  == MatCol);
     REQUIRE(m2.kd_  == MatCol);
@@ -169,26 +169,26 @@ TEST_CASE("SphereIntersect","[intersect1]")
     Material ma{"a",MatCol,MatCol,MatCol,1};
     Sphere s1{glm::vec3 {3,3,3}, 1,"Kugel", ma};
  
-    Ray ralf   {glm::vec3 {1,1,1}, glm::vec3 {4,4,4}};
-    Ray ronny  {glm::vec3 {4,4,4}, glm::vec3 {2,2,2}};
-    Ray roland {glm::vec3 {4,4,4}, glm::vec3 {6,6,6}};
+    Ray ray1   {glm::vec3 {1,1,1}, glm::vec3 {4,4,4}};
+    Ray ray2  {glm::vec3 {4,4,4}, glm::vec3 {2,2,2}};
+    Ray ray3 {glm::vec3 {4,4,4}, glm::vec3 {6,6,6}};
  
-    REQUIRE( s1.intersect(ralf).impact);
-    REQUIRE( s1.intersect(ralf).impact);
-    REQUIRE(!s1.intersect(ronny).impact);
-    REQUIRE(!s1.intersect(ronny).impact);
-    REQUIRE(!s1.intersect(roland).impact);
-    REQUIRE(!s1.intersect(roland).impact);
+    REQUIRE( s1.intersect(ray1).impact);
+    REQUIRE( s1.intersect(ray1).impact);
+    REQUIRE(!s1.intersect(ray2).impact);
+    REQUIRE(!s1.intersect(ray2).impact);
+    REQUIRE(!s1.intersect(ray3).impact);
+    REQUIRE(!s1.intersect(ray3).impact);
 }
  
 TEST_CASE ("intersectRaySphere","[intersect]" )
 {
-    Ray ronny(glm::vec3{0,0,0},glm::vec3{0,0,1});
+    Ray ray1(glm::vec3{0,0,0},glm::vec3{0,0,1});
     Sphere s(glm::vec3{0,0,3},1);
-    REQUIRE(s.intersect(ronny).impact);
+    REQUIRE(s.intersect(ray1).impact);
 }
  
-/*TEST_CASE("boxintersect", "[box]")
+TEST_CASE("boxintersect", "[box]")
 {
   Box b{glm::vec3{0.0f}, glm::vec3{1.0f}};
  
@@ -205,18 +205,18 @@ TEST_CASE ("intersectRaySphere","[intersect]" )
   glm::vec3 direction4{2.0f,2.0f,2.0f};
  
  
-  Ray triffter{origin,direction};
-  Ray triffter2{origin2,direction2};
-  Ray triffter3{origin3,direction3};
-  Ray triffter4{origin4,direction4};
+  Ray hit1{origin,direction};
+  Ray hit2{origin2,direction2};
+  Ray hit3{origin3,direction3};
+  Ray hit4{origin4,direction4};
  
   float x = 1.0f;
  
-  REQUIRE(b.intersect(triffter, x));
-  REQUIRE(b.intersect(triffter2, x));
-  REQUIRE(b.intersect(triffter3, x));
-  REQUIRE(!b.intersect(triffter4, x));
-}*/
+  REQUIRE(b.intersect(hit1).impact);
+  REQUIRE(b.intersect(hit2).impact);
+  REQUIRE(b.intersect(hit3).impact);
+  REQUIRE(!b.intersect(hit4).impact);
+}
  
 
  
