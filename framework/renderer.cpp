@@ -51,7 +51,7 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
         {
           Material mat{hit.shape->getmat()};
 
-          float iamb = 0.4;
+          float iamb = 0.15;
 
           float ambientR = iamb * mat.ka_.r;
           float ambientG = iamb * mat.ka_.g;
