@@ -14,6 +14,16 @@ public:
 
 	std::ostream & print ( std :: ostream & os ) const override;
 
+	inline glm::vec3 getp1() const
+	{
+		return p1;
+	}
+
+	inline glm::vec3 getp3() const
+	{
+		return p3;
+	}
+
 private:
 	glm::vec3 p1;
 	glm::vec3 p2;

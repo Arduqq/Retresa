@@ -27,6 +27,22 @@ inline float winkel(glm::vec3 const& a,glm::vec3 const& b)
 {
 	return acos(skalar(a,b)/(absolute(a)*absolute(b)));
 }
+inline glm::vec3 operator/(glm::vec3 const& v, float a)
+{
+	return glm::vec3{v.x / a, v.y / a, v.z / a};
+}
+inline glm::vec3 operator*(glm::vec3 const& v, float a)
+{
+	return glm::vec3{v.x * a, v.y * a, v.z * a};
+}
+inline glm::vec3 mirror(glm::vec3 const& point, Ray const& norm)
+{
+	glm::vec3 N = glm::normalize(norm.direction);
+	glm::vec3 L = glm::normalize(point - norm.origin);
+
+	return N * 2 * skalar(N , L) - L;
+
+}
 /*inline glm::vec3 pointOnLine(Ray r, glm::vec3 p)
 {
 	glm::vec3 d = r.direction;

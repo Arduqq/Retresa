@@ -46,13 +46,25 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 
   if (hit.impact)
       {
-        float a = 1; 
-        if(!illuminate(hit.point))
-          {
-            a = a / 2;
-          }
-        glm::vec3 debugNormal = 0.5f * hit.normal + glm::vec3(0.5);
-        Color c = Color(a*debugNormal.x,a*debugNormal.y,a*debugNormal.z);
+        Color c{0,0,0};
+        if(true)//illuminate(hit.point))
+        {
+          Material mat{hit.shape->getmat()};
+
+          float ia = 0.15;
+          float ip = scene_.lights[0]->intensity;
+          float LN = skalar(glm::normalize(scene_.lights[0]->pos - hit.point) , glm::normalize(hit.normal));
+          float RV = skalar(glm::normalize(mirror(scene_.lights[0]->pos , Ray{hit.point, hit.normal})) , glm::normalize(ronny.origin - hit.point));
+          if(LN < 0) LN = 0;
+          if(RV < 0) RV = 0;
+          c.r = ia * mat.ka_.r + ip * LN + mat.ks_.r * pow(RV,mat.m_);
+          c.g = ia * mat.ka_.g + ip * LN + mat.ks_.g * pow(RV,mat.m_);
+          c.b = ia * mat.ka_.b + ip * LN + mat.ks_.b * pow(RV,mat.m_);
+        }
+        else
+        {
+          c.r = c.g = c.b = 0;
+        }
         return c;
       } 
 
@@ -77,11 +89,11 @@ Hit Renderer::calculateHit(Ray const& rafa) const
   return hit;
 }
 
-bool Renderer::illuminate(glm::vec3 const& point) const
+bool Renderer::illuminate(glm::vec3 const& point ) const
 {
   for(unsigned i =0; i < scene_.sizeLight; i++)
   {
-    Ray robert{point,scene_.lights[i]->pos - point};
+    Ray robert{ point,scene_.lights[i]->pos - point};
 
     Hit isilluminated = calculateHit(robert);
 
@@ -89,7 +101,7 @@ bool Renderer::illuminate(glm::vec3 const& point) const
     {
       return true;
     }
-    else if(glm::length(point - scene_.lights[i]->pos) < glm::length(point - isilluminated.point))
+    else if(glm::length( point - scene_.lights[i]->pos) < glm::length( point - isilluminated. point))
     {
       return true;
     }
