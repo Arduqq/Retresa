@@ -25,7 +25,7 @@ void Renderer::render()
         
         Ray ronny = scene_.cam->calculateRay(x,y);
         
-        p.color = raytrace(ronny,1);
+        p.color = raytrace(ronny,x);
 
         write(p);
       }
@@ -40,7 +40,7 @@ void Renderer::render()
 
 Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 {
-  depth --;
+  //depth --;
 
   Hit hit = calculateHit(ronny);
 
@@ -51,15 +51,47 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
         {
           Material mat{hit.shape->getmat()};
 
-          c.r = -scene_.lights[0]->intensity * mat.kd_.r * (skalar(glm::normalize(hit.normal),glm::normalize(hit.point - scene_.lights[0]->pos)) );
-          c.g = -scene_.lights[0]->intensity * mat.kd_.g * (skalar(glm::normalize(hit.normal),glm::normalize(hit.point - scene_.lights[0]->pos)) );
-          c.b = -scene_.lights[0]->intensity * mat.kd_.b * (skalar(glm::normalize(hit.normal),glm::normalize(hit.point - scene_.lights[0]->pos)) );
-         
+          float iamb = 0.4;
+
+          float ambientR = iamb * mat.ka_.r;
+          float ambientG = iamb * mat.ka_.g;
+          float ambientB = iamb * mat.ka_.b;
+
+          if(ambientR < 0)ambientR=0;
+          if(ambientG < 0)ambientG=0;
+          if(ambientB < 0)ambientB=0;         
+
+          float diffuseR = scene_.lights[0]->intensity * mat.kd_.r * (skalar(glm::normalize(hit.normal),glm::normalize(scene_.lights[0]->pos - hit.point)) );
+          float diffuseG = scene_.lights[0]->intensity * mat.kd_.g * (skalar(glm::normalize(hit.normal),glm::normalize(scene_.lights[0]->pos - hit.point)) );
+          float diffuseB = scene_.lights[0]->intensity * mat.kd_.b * (skalar(glm::normalize(hit.normal),glm::normalize(scene_.lights[0]->pos - hit.point)) );
+
+          if(diffuseR < 0)diffuseR=0;
+          if(diffuseG < 0)diffuseG=0;
+          if(diffuseB < 0)diffuseB=0;
+
+          glm::vec3 ausfallvektor = mirror(scene_.lights[0]->pos , Ray{hit.point, hit.normal});
+
+
+          float specularR = scene_.lights[0]->intensity * mat.ks_.r * (mat.m_ + 2) / 6.2831 * pow(skalar(ausfallvektor ,glm::normalize(ronny.direction)), mat.m_);
+          float specularG = scene_.lights[0]->intensity * mat.ks_.g * (mat.m_ + 2) / 6.2831 * pow(skalar(ausfallvektor ,glm::normalize(ronny.direction)), mat.m_);
+          float specularB = scene_.lights[0]->intensity * mat.ks_.b * (mat.m_ + 2) / 6.2831 * pow(skalar(ausfallvektor ,glm::normalize(ronny.direction)), mat.m_);
+
+          if(specularR < 0)specularR=0;
+          if(specularG < 0)specularG=0;
+          if(specularB < 0)specularB=0;
+
+          c.r = ambientR/3 + diffuseR/3 + specularR/3;
+          c.g = ambientG/3 + diffuseG/3 + specularG/3;
+          c.b = ambientB/3 + diffuseB/3 + specularB/3;
+
+          /*c.r = iamb * mat.ka_.r + scene_.lights[0]->intensity * (mat.kd_.r * skalar (glm::normalize(scene_.lights[0]->pos - hit.point), glm::normalize(hit.normal)))
+                + mat.ks_.r * ( (mat.m_ + 2) / 6.2831 ) *  pow(skalar(ausfallvektor ,glm::normalize(ronny.direction)), mat.m_);
+         */
 
         }
         else
         {
-         
+          c.r = c.g = c.b = 0;
         }
         /*float a = 1; 
         if(!illuminate(hit.point))
@@ -92,11 +124,11 @@ Hit Renderer::calculateHit(Ray const& rafa) const
   return hit;
 }
 
-bool Renderer::illuminate(glm::vec3 const& point) const
+bool Renderer::illuminate(glm::vec3 const& point ) const
 {
   for(unsigned i =0; i < scene_.sizeLight; i++)
   {
-    Ray robert{point,scene_.lights[i]->pos - point};
+    Ray robert{ point,scene_.lights[i]->pos - point};
 
     Hit isilluminated = calculateHit(robert);
 
@@ -104,7 +136,7 @@ bool Renderer::illuminate(glm::vec3 const& point) const
     {
       return true;
     }
-    else if(glm::length(point - scene_.lights[i]->pos) < glm::length(point - isilluminated.point))
+    else if(glm::length( point - scene_.lights[i]->pos) < glm::length( point - isilluminated. point))
     {
       return true;
     }
