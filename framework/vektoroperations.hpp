@@ -40,16 +40,6 @@ inline glm::vec3 mirror(glm::vec3 const& point, Ray const& norm)
 	glm::vec3 N = glm::normalize(norm.direction);
 	glm::vec3 L = glm::normalize(point - norm.origin);
 
-	/*float d = norm.direction.x * point.x + norm.direction.y * point.y + norm.direction.z * point.z;
-
-	float p = (d - norm.origin.x * norm.direction.x - norm.origin.y * norm.direction.y - norm.origin.z * norm.direction.z)
-			 / ((norm.direction.x*norm.direction.x) + (norm.direction.y*norm.direction.y) + (norm.direction.z*norm.direction.z));
-
-	glm::vec3 s = norm.origin + p * norm.direction;
-
-	glm::vec3 r = s + s - point;
-
-	return(glm::normalize(r - norm.origin)); */
 	return N * 2 * skalar(N , L) - L;
 
 }
