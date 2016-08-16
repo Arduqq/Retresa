@@ -16,7 +16,7 @@ Composite (7.2)
 
           --Composite-Box
 Composite-|           -- Sphere
-		  --Composite-|
+	  --Composite-|
                       -- Box
 
 -> Zusammensetzungen von Objekten können
