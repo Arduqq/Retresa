@@ -15,9 +15,9 @@ Composite (7.2)
 -> Composite-Pattern entspricht Baumstruktur
 
           --Composite-Box
-Composite-|			  -- Sphere
+Composite-|           -- Sphere
 		  --Composite-|
-		  			  -- Box
+                      -- Box
 
 -> Zusammensetzungen von Objekten können
    können uniform behandelt werden
