@@ -5,9 +5,9 @@
 #include <string>
 #include <iostream>
 #include <memory>
-#include "Shape.hpp"
-#include "Box.hpp"
-#include "Sphere.hpp"
+#include "shape.hpp"
+#include "box.hpp"
+#include "sphere.hpp"
 
 /*
 Composite (7.2)
