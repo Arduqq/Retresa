@@ -8,6 +8,17 @@
 #include "light.hpp"
 #include "camera.hpp"
 #include "material.hpp"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include "scene.hpp"
+#include "sphere.hpp"
+#include "surface.hpp"
+#include "composite.hpp"
+#include "box.hpp"
+#include <map>
+#include <sstream>
+
 
 struct Scene
 {

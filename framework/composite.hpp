@@ -30,6 +30,9 @@ http://www.bogotobogo.com/DesignPatterns/composite.php
 [] Endboss: Composites müssen gerendert werden
 [] Könnte vielleicht ein paar Tests vertragen (*)
 [] Composites aus Composites aus Composites möglich? (opt.)
+
+
+~WIP~
 */
 
 class Composite : public Shape{

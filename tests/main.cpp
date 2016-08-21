@@ -4,8 +4,10 @@
 #include "box.hpp"
 #include "sphere.hpp"
 #include "shape.hpp"
+#include "cylinder.hpp"
 #include <glm/vec3.hpp>
 #include "material.hpp"
+#include "composite.hpp"
  
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
@@ -218,8 +220,15 @@ TEST_CASE("boxintersect", "[box]")
   REQUIRE(!b.intersect(hit4).impact);
 }
  
+TEST_CASE("Cylinder","[cylinder]")
+{
+    Cylinder cyl1{};
+    Cylinder cyl2{{0.0f,0.1f,0.2f},3.0f,5.0f};
+    REQUIRE(cyl1.getrad()==Approx(0.0f));
+    cyl2.setheight(10.0f);
+    REQUIRE(cyl2.getheight()==Approx(10.0f));
+}
 
- 
 int main(int argc, char *argv[])
 {
     return Catch::Session().run(argc, argv);
