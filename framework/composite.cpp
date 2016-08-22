@@ -1,7 +1,8 @@
 #include "composite.hpp"
 
-Composite::Composite(){}
-Composite::~Composite(){}
+Composite::Composite(): shapes_(),name_(){}
+
+Composite::~Composite() {}
 
 /*
 -> Fügt ein Shape (Box, Sphere, Composite) am Anfang der Map an
@@ -9,20 +10,24 @@ Composite::~Composite(){}
 ~WIP~
 */
 void Composite::addChild(std::shared_ptr<Shape>& shape){
-	shapes_.insert(shapes_.begin(),std::pair<std::string, std::shared_ptr<Shape>>(shape->getname(),shape));
+	shapes_.push_back(shape);
 }
 
-void Composite::removeChild(std::string const& name){
-	shapes_.erase(name);
+void Composite::removeChild(std::shared_ptr<Shape>& shape){
+	shapes_.erase(std::remove(shapes_.begin(),shapes_.end(), shape),shapes_.end()); 
 }
 
-std::ostream& Composite::print(std::ostream os) const{
+void Composite::print(std::ostream os) const{
 	for(auto x: shapes_) {
-		x.second->print(os); //x.second = zweite Spalte von x
+		x->print(os);
 	}
-	return os;
 }
 
-std::map<std::string, std::shared_ptr<Shape>> Composite::getChild(){
+std::vector<std::shared_ptr<Shape>> Composite::getChild(){
 	return shapes_;
+}
+
+Hit intersect(Ray const & ray){
+	Hit a;
+	return a;
 }

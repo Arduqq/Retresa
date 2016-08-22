@@ -6,6 +6,7 @@
 #include "color.hpp"
 #include "material.hpp"
 #include "hit.hpp"
+#include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
 
@@ -24,6 +25,11 @@ public:
 	virtual Hit intersect(Ray const & ray) = 0;
 
 	virtual std::ostream & print ( std :: ostream & os ) const ;
+
+	//Composite
+	virtual void remove(std::shared_ptr<Shape>){}
+	virtual void add(std::shared_ptr<Shape>){}
+	virtual void getChild(int){}
 	
 
 protected:

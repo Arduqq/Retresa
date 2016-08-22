@@ -229,6 +229,10 @@ TEST_CASE("Cylinder","[cylinder]")
     REQUIRE(cyl2.getheight()==Approx(10.0f));
 }
 
+TEST_CASE("Composite","[composite]")
+{
+}
+
 int main(int argc, char *argv[])
 {
     return Catch::Session().run(argc, argv);

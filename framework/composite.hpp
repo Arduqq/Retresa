@@ -1,8 +1,9 @@
 #ifndef COMPOSITE_HPP
 #define COMPOSITE_HPP
 
-#include <map>
+#include <vector>
 #include <string>
+#include <algorithm>
 #include <iostream>
 #include <memory>
 #include "shape.hpp"
@@ -25,8 +26,8 @@ Composite-|           -- Sphere
 http://www.bogotobogo.com/DesignPatterns/composite.php
 -> Knoten müssen aus Composites bestehen, Blätter sind Shapes
 -------------------------------------------------------------
-[] Sceneloader muss um ein weiteres if erweitert werden
-[] define shape composite [Knoten] [Blatt_1] ... [Blatt_n]
+[X] Sceneloader muss um ein weiteres if erweitert werden
+[X] define shape composite [Knoten] [Blatt_1] ... [Blatt_n]
 [] Endboss: Composites müssen gerendert werden
 [] Könnte vielleicht ein paar Tests vertragen (*)
 [] Composites aus Composites aus Composites möglich? (opt.)
@@ -41,14 +42,16 @@ public:
 	~Composite();
 
 	void addChild(std::shared_ptr<Shape>& shape); //*
-	void removeChild(std::string const& name); //*
+	void removeChild(std::shared_ptr<Shape>& shape); //*
 
-	std::ostream& print(std::ostream os) const;
+	void print(std::ostream os) const;
 
-	std::map<std::string, std::shared_ptr<Shape>> getChild(); //*
+	std::vector<std::shared_ptr<Shape>> getChild(); //*
+	Hit intersect(Ray const & ray);
 
 private:
-	std::map<std::string,std::shared_ptr<Shape>> shapes_;
+	std::string name_;
+	std::vector<std::shared_ptr<Shape>> shapes_;
 };
 
 #endif

@@ -14,6 +14,8 @@ void Scene::loadscene(std::string const& input) {
   std::ifstream myfile (input);//"../Material.sdf");
 
   std::map<std::string, Material> materials;
+  std::map<std::string, std::shared_ptr<Shape>> compositeBasin;
+  Scene scene;
 
   sizeShape = sizeLight = 0;
 
@@ -100,6 +102,18 @@ void Scene::loadscene(std::string const& input) {
             shapes.push_back(std::make_shared<Box>(glm::vec3 {x1,y1,z1}, glm::vec3 {x2,y2,z2}, name, mat));
             sizeShape++;
             std::cout<<"Loaded shape #" <<sizeShape<<". (Box) "<<*shapes[sizeShape-1]<<" - Success\n"<<std::endl;
+          }
+          else if (shapeType == "composite")
+          {
+            std::string nameComposite, nameShape;
+            ss>>nameComposite;
+            while (!ss.eof()){
+              ss>>nameShape;
+              auto it = compositeBasin.find(nameShape);
+              if(it != compositeBasin.end()){
+                scene.composite->add(it->second);
+              }
+            }
           }
 
         }
