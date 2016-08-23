@@ -9,6 +9,7 @@
 #include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
+#include <vector>
 
 class Shape
 {
@@ -27,9 +28,9 @@ public:
 	virtual std::ostream & print ( std :: ostream & os ) const ;
 
 	//Composite
-	virtual void remove(std::shared_ptr<Shape>){}
-	virtual void add(std::shared_ptr<Shape>){}
-	virtual void getChild(int){}
+	virtual void removeChild(std::shared_ptr<Shape>& shape){}
+	virtual void addChild(std::shared_ptr<Shape>& shape){}
+	virtual std::vector<std::shared_ptr<Shape>> getChild(){}
 	
 
 protected:

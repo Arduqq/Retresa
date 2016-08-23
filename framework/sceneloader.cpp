@@ -136,7 +136,7 @@ void Scene::loadscene(std::string const& input) {
               auto it = compositeBasin.find(nameShape);
               if(it != compositeBasin.end())
               {
-                scene.composite->add(it->second);
+                scene.composite->addChild(it->second);
               }
             }
           }
