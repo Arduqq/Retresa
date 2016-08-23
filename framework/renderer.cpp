@@ -59,16 +59,15 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
         { 
           for (unsigned int i = 0 ; i < scene_.sizeLight ; i++)
           {
-            ip = scene_.lights[i]->intensity;
-            LN = skalar(glm::normalize(scene_.lights[i]->pos - hit.point) , glm::normalize(hit.normal));
+            ip = scene_.lights[i]->intensity; //intensität des lichts
+            LN = skalar(glm::normalize(scene_.lights[i]->pos - hit.point) , glm::normalize(hit.normal)); //winkel normale / blickwinkel
             RV = skalar(glm::normalize(mirror(scene_.lights[i]->pos , Ray{hit.point, hit.normal})) , glm::normalize(ronny.origin - hit.point));
 
-            //RV = RV / scene_.sizeLight;
             if(LN < 0) LN = 0;
             if(RV < 0) RV = 0;
-            c.r += ip * (LN + mat.ks_.r * pow(RV,mat.m_));
-            c.g += ip * (LN + mat.ks_.g * pow(RV,mat.m_));
-            c.b += ip * (LN + mat.ks_.b * pow(RV,mat.m_));
+            c.r += ip * (LN * mat.kd_.r + mat.ks_.r * pow(RV,mat.m_));
+            c.g += ip * (LN * mat.kd_.g + mat.ks_.g * pow(RV,mat.m_));
+            c.b += ip * (LN * mat.kd_.b + mat.ks_.b * pow(RV,mat.m_));
           }
         }
 
