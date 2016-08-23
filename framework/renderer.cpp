@@ -47,7 +47,7 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
   if (hit.impact)
       {
         Color c{0,0,0};
-        if(true)//illuminate(hit.point))
+        if(1)//illuminate(hit.point))
         {
           Material mat{hit.shape->getmat()};
 

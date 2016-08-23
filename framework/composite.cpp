@@ -1,6 +1,6 @@
 #include "composite.hpp"
 
-Composite::Composite(): shapes_(),name_(){}
+Composite::Composite(): shapes_{},name_{}{}
 
 Composite::~Composite() {}
 
