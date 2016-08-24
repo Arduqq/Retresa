@@ -3,7 +3,6 @@
 #include <string>
 #include "scene.hpp"
 #include "sphere.hpp"
-#include "surface.hpp"
 #include "box.hpp"
 #include "triangle.hpp"
 #include <map>
@@ -64,27 +63,6 @@ void Scene::loadscene(std::string const& input) {
             shapes.push_back(std::make_shared<Sphere>(glm::vec3{x,y,z},r,name,mat)); // neues Object in scene schreiben
             sizeShape++;
             std::cout<<"Loaded shape #" <<sizeShape<<". (Sphere) "<<*shapes[sizeShape-1]<<" - Success\n"<<std::endl;
-          }
-          else if (shapeType == "surface")
-          {
-            std::string name,mat_name;
-            float x1,y1,z1,x2,y2,z2,x3,y3,z3;
-            Material mat;
-            ss>>name;
-            ss>>x1;
-            ss>>y1;
-            ss>>z1;
-            ss>>x2;
-            ss>>y2;
-            ss>>z2;
-            ss>>x3;
-            ss>>y3;
-            ss>>z3;
-            ss>>mat_name;
-            mat=materials.find(mat_name)->second; 
-            shapes.push_back(std::make_shared<Surface>(glm::vec3 {x1,y1,z1}, glm::vec3 {x2,y2,z2}, glm::vec3 {x3,y3,z3}, name, mat));
-            sizeShape++;
-            std::cout<<"Loaded shape #" <<sizeShape<<". (Surface) "<<*shapes[sizeShape-1]<<" - Success\n"<<std::endl;
           }
           else if(shapeType == "triangle")
           {

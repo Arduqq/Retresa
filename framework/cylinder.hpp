@@ -2,7 +2,6 @@
 #define CYLINDER_HPP
 
 #include "shape.hpp"
-#include "surface.hpp"
 #include <vector>
 #include <memory>
 #include <glm/vec3.hpp>

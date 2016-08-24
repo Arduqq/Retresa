@@ -6,36 +6,25 @@ Box::Box():
 	min_{0.0f,0.0f,0.0f},
 	max_{0.0f,0.0f,0.0f}
 	{
-		setSurfaces(min_, max_);
+
 	}
 Box::Box(glm::vec3 const& min, glm::vec3 const& max):
 	Shape(),
 	min_{min},
 	max_{max}
 	{
-		setSurfaces(min_, max_);
+
 	}
 Box::Box(glm::vec3 const& min, glm::vec3 const& max, std::string const& name, Material const& mat):
 	Shape(name, mat),
 	min_{min},
 	max_{max}
 	{
-		setSurfaces(min_, max_);
+
 	}
 Box::~Box()
 {
 	std::cout<<"Delete Box"<<std::endl;
-}
-void Box::setSurfaces(glm::vec3 const& min, glm::vec3 const& max)
-{
-	surfaces_.push_back(std::make_shared<Surface>(glm::vec3 {min_.x,min_.y,min_.z}, glm::vec3 {min_.x,max_.y,min_.z}, glm::vec3 {max_.x,max_.y,min_.z}));//front
-	surfaces_.push_back(std::make_shared<Surface>(glm::vec3 {max_.x,max_.y,max_.z}, glm::vec3 {min_.x,max_.y,max_.z}, glm::vec3 {min_.x,min_.y,max_.z}));//back
-
-	surfaces_.push_back(std::make_shared<Surface>(glm::vec3 {max_.x,max_.y,min_.z}, glm::vec3 {max_.x,max_.y,max_.z}, glm::vec3 {max_.x,max_.y,min_.z}));//right
-	surfaces_.push_back(std::make_shared<Surface>(glm::vec3 {min_.x,min_.y,max_.z}, glm::vec3 {min_.x,max_.y,max_.z}, glm::vec3 {min_.x,max_.y,min_.z}));//left
-	
-	surfaces_.push_back(std::make_shared<Surface>(glm::vec3 {min_.x,max_.y,min_.z}, glm::vec3 {min_.x,max_.y,max_.z}, glm::vec3 {max_.x,max_.y,max_.z}));//top
-	surfaces_.push_back(std::make_shared<Surface>(glm::vec3 {max_.x,min_.y,max_.z}, glm::vec3 {max_.x,min_.y,min_.z}, glm::vec3 {min_.x,min_.y,min_.z}));//bottom
 }
 std::ostream & Box::print ( std :: ostream & os ) const
 {
