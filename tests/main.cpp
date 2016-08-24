@@ -1,16 +1,16 @@
 #define CATCH_CONFIG_RUNNER
  
 #include <catch.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtx/intersect.hpp>
+#include <glm/vec3.hpp>
 #include "box.hpp"
 #include "sphere.hpp"
 #include "shape.hpp"
 #include "cylinder.hpp"
-#include <glm/vec3.hpp>
 #include "material.hpp"
 #include "composite.hpp"
- 
-#include <glm/glm.hpp>
-#include <glm/gtx/intersect.hpp>
+
  
 TEST_CASE("Boxmin","[minimum]"){
     Box b{};
@@ -231,6 +231,14 @@ TEST_CASE("Cylinder","[cylinder]")
 
 TEST_CASE("Composite","[composite]")
 {
+    Composite c1{};
+    std::shared_ptr<Shape> s1{};
+    std::shared_ptr<Shape> s2{};
+    c1.addChild(s1);
+    c1.addChild(s2);
+    REQUIRE(c1.getChild().size()==2);
+    c1.removeChild(s2);
+    //REQUIRE(c1.getChild().size()==1);
 }
 
 int main(int argc, char *argv[])
