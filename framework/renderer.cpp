@@ -55,36 +55,35 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
         c.r = ia * mat.ka_.r; //die abmienten
         c.g = ia * mat.ka_.g; //terme werden
         c.b = ia * mat.ka_.b; //zugewiesen
-
-        if(1)//illuminate(hit.point, hit.shape))
-        { 
+        
           for (unsigned int i = 0 ; i < scene_.sizeLight ; i++)
           {
-            ip = scene_.lights[i]->intensity; //intensität des lichts
-            LN = skalar(glm::normalize(scene_.lights[i]->pos - hit.point) , glm::normalize(hit.normal)); //winkel normale / blickwinkel
-            RV = skalar(glm::normalize(mirror(scene_.lights[i]->pos , Ray{hit.point, hit.normal})) , glm::normalize(ronny.origin - hit.point));
+            if(illuminate(hit.point, hit.shape, scene_.lights[i]->pos))
+            {
+              ip = scene_.lights[i]->intensity; //intensität des lichts
+              LN = skalar(glm::normalize(scene_.lights[i]->pos - hit.point) , glm::normalize(hit.normal)); //winkel normale / blickwinkel
+              RV = skalar(glm::normalize(mirror(scene_.lights[i]->pos , Ray{hit.point, hit.normal})) , glm::normalize(ronny.origin - hit.point));
 
-            if(LN < 0) LN = 0;
-            if(RV < 0) RV = 0;
-            c.r += ip * (LN * mat.kd_.r + mat.ks_.r * pow(RV,mat.m_));
-            c.g += ip * (LN * mat.kd_.g + mat.ks_.g * pow(RV,mat.m_));
-            c.b += ip * (LN * mat.kd_.b + mat.ks_.b * pow(RV,mat.m_));
+              if(LN < 0) LN = 0;
+              if(RV < 0) RV = 0;
+              c.r += ip * (LN * mat.kd_.r + mat.ks_.r * pow(RV,mat.m_));
+              c.g += ip * (LN * mat.kd_.g + mat.ks_.g * pow(RV,mat.m_));
+              c.b += ip * (LN * mat.kd_.b + mat.ks_.b * pow(RV,mat.m_));
+            }
           }
-        }
-
         return c;
       } 
 
 }
 Hit Renderer::calculateHit(Ray const& rafa) const
 {
-  Hit hit = scene_.shapes[0]->intersect(rafa);
+  Hit hit = scene_.shapes[0]->intersect(Ray{rafa.origin,glm::normalize(rafa.direction)});
   
   for(unsigned int i = 1; i < scene_.sizeShape; i++)
   {
     if(scene_.shapes[i] != nullptr)
     {
-      Hit newHit = scene_.shapes[i]->intersect(rafa);
+      Hit newHit = scene_.shapes[i]->intersect(Ray{rafa.origin,glm::normalize(rafa.direction)});
 
         if(!hit.impact || (newHit.impact && glm::length(newHit.point - rafa.origin) < glm::length(hit.point - rafa.origin)))
         {
@@ -96,23 +95,19 @@ Hit Renderer::calculateHit(Ray const& rafa) const
   return hit;
 }
 
-bool Renderer::illuminate(glm::vec3 const& point ,Shape* const& shape) const
+bool Renderer::illuminate(glm::vec3 const& point ,Shape* const& shape, glm::vec3 const& lightPos) const
 {
-  for(unsigned i =0; i < scene_.sizeLight; i++)
-  {
-    Ray robert{ point,scene_.lights[i]->pos - point};
+  Hit shadow = calculateHit(Ray{ point,lightPos - point});
 
-    Hit isilluminated = calculateHit(robert);
-
-    if(!isilluminated.impact or glm::length( point - scene_.lights[i]->pos) < glm::length( point - isilluminated. point) or isilluminated.shape == shape)
-    { 
-      return true;
-    }
-    else 
-    {
-      return false;
-    }
+  if(!shadow.impact or glm::length( point - lightPos) < glm::length( point - shadow. point) )
+  { 
+    return true;
   }
+  else
+  {
+    return false;
+  }
+  
 }
 
 void Renderer::write(Pixel const& p)
