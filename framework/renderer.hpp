@@ -22,6 +22,8 @@ public:
   // Color shade(OptionalHit const&, Ray const&, unsigned depth) const
   void write(Pixel const& p);
 
+  void antialias() ;
+
   inline std::vector<Color> const& colorbuffer() const
   {
     return colorbuffer_;

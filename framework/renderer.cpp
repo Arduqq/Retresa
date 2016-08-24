@@ -29,7 +29,8 @@ void Renderer::render()
 
         write(p);
       }
-    }
+    }//hier ist der colorbuffer geladen
+    //antialias();
   }
   else
   {
@@ -118,14 +119,28 @@ void Renderer::write(Pixel const& p)
 {
   // flip pixels, because of opengl glDrawPixels
   size_t buf_pos = (width_*p.y + p.x);
-  if (buf_pos >= colorbuffer_.size() || (int)buf_pos < 0) {
+
+  if (buf_pos >= colorbuffer_.size() or (int)buf_pos < 0) 
+  {
     std::cerr << "Fatal Error Renderer::write(Pixel p) : "
       << "pixel out of ppm_ : "
       << (int)p.x << "," << (int)p.y
       << std::endl;
-  } else {
+  } 
+  else 
+  {
     colorbuffer_[buf_pos] = p.color;
   }
-
   ppm_.write(p);
+}
+
+void Renderer::antialias()
+{
+  //Versuch
+  for(unsigned i = 0 ; i < colorbuffer_.size(); i++)
+  {
+    colorbuffer_[i].r = 1 - colorbuffer_[i].r;
+    colorbuffer_[i].g = 1 - colorbuffer_[i].g;
+    colorbuffer_[i].b = 1 - colorbuffer_[i].b;
+  }
 }
