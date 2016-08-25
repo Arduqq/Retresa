@@ -31,6 +31,7 @@ void  Shape::setmat( Material const&    m)
 {
 	mat_=m;
 }
+//rotatethefuckshit();
 
 std::ostream& operator<<(std::ostream& os, Shape const& s)
 {
@@ -40,4 +41,15 @@ std::ostream & Shape::print ( std :: ostream & os ) const
 {
   os << "Name: " << name_ << std::endl <<" Material: "<< mat_;
   return os;
+}
+Ray transformRay(glm::mat4 const& mat, Ray const& ray)
+{
+	glm::vec4 origin{ray.origin,1};
+	glm::vec4 direction{ray.direction,1};
+	//---
+
+	//mat * ray
+
+	//---
+	return Ray{glm::vec3{origin.w, origin.x, origin.y}, glm::vec3{direction.w, direction.x, direction.y}};
 }
