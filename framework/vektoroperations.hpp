@@ -43,21 +43,5 @@ inline glm::vec3 mirror(glm::vec3 const& point, Ray const& norm)
 	return N * 2 * skalar(N , L) - L;
 
 }
-/*inline glm::vec3 pointOnLine(Ray r, glm::vec3 p)
-{
-	glm::vec3 d = r.direction;
-	glm::vec3 q = r.origin;
-
-	float S = ((d.x*p.x-q.x*d.x)+(d.y*p.y-q.y*d.y)+(d.z*p.z-q.z*d.z)) / ((d.x*d.x) + (d.y*d.y) + (d.z*d.z));
-	return q + (d * S);
-
-}
-inline Ray mirrorLine(glm::vec3 norm, glm::vec3 pointOnRay, glm::vec3 inters) 
-{
-	Ray r{inters,norm};
-	glm::vec3 pOL = pointOnLine(Ray r, glm::vec3 pointOnRay);
-	glm::vec3 pointOnMirroredLine = p + ((pOL - p) * 2);
-	return (Ray{inters,(pointOnMirroredLine - inters)});
-}*/
 
 #endif

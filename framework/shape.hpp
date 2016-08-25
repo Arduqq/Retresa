@@ -15,7 +15,8 @@ class Shape
 {
 public:
 	Shape();
-	Shape(std::string const & name, Material const& mat);
+	Shape(std::string const& name, Material const& mat);
+	Shape(std::string const& name, Material const& mat, glm::mat4 const& transe);
 	~Shape();
 	std::string const& getname() const;
 	Material const& getmat() const;
@@ -36,6 +37,8 @@ public:
 protected:
 	std::string name_;
 	Material mat_;
+	glm::mat4 world_transformation;
+	glm::mat4 world_transformation_inv;
 };
 
 std::ostream& operator<<(std::ostream& os, Shape const& s);

@@ -5,7 +5,12 @@ Shape::Shape(): name_{"Shape"}, mat_{} {
 }
 
 Shape::Shape(std::string const& name, Material const& mat): 
-  name_{name}, mat_{mat} {
+  name_{name}, mat_{mat} 
+  {}
+Shape::Shape(std::string const& name, Material const& mat, glm::mat4 const& transe): 
+  name_{name}, mat_{mat}, world_transformation{transe} 
+  {
+  	world_transformation_inv = glm::inverse(world_transformation);
   }
 
 Shape::~Shape() {}
