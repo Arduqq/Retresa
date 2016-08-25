@@ -26,7 +26,6 @@ struct Scene
 	unsigned int height;
 	std::vector<std::shared_ptr<Shape>> shapes;
 	std::vector<std::shared_ptr<Light>> lights;
-	std::vector<std::shared_ptr<Material>> materials;
 	std::shared_ptr<Composite> composite;
 	std::shared_ptr <Camera> cam;
 
