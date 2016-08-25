@@ -1,11 +1,12 @@
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
 
-#include <string>
 #include "ray.hpp"
 #include "color.hpp"
 #include "material.hpp"
 #include "hit.hpp"
+
+#include <string>
 #include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>

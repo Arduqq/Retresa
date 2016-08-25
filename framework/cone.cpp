@@ -1,7 +1,7 @@
 #include "cone.hpp"
-#include "vektoroperations.hpp"
-#include <math.h>
-#include <string>
+//#include "vektoroperations.hpp"
+//#include <math.h>
+//#include <string>
 
 Cone::Cone():
 	Shape{"Cone",{}},ctr_{0.0f,0.0f,0.0f}, rad_{0.0f}, peak_{0.0f,0.0f,0.0f}{

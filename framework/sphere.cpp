@@ -1,7 +1,7 @@
 #include "sphere.hpp"
-#include "vektoroperations.hpp"
-#include <math.h>
-#include <string>
+//#include "vektoroperations.hpp"
+//#include <math.h>
+//#include <string>
 
 Sphere::Sphere():
 	Shape{"Sphere",{}}, rad_{0.0f}, ctr_{0.0f,0.0f,0.0f}{

@@ -2,6 +2,8 @@
 #define BOX_HPP
 
 #include "shape.hpp"
+#include "vektoroperations.hpp"
+
 #include <vector>
 #include <memory>
 #include <glm/vec3.hpp>

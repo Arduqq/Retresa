@@ -2,6 +2,10 @@
 #define SPHERE_HPP
 
 #include "shape.hpp"
+#include "vektoroperations.hpp"
+
+#include <math.h>
+#include <string>
 
 class Sphere: public Shape
 {

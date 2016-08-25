@@ -1,14 +1,16 @@
 #ifndef COMPOSITE_HPP
 #define COMPOSITE_HPP
 
+#include "shape.hpp"
+#include "box.hpp"
+#include "sphere.hpp"
+
 #include <vector>
 #include <string>
 #include <algorithm>
 #include <iostream>
 #include <memory>
-#include "shape.hpp"
-#include "box.hpp"
-#include "sphere.hpp"
+
 
 /*
 Composite (7.2)
