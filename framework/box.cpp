@@ -1,5 +1,5 @@
 #include "box.hpp"
-#include "vektoroperations.hpp"
+//#include "vektoroperations.hpp"
 
 Box::Box():
 	Shape(),

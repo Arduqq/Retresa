@@ -1,15 +1,18 @@
 #define CATCH_CONFIG_RUNNER
- 
-#include <catch.hpp>
-#include <glm/glm.hpp>
-#include <glm/gtx/intersect.hpp>
-#include <glm/vec3.hpp>
+
 #include "box.hpp"
 #include "sphere.hpp"
 #include "shape.hpp"
 #include "cylinder.hpp"
 #include "material.hpp"
 #include "composite.hpp"
+ 
+#include <catch.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtx/intersect.hpp>
+#include <glm/vec3.hpp>
+#include <memory>
+
 
  
 TEST_CASE("Boxmin","[minimum]"){

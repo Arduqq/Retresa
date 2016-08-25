@@ -2,6 +2,10 @@
 #define CYLINDER_HPP
 
 #include "shape.hpp"
+#include "vektoroperations.hpp"
+
+#include <math.h>
+#include <string>
 #include <vector>
 #include <memory>
 #include <glm/vec3.hpp>
