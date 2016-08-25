@@ -263,6 +263,40 @@ void Scene::loadscene(std::string const& input) {
         {
           //tbi
         }
+        else if(keyword == "transform")
+        {
+          std::string name, transformation;
+          
+          ss>>name;
+          ss>>transformation;
+          
+          if(transformation == "scale")
+          {
+            float x, y, z;
+            ss>>x;
+            ss>>y;
+            ss>>z;
+          }
+          else if(transformation == "translate")
+          {
+            float x, y, z;
+            ss>>x;
+            ss>>y;
+            ss>>z;
+          }
+          else if(transformation == "rotate")
+          {
+            float x, y, z, k;
+            ss>>x;
+            ss>>y;
+            ss>>z;
+            ss>>k;
+          }
+          else
+          {
+            std::cout<<"!! Transformationsbefehl unbekannt !! \n";
+          }
+        }
         else
         {
           std::cout<<"Unable to read some Things. Check ur Stuff!\n"<<std::endl;

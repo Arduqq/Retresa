@@ -77,12 +77,16 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 }
 Hit Renderer::calculateHit(Ray const& rafa) const
 {
+  //rafa = Transformray(scene.shapes[0]->matrix, rafa);
+
   Hit hit = scene_.shapes[0]->intersect(Ray{rafa.origin,glm::normalize(rafa.direction)});
   
   for(unsigned int i = 1; i < scene_.sizeShape; i++)
   {
     if(scene_.shapes[i] != nullptr)
     {
+      //rafa = Transformray(scene.shapes[i]->matrix, rafa)
+
       Hit newHit = scene_.shapes[i]->intersect(Ray{rafa.origin,glm::normalize(rafa.direction)});
 
         if(!hit.impact || (newHit.impact && glm::length(newHit.point - rafa.origin) < glm::length(hit.point - rafa.origin)))

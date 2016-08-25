@@ -28,6 +28,8 @@ public:
 
 	virtual std::ostream & print ( std :: ostream & os ) const ;
 
+	Ray transformRay(glm::mat4 const& mat, Ray const& Ray);
+
 	//Composite
 	virtual void removeChild(std::shared_ptr<Shape>& shape){}
 	virtual void addChild(std::shared_ptr<Shape>& shape){}
