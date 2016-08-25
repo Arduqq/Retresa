@@ -4,7 +4,10 @@
 #include <glm/vec3.hpp>
 struct Ray
 {
-	Ray();
+	Ray():
+	origin{0.0f,0.0f,0.0f},
+	direction{0.0f,0.0f,0.0f}
+	{}
 
 	Ray(glm::vec3 const& ori, glm::vec3 const& dir):
 	origin{ori},

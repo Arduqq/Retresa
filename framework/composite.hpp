@@ -39,6 +39,7 @@ http://www.bogotobogo.com/DesignPatterns/composite.php
 class Composite : public Shape{
 public:
 	Composite();
+	Composite(std::string name);
 	~Composite();
 
 	void addChild(std::shared_ptr<Shape>& shape) override; //*
