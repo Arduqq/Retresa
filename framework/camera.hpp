@@ -9,32 +9,37 @@ class Camera
 public:
 
 	Camera(glm::vec3 const& e, glm::vec3 const& d, float u, unsigned h, unsigned w):
-		up{u},
-		eye{e},
-		dir{glm::normalize(d)},
-		height{h},
-		width{w}{}
+		up_{u},
+		eye_{e},
+		dir_{glm::normalize(d)},
+		height_{h},
+		width_{w}{}
 
 	inline Ray calculateRay(unsigned xInp, unsigned yInp)
 	{
-		glm::vec3 xyCentre{glm::vec3{dir.x * 1000, dir.y * 1000, dir.z * 1000} + eye };
+		glm::mat4 camMat {rx,vx,-dx,x,
+						  ry,vy,-dy,y,
+						  rz,vz,-dz,z,
+						  0 , 0, 0 ,1};
+		
+		glm::vec3 xyCentre{glm::vec3{dir_.x * 1000, dir_.y * 1000, dir_.z * 1000} + eye_ };
 
-		glm::vec3 colY{0,1,0};//später wird der mittels Drehmatrix um dir im winkel up gedreht.
-		glm::vec3 rowX{glm::normalize(glm::cross(dir,colY))}; 
+		glm::vec3 colY{0,1,0};//später wird der mittels Drehmatrix um dir_ im winkel up gedreht.
+		glm::vec3 rowX{glm::normalize(glm::cross(dir_,colY))}; 
 		//std::cout<<xyCentre.x<<" "<<xyCentre.y<<" "<<xyCentre.z<<" "<<std::endl;
-		int x = xInp - (width/2);
-		int y = yInp - (height/2);
+		int x = xInp - (width_/2);
+		int y = yInp - (height_/2);
 
-		Ray ronny{eye, glm::normalize((xyCentre + glm::vec3{x * rowX.x, x * rowX.y, x * rowX.z} + glm::vec3{y * colY.x, y * colY.y, y * colY.z}) - eye)};/* glm::normalize(glm::vec3{x, y, 0} - eye)*/ 
+		Ray ronny{eye_, glm::normalize((xyCentre + glm::vec3{x * rowX.x, x * rowX.y, x * rowX.z} + glm::vec3{y * colY.x, y * colY.y, y * colY.z}) - eye_)};/* glm::normalize(glm::vec3{x, y, 0} - eye)*/ 
 		return ronny;
 	}
 
 private:
-	float up;
-	glm::vec3 eye;
-	glm::vec3 dir;
-	unsigned height;
-	unsigned width;
+	float up_;
+	glm::vec3 eye_;
+	glm::vec3 dir_;
+	unsigned height_;
+	unsigned width_;
 };
 
 #endif

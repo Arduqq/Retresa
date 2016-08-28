@@ -51,5 +51,5 @@ Ray transformRay(glm::mat4 const& mat, Ray const& ray)
 	//mat * ray
 
 	//---
-	return Ray{glm::vec3{origin.w, origin.x, origin.y}, glm::vec3{direction.w, direction.x, direction.y}};
+	return Ray{glm::vec3{origin.x, origin.y, origin.z }, glm::vec3{direction.x, direction.y, direction.z}};
 }

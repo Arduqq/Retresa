@@ -204,6 +204,8 @@ void Scene::loadscene(std::string const& input) {
             ss>>x;
             ss>>y;
             ss>>z;
+
+            //objektXY.setmatrix(x 0 0 0 y 0 )
           }
           else if(transformation == "translate")
           {

@@ -30,6 +30,11 @@ public:
 
 	Ray transformRay(glm::mat4 const& mat, Ray const& Ray);
 
+	inline void makeMatrix(glm::mat4 const& mat)
+	{
+		//world_transformation * = mat;
+	}
+
 	//Composite
 	virtual void removeChild(std::shared_ptr<Shape>& shape){}
 	virtual void addChild(std::shared_ptr<Shape>& shape){}

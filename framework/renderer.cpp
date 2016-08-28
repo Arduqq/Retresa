@@ -58,7 +58,7 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
         
           for (unsigned int i = 0 ; i < scene_.sizeLight ; i++)
           {
-            if(illuminate(hit.point, hit.shape, scene_.lights[i]->pos))
+            if(illuminate(hit, scene_.lights[i]->pos))
             {
               ip = scene_.lights[i]->intensity; //intensität des lichts
               LN = skalar(glm::normalize(scene_.lights[i]->pos - hit.point) , glm::normalize(hit.normal)); //winkel normale / blickwinkel
@@ -99,8 +99,11 @@ Hit Renderer::calculateHit(Ray const& rafa) const
   return hit;
 }
 
-bool Renderer::illuminate(glm::vec3 const& point ,Shape* const& shape, glm::vec3 const& lightPos) const
+bool Renderer::illuminate(Hit const& hit, glm::vec3 const& lightPos) const
 {
+  float epschilom = 0.01;
+  glm::vec3 point = hit.point + (glm::normalize(hit.normal) * epschilom);
+
   Hit shadow = calculateHit(Ray{ point,lightPos - point});
 
   if(!shadow.impact or glm::length( point - lightPos) < glm::length( point - shadow. point) )
