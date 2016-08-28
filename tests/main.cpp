@@ -174,8 +174,8 @@ TEST_CASE("SphereIntersect","[intersect1]")
     Material ma{"a",MatCol,MatCol,MatCol,1};
     Sphere s1{glm::vec3 {3,3,3}, 1,"Kugel", ma};
  
-    Ray ray1   {glm::vec3 {1,1,1}, glm::vec3 {4,4,4}};
-    Ray ray2  {glm::vec3 {4,4,4}, glm::vec3 {2,2,2}};
+    Ray ray1 {glm::vec3 {1,1,1}, glm::vec3 {4,4,4}};
+    Ray ray2 {glm::vec3 {4,4,4}, glm::vec3 {2,2,2}};
     Ray ray3 {glm::vec3 {4,4,4}, glm::vec3 {6,6,6}};
  
     REQUIRE( s1.intersect(ray1).impact);
@@ -242,6 +242,21 @@ TEST_CASE("Composite","[composite]")
     REQUIRE(c1.getChild().size()==2);
     c1.removeChild(s2);
     //REQUIRE(c1.getChild().size()==1);
+}
+
+TEST_CASE("Raytranslate","[raytranslate]")
+{
+    float v_x = 6.0f;
+    float v_y = 3.0f;
+    float v_z = 2.0f;
+
+    glm::vec4 origin1{5.0f, 7.0f, 2.0f, 1.0f};
+    glm::vec4 direction1{9.0f, 8.0f, 3.0f, 1.0f};
+    glm::mat4 translate1{1.0f,0.0f,0.0f,v_x,0.0f,1.0f,0.0f,v_y,0.0f,0.0f,1.0f,v_z,0.0f,0.0f,0.0f,1.0f};
+
+    //Ray ray1 {origin1, direction1};
+    //REQUIRE(Approx(11.0f) == ray1.translate().x);
+
 }
 
 int main(int argc, char *argv[])
