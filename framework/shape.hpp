@@ -31,8 +31,16 @@ public:
 
 	Ray transformRay(glm::mat4 const& mat, Ray const& ray);
 
+<<<<<<< HEAD
 	Ray translate(glm::mat4 const& trans, Ray const& ray);
 	Ray scale(glm::mat4 const& sca, Ray const& ray);
+=======
+	inline void makeMatrix(glm::mat4 const& mat)
+	{
+		//world_transformation * = mat;
+	}
+
+>>>>>>> 03a7a03dc20cb7768e706afd5b65802e462f4b22
 	//Composite
 	virtual void removeChild(std::shared_ptr<Shape>& shape){}
 	virtual void addChild(std::shared_ptr<Shape>& shape){}

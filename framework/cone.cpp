@@ -66,17 +66,8 @@ void Cone::setpeak(glm::vec3 const& peak){
 	peak_ = peak;
 }
 
-/*Hit Cone::intersect(Ray const& ray){
+Hit Cone::intersect(Ray const& ray){
+	Hit hit;
+	return hit;
 
-	Hit coneHit;
-
-	glm::vec3 l = ray.direction;
-	glm::vec3 o = ray.origin;
-	glm::vec3 c = ctr_;
-	float 	  r = rad_;
-	glm::vec3 p = peak_; 
-
-	
-
-
-}*/
+}
