@@ -6,22 +6,23 @@ Composite::Composite(std::string name): name_{name} {}
 
 Composite::~Composite() {}
 
-/*
--> Fügt ein Shape (Box, Sphere, Composite) am Anfang der Map an
-
-~WIP~
-*/
-void Composite::addChild(std::shared_ptr<Shape>& shape){
+void Composite::addChild(std::shared_ptr<Shape>& shape)
+{
 	shapes_.push_back(shape);
 }
 
-void Composite::removeChild(std::shared_ptr<Shape>& shape){
+void Composite::removeChild(std::shared_ptr<Shape>& shape)
+{
 	std::vector<std::shared_ptr<Shape>>::iterator it;
-	for (it=shapes_.begin();it!=shapes_.end();){
-		if ((*it)==shape){
+
+	for (it = shapes_.begin(); it!=shapes_.end(); )
+	{
+		if ((*it)==shape)
+		{
 			it = shapes_.erase(it);
 		}
-		else{
+		else
+		{
 			++it;
 		}
 	}
@@ -40,5 +41,6 @@ std::vector<std::shared_ptr<Shape>> Composite::getChild(){
 
 Hit Composite::intersect(Ray const& ray){
 	Hit a;
+	
 	return a;
 }
