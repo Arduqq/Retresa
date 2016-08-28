@@ -2,6 +2,7 @@
 #define TRIANGLE_HPP
 
 #include "shape.hpp"
+#include "vektoroperations.hpp"
 
 class Triangle: public Shape
 {

@@ -2,6 +2,8 @@
 
 Composite::Composite() {}
 
+Composite::Composite(std::string name): name_{name} {}
+
 Composite::~Composite() {}
 
 /*

@@ -41,7 +41,6 @@ inline glm::vec3 mirror(glm::vec3 const& point, Ray const& norm)
 	glm::vec3 L = glm::normalize(point - norm.origin);
 
 	return N * 2 * skalar(N , L) - L;
-
 }
 
 #endif

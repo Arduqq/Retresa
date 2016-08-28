@@ -5,6 +5,8 @@
 #include "sphere.hpp"
 #include "box.hpp"
 #include "triangle.hpp"
+#include "cylinder.hpp"
+#include "cone.hpp"
 #include <map>
 #include <memory>
 #include <sstream>
@@ -47,7 +49,9 @@ void Scene::loadscene(std::string const& input) {
           std::string shapeType;
 
           ss>>shapeType;
-
+          /*
+          define shape sphere [Name] [Zentrum (X,Y,Z)] [Radius] [Material]
+          */
           if (shapeType == "sphere") //alles was hinter shape steht
           {
             std::string name,mat_name;
@@ -60,10 +64,15 @@ void Scene::loadscene(std::string const& input) {
             ss>>r;
             ss>>mat_name;
             mat=materials.find(mat_name)->second; 
-            shapes.push_back(std::make_shared<Sphere>(glm::vec3{x,y,z},r,name,mat)); // neues Object in scene schreiben
+            std::shared_ptr<Shape> sphere=std::make_shared<Sphere>(glm::vec3{x,y,z},r,name,mat);
+            shapes.push_back(sphere); // neues Object in scene schreiben
             sizeShape++;
             std::cout<<"Loaded shape #" <<sizeShape<<". (Sphere) "<<*shapes[sizeShape-1]<<" - Success\n"<<std::endl;
+            compositeBasin.insert(std::pair<std::string, std::shared_ptr<Shape>>(sphere->getname(), sphere));
           }
+          /*
+          define shape triangle [Name] [Punkt A (X,Y,Z)] [Punkt B (X,Y,Z)] [Punkt C (X,Y,Z)] [Material]
+          */
           else if(shapeType == "triangle")
           {
             std::string name,mat_name;
@@ -81,10 +90,15 @@ void Scene::loadscene(std::string const& input) {
             ss>>z3;
             ss>>mat_name;
             mat = materials.find(mat_name)->second; 
-            shapes.push_back(std::make_shared<Triangle>(glm::vec3 {x1,y1,z1}, glm::vec3 {x2,y2,z2}, glm::vec3 {x3,y3,z3}, name, mat));
+            std::shared_ptr<Shape> triangle=std::make_shared<Triangle>(glm::vec3 {x1,y1,z1}, glm::vec3 {x2,y2,z2}, glm::vec3 {x3,y3,z3}, name, mat);
+            shapes.push_back(triangle);
             sizeShape++;
             std::cout<<"Loaded shape #" <<sizeShape<<". (Triangle) "<<*shapes[sizeShape-1]<<" - Success\n"<<std::endl;
+            compositeBasin.insert(std::pair<std::string, std::shared_ptr<Shape>>(triangle->getname(), triangle));
           }
+          /*
+          define shape box [Name] [Punkt A (X,Y,Z)] [Punkt B (X,Y,Z)] [Punkt C (X,Y,Z)] [Material]
+          */
           else if (shapeType == "box")
           {
             std::string name,mat_name;
@@ -99,40 +113,92 @@ void Scene::loadscene(std::string const& input) {
             ss>>z2;
             ss>>mat_name;
             mat=materials.find(mat_name)->second; 
-            shapes.push_back(std::make_shared<Box>(glm::vec3 {x1,y1,z1}, glm::vec3 {x2,y2,z2}, name, mat));
+            std::shared_ptr<Shape> box = std::make_shared<Box>(glm::vec3 {x1,y1,z1}, glm::vec3 {x2,y2,z2}, name, mat);
+            shapes.push_back(box);
             sizeShape++;
             std::cout<<"Loaded shape #" <<sizeShape<<". (Box) "<<*shapes[sizeShape-1]<<" - Success\n"<<std::endl;
+            compositeBasin.insert(std::pair<std::string, std::shared_ptr<Shape>>(box->getname(), box));
           }
+          /*
+          define shape cylinder [Name] [Zentrum (X,Y,Z)] [Radius] [Höhe] [Material]
+          */
+          else if(shapeType == "cylinder")
+          {
+            std::string name,mat_name;
+            float x,y,z,r,h;
+            Material mat;
+            ss>>name;
+            ss>>x;
+            ss>>y;
+            ss>>z;
+            ss>>r;
+            ss>>h;
+            ss>>mat_name;
+            mat = materials.find(mat_name)->second; 
+            std::shared_ptr<Shape> cylinder = std::make_shared<Cylinder>(glm::vec3{x,y,z}, r, h, name, mat);
+            shapes.push_back(cylinder);
+            sizeShape++;
+            std::cout<<"Loaded shape #" <<sizeShape<<". (Cylinder) "<<*shapes[sizeShape-1]<<" - Success\n"<<std::endl;
+            compositeBasin.insert(std::pair<std::string, std::shared_ptr<Shape>>(cylinder->getname(), cylinder));
+          }
+          /*
+          define shape cone [Name] [Zentrum (X,Y,Z)] [Spitze (X,Y,Z)] [Radius] [Material]
+          */
+          else if(shapeType == "cone")
+          {
+            std::string name,mat_name;
+            float x1,y1,z1,x2,y2,z2,r;
+            Material mat;
+            ss>>name;
+            ss>>x1;
+            ss>>y1;
+            ss>>z1;
+            ss>>x2;
+            ss>>y2;
+            ss>>z2;
+            ss>>r;
+            ss>>mat_name;
+            mat = materials.find(mat_name)->second; 
+            std::shared_ptr<Shape> cone = std::make_shared<Cone>(glm::vec3{x1,y1,z1}, r, glm::vec3{x2,y2,z2}, name, mat);
+            shapes.push_back(cone);
+            sizeShape++;
+            std::cout<<"Loaded shape #" <<sizeShape<<". (Cone) "<<*shapes[sizeShape-1]<<" - Success\n"<<std::endl;
+            compositeBasin.insert(std::pair<std::string, std::shared_ptr<Shape>>(cone->getname(), cone));
+          }
+          /*
+          define shape composite [Name] [Obekt_1] [Objekt_2] ... [Objekt_n]
+          */
           else if (shapeType == "composite")
           {
             std::string nameComposite, nameShape;
             ss>>nameComposite;
+            scene.composite=std::make_shared<Composite>(nameComposite);
             while (!ss.eof())
             {
               ss>>nameShape;
-              //composite mycomposite shape1 shape2 ... shapeN
               auto it = compositeBasin.find(nameShape);
               if(it != compositeBasin.end())
               {
                 scene.composite->addChild(it->second);
               }
             }
+            std::cout<<"Loaded composite " << nameComposite <<" - Success\n"<<std::endl;
           }
 
         }
+        /*
+        define material [Name] [Ambient] [Diffuse] [Specular]
+        */
         else if (objClass == "material")
           {
             Material mat;
             ss>>mat.name_;
-            //read ambient term
             ss >> mat.ka_.r;
             ss >> mat.ka_.g;
             ss >> mat.ka_.b;
-            //read diffuse term
             ss >> mat.kd_.r;
             ss >> mat.kd_.g;
             ss >> mat.kd_.b;
-            //read specular term
             ss >> mat.ks_.r;
             ss >> mat.ks_.g;
             ss >> mat.ks_.b;
@@ -142,6 +208,9 @@ void Scene::loadscene(std::string const& input) {
             materials[mat.name_] = mat;
             std::cout<<"Loaded Material: "<<mat<<" - Success\n"<<std::endl;
           }
+        /*
+        define light [Name] [Herkunft (X,Y,Z)] [Farbwert (R,G,B)] [Intensität]
+        */
         else if(objClass == "light")
           {
             std::string name;
@@ -164,6 +233,9 @@ void Scene::loadscene(std::string const& input) {
             sizeLight ++;
             std::cout<< "Loaded Light #"<<sizeLight<<" "<<*lights[sizeLight-1]<<" - Success\n"<<std::endl;
           }
+        /*
+        define camera [Quelle (X,Y,Z)] [Richtung (X,Y,Z)] [Neigung] [Höhe] [Breite]
+        */
         else if(objClass == "camera")
           {
             float ex, ey, ez, dx, dy, dz, u;

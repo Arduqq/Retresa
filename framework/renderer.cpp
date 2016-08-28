@@ -138,11 +138,5 @@ void Renderer::write(Pixel const& p)
 
 void Renderer::antialias()
 {
-  //Versuch
-  for(unsigned i = 0 ; i < colorbuffer_.size(); i++)
-  {
-    colorbuffer_[i].r = 1 - colorbuffer_[i].r;
-    colorbuffer_[i].g = 1 - colorbuffer_[i].g;
-    colorbuffer_[i].b = 1 - colorbuffer_[i].b;
-  }
+//http://paulbourke.net/miscellaneous/aliasing/
 }
