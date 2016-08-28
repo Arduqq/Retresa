@@ -29,18 +29,12 @@ public:
 
 	virtual std::ostream & print ( std :: ostream & os ) const ;
 
-	Ray transformRay(glm::mat4 const& mat, Ray const& ray);
+	Ray transformRay(Ray const& ray);
 
-<<<<<<< HEAD
-	Ray translate(glm::mat4 const& trans, Ray const& ray);
-	Ray scale(glm::mat4 const& sca, Ray const& ray);
-=======
-	inline void makeMatrix(glm::mat4 const& mat)
-	{
-		//world_transformation * = mat;
-	}
+	void translate(glm::vec3 const& trans);
+	void scale    (glm::vec3 const& sca);
+	void rotate   (float phi , glm::vec3 const& axis);
 
->>>>>>> 03a7a03dc20cb7768e706afd5b65802e462f4b22
 	//Composite
 	virtual void removeChild(std::shared_ptr<Shape>& shape){}
 	virtual void addChild(std::shared_ptr<Shape>& shape){}

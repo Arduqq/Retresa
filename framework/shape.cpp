@@ -32,105 +32,65 @@ void  Shape::setmat( Material const&    m)
 	mat_=m;
 }
 
-Ray translate(glm::mat4 const& trans, Ray const& ray){
-
-  float v_x, v_y;
-  float v_z;
-  float x;
-  float y;
-  float z;
-
-  glm::mat4 tran{1.0f,0.0f,0.0f,v_x,
-                 0.0f,1.0f,0.0f,v_y,
-                 0.0f,0.0f,1.0f,v_z, 
+void Shape::translate(glm::vec3 const& trans)
+{
+  glm::mat4 tran{1.0f,0.0f,0.0f,trans.x,
+                 0.0f,1.0f,0.0f,trans.y,
+                 0.0f,0.0f,1.0f,trans.z, 
                  0.0f,0.0f,0.0f,1.0f};
-  glm::vec4 origin{ray.origin,1.0f};
-  glm::vec4 direction{ray.direction,1.0f};
-  glm::vec4 transori{x,y,z,1.0f};
-  glm::vec4 transdir{x,y,z,1.0f};
+  
+  world_transformation = tran * world_transformation;
 
-  transori = tran * origin;
-  transdir = tran * direction;
+  /*glm::vec4 origin{ray.origin,1.0f};
+  glm::vec4 direction{ray.direction,1.0f};
+
+
+
+  glm::vec4 transori = tran * origin;
+  glm::vec4 transdir = tran * direction;
  
-  return Ray{glm::vec3{transori.x,transori.y,transori.z}, glm::vec3{transdir.x,transdir.y,transdir.z}};
+  return Ray{glm::vec3{transori.x,transori.y,transori.z}, glm::vec3{transdir.x,transdir.y,transdir.z}};*/
 
 }
 
-Ray scale(glm::mat4 const& sca, Ray const& ray){
-
-  float s_x;
-  float s_y;
-  float s_z;
-  float x;
-  float y;
-  float z;
-
-  glm::mat4 sc{s_x,0.0f,0.0f,0.0f,0.0f,s_y,0.0f,0.0f,0.0f,0.0f,s_z,0.0f,0.0f,0.0f,0.0f,1.0f};
-  glm::vec4 origin{ray.origin,1.0f};
-  glm::vec4 direction{ray.direction,1.0f};
-  glm::vec4 scalori{x,y,z,1.0f};
-  glm::vec4 scaldir{x,y,z,1.0f};
-
-  scalori = sc * origin;
-  scaldir = sc * direction;
-
-  return Ray {glm::vec3{scalori.x,scalori.y,scalori.z}, glm::vec3{scaldir.x,scaldir.y,scaldir.z}};
+void Shape::scale(glm::vec3 const& sca)
+{
+  glm::mat4 sc{sca.x,0.0f ,0.0f ,0.0f,
+               0.0f ,sca.y,0.0f ,0.0f,
+               0.0f ,0.0f ,sca.z,0.0f,
+               0.0f ,0.0f ,0.0f ,1.0f};
+  world_transformation = sc * world_transformation;
 }
 
-Ray rotate(glm::mat4 const& rotat, Ray const& ray){
-
-  float phi;
-  float x;
-  float y;
-  float z;
-
-  glm::mat4 rot{1.0f,0.0f,0.0f,0.0f,0.0f,cos(phi),-1*sin(phi),0.0f,0.0f,sin(phi),cos(phi),0.0f,0.0f,0.0f,0.0f,1.0f};
-  glm::vec4 origin{ray.origin,1.0f};
-  glm::vec4 direction{ray.direction,1.0f};
-  glm::vec4 rotatori{x,y,z,1.0f};
-  glm::vec4 rotatdir{x,y,z,1.0f};
-
-  rotatori = rot * origin;
-  rotatdir = rot * direction;
-
-  return Ray {glm::vec3{rotatori.x,rotatori.y,rotatori.z}, glm::vec3{rotatdir.x,rotatdir.y,rotatdir.z}};
+void Shape::rotate(float phi, glm::vec3 const& axis)
+{
+  glm::mat4 rot{1.0f,  0.0f  ,  0.0f   ,0.0f,
+                0.0f,cos(phi),-sin(phi),0.0f,
+                0.0f,sin(phi), cos(phi),0.0f,
+                0.0f,  0.0f  ,  0.0f   ,1.0f};
+  world_transformation = rot * world_transformation;
 }
 
 std::ostream& operator<<(std::ostream& os, Shape const& s)
 {
   return s.print(os);
 }
+
 std::ostream & Shape::print ( std :: ostream & os ) const 
 {
   os << "Name: " << name_ << std::endl <<" Material: "<< mat_;
   return os;
 }
-Ray transformRay(glm::mat4 const& mat, Ray const& ray)
+
+Ray Shape::transformRay(Ray const& ray)
 {
 	glm::vec4 origin{ray.origin,1};
 	glm::vec4 direction{ray.direction,1};
 
+  world_transformation_inv = glm::inverse(world_transformation);
 
-  float v_x;
-  float v_y;
-  float v_z;
-  float s_x;
-  float s_y;
-  float s_z;
-  float phi;
+  glm::vec4 newOrigin   {origin    * world_transformation_inv};
+  glm::vec4 newDirection{direction * world_transformation_inv};
 
-  glm::mat4 translate{1.0f,0.0f,0.0f,v_x,0.0f,1.0f,0.0f,v_y,0.0f,0.0f,1.0f,v_z,0.0f,0.0f,0.0f,1.0f};
-  glm::mat4 scale{s_x,0.0f,0.0f,0.0f,0.0f,s_y,0.0f,0.0f,0.0f,0.0f,s_z,0.0f,0.0f,0.0f,0.0f,1.0f};
-	glm::mat4 rotate{1.0f,0.0f,0.0f,0.0f,0.0f,cos(phi),-1*sin(phi),0.0f,0.0f,sin(phi),cos(phi),0.0f,0.0f,0.0f,0.0f,1.0f};
-
-  glm::mat4 world_transformation = translate*scale*rotate ;
-
-  //glm::mat4 world_transformation_inv = glm::inverse world_transformation;
-  
-  //---
-
-	//mat * ray
-
-	//---
-	return Ray{glm::vec3{origin.x, origin.y, origin.z }, glm::vec3{direction.x, direction.y, direction.z}};
+	return Ray{glm::vec3{newOrigin.x, newOrigin.y, newOrigin.z }, glm::vec3{newDirection.x, newDirection.y, newDirection.z}};
 }

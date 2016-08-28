@@ -77,7 +77,7 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 }
 Hit Renderer::calculateHit(Ray const& rafa) const
 {
-  //rafa = Transformray(scene.shapes[0]->matrix, rafa);
+  //rafa = scene.shapes[0]->Transformray(rafa);
 
   Hit hit = scene_.shapes[0]->intersect(Ray{rafa.origin,glm::normalize(rafa.direction)});
   
@@ -85,7 +85,7 @@ Hit Renderer::calculateHit(Ray const& rafa) const
   {
     if(scene_.shapes[i] != nullptr)
     {
-      //rafa = Transformray(scene.shapes[i]->matrix, rafa)
+      //rafa = scene.shapes[i]->Transformray(rafa);
 
       Hit newHit = scene_.shapes[i]->intersect(Ray{rafa.origin,glm::normalize(rafa.direction)});
 
