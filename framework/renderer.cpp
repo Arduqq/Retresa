@@ -77,7 +77,7 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 }
 Hit Renderer::calculateHit(Ray const& rafa) const
 {
-  //rafa = scene.shapes[0]->Transformray(rafa);
+  rafa = scene_.shapes[0]->transformRay(rafa);
 
   Hit hit = scene_.shapes[0]->intersect(Ray{rafa.origin,glm::normalize(rafa.direction)});
   
@@ -85,7 +85,7 @@ Hit Renderer::calculateHit(Ray const& rafa) const
   {
     if(scene_.shapes[i] != nullptr)
     {
-      //rafa = scene.shapes[i]->Transformray(rafa);
+      rafa = scene_.shapes[i]->transformRay(rafa);
 
       Hit newHit = scene_.shapes[i]->intersect(Ray{rafa.origin,glm::normalize(rafa.direction)});
 
@@ -101,10 +101,11 @@ Hit Renderer::calculateHit(Ray const& rafa) const
 
 bool Renderer::illuminate(Hit const& hit, glm::vec3 const& lightPos) const
 {
-  float epschilom = 0.01;
-  glm::vec3 point = hit.point + (glm::normalize(hit.normal) * epschilom);
+  float epschilom = 0.003f;
 
-  Hit shadow = calculateHit(Ray{ point,lightPos - point});
+  glm::vec3 point = hit.point + (epschilom * glm::normalize(hit.normal));
+
+  Hit shadow = calculateHit(Ray{ point , lightPos - point});
 
   if(!shadow.impact or glm::length( point - lightPos) < glm::length( point - shadow. point) )
   { 

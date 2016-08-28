@@ -40,17 +40,6 @@ void Shape::translate(glm::vec3 const& trans)
                  0.0f,0.0f,0.0f,1.0f};
   
   world_transformation = tran * world_transformation;
-
-  /*glm::vec4 origin{ray.origin,1.0f};
-  glm::vec4 direction{ray.direction,1.0f};
-
-
-
-  glm::vec4 transori = tran * origin;
-  glm::vec4 transdir = tran * direction;
- 
-  return Ray{glm::vec3{transori.x,transori.y,transori.z}, glm::vec3{transdir.x,transdir.y,transdir.z}};*/
-
 }
 
 void Shape::scale(glm::vec3 const& sca)

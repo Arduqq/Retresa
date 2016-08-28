@@ -50,7 +50,7 @@ Hit Sphere::intersect(Ray const& ray)
 	{
 		float root = std::min(sqrt(underroot),-sqrt(underroot));
 		float d = (- skalar(l , (o - c))) + root;
-		if(d >= 0) //strahl schneidet in positiver richtung
+		if(d > 0) //strahl schneidet in positiver richtung
 		{
 			sphereHit.impact = true;
 			sphereHit.shape = this;

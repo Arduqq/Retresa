@@ -276,9 +276,13 @@ void Scene::loadscene(std::string const& input) {
             ss>>x;
             ss>>y;
             ss>>z;
-            
 
-            //objektXY.setmatrix(x 0 0 0 y 0 )
+            auto it = compositeBasin.find(name);
+              if(it != compositeBasin.end())
+              {
+                it->second -> scale(glm::vec3{x,y,z});
+              }
+
           }
           else if(transformation == "translate")
           {
@@ -286,14 +290,26 @@ void Scene::loadscene(std::string const& input) {
             ss>>x;
             ss>>y;
             ss>>z;
+
+            auto it = compositeBasin.find(name);
+              if(it != compositeBasin.end())
+              {
+                it->second -> translate(glm::vec3{x,y,z});
+              }
           }
           else if(transformation == "rotate")
           {
             float x, y, z, k;
+            ss>>k;
             ss>>x;
             ss>>y;
             ss>>z;
-            ss>>k;
+            
+            auto it = compositeBasin.find(name);
+              if(it != compositeBasin.end())
+              {
+                it->second -> rotate(k, glm::vec3{x,y,z});
+              }
           }
           else
           {
