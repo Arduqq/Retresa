@@ -17,11 +17,11 @@ public:
 
 	inline Ray calculateRay(unsigned xInp, unsigned yInp)
 	{
-		glm::mat4 camMat {rx,vx,-dx,x,
+		/*glm::mat4 camMat {rx,vx,-dx,x,
 						  ry,vy,-dy,y,
 						  rz,vz,-dz,z,
 						  0 , 0, 0 ,1};
-		
+		*/
 		glm::vec3 xyCentre{glm::vec3{dir_.x * 1000, dir_.y * 1000, dir_.z * 1000} + eye_ };
 
 		glm::vec3 colY{0,1,0};//später wird der mittels Drehmatrix um dir_ im winkel up gedreht.
