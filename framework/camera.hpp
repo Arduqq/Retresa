@@ -36,6 +36,11 @@ public:
 
 		Ray ronny{glm::vec3{0, 0, 0}, glm::normalize(glm::vec3{x, y, -dist_})};
 
+		glm::vec4 RayTrafOri{ronny.origin,    1};
+		glm::vec4 RayTrafDir{ronny.direction, 0};
+
+		RayTrafDir = RayTrafDir * camMat;
+		RayTrafOri = RayTrafOri * camMat;
 		//std::cout<<ronny.direction.x<<" "<<ronny.direction.y<<" "<<ronny.direction.z<<std::endl;
 
 		/*glm::vec3 xyCentre{glm::vec3{dir_.x * 1000, dir_.y * 1000, dir_.z * 1000} + eye_ };
@@ -47,7 +52,7 @@ public:
 		int y = yInp - (height_/2);
 
 		Ray ronny{eye_, glm::normalize((xyCentre + glm::vec3{x * rowX.x, x * rowX.y, x * rowX.z} + glm::vec3{y * colY.x, y * colY.y, y * colY.z}) - eye_)};/* glm::normalize(glm::vec3{x, y, 0} - eye)*/ 
-		return ronny;
+		return Ray{glm::vec3{RayTrafOri.x, RayTrafOri.y, RayTrafOri.z}, glm::vec3{RayTrafDir.x, RayTrafDir.y, RayTrafDir.z} };//ronny;
 	}
 
 private:
