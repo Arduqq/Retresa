@@ -35,6 +35,8 @@ public:
 	void scale    (glm::vec3 const& sca);
 	void rotate   (float phi , glm::vec3 const& axis);
 
+	void rotatead(float phi , glm::vec3 const& n);
+
 	//Composite
 	virtual void removeChild(std::shared_ptr<Shape>& shape){}
 	virtual void addChild(std::shared_ptr<Shape>& shape){}
@@ -46,6 +48,7 @@ protected:
 	Material mat_;
 	glm::mat4 world_transformation;
 	glm::mat4 world_transformation_inv;
+
 };
 
 std::ostream& operator<<(std::ostream& os, Shape const& s);
