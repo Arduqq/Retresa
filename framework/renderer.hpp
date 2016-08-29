@@ -21,7 +21,7 @@ public:
   bool illuminate(Hit const& hit, glm::vec3 const& lightPos) const;
   // Color shade(OptionalHit const&, Ray const&, unsigned depth) const
   void write(Pixel const& p);
-
+  Color tonemap(Color c);
   void antialias() ;
 
   inline std::vector<Color> const& colorbuffer() const

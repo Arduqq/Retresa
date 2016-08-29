@@ -27,6 +27,10 @@ void Renderer::render()
         
         p.color = raytrace(ronny,1);
 
+        p.color = tonemap(p.color);
+
+        //std::cout<<"Pixel ["<<x<<","<<y<<"]"<<" RGB ["<<p.color.r<<","<<p.color.g<<","<<p.color.b<<"]"<<std::endl;
+
         write(p);
       }
     }//hier ist der colorbuffer geladen
@@ -51,7 +55,6 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
         float ia = 0.10;
         float ip = 0, LN = 0, RV = 0;
         Material mat{hit.shape->getmat()};
-
         c.r = ia * mat.ka_.r; //die abmienten
         c.g = ia * mat.ka_.g; //terme werden
         c.b = ia * mat.ka_.b; //zugewiesen
@@ -116,6 +119,42 @@ bool Renderer::illuminate(Hit const& hit, glm::vec3 const& lightPos) const
     return false;
   }
   
+}
+
+Color Renderer::tonemap(Color c){
+  float r,g,b;
+  float l = 0.2126 * c.r + 0.7512 * c.g + 0.0722 * c.b;
+  /*
+  //John Hable Method
+  r=std::max(0.0f,c.r-0.004f);
+  g=std::max(0.0f,c.g-0.004f);
+  b=std::max(0.0f,c.b-0.004f);
+  r=(r*(6.2*r+0.5))/(r*(6.2*r+1.7)+0.06);
+  g=(g*(6.2*g+0.5))/(g*(6.2*g+1.7)+0.06);
+  b=(b*(6.2*b+0.5))/(b*(6.2*b+1.7)+0.06);
+  return {r,g,b};
+  */
+  
+  //Simple Operator
+  return{c.r+0.1f,c.g+0.1f,c.b+0.1f};
+
+  /*
+  //Filmic Operator (http://filmicgames.com/archives/75)
+  float A = 0.15; //shoulder strength
+  float B = 0.50; //linear strength
+  float C = 0.10; //linear angle
+  float D = 0.20; //toe strength
+  float E = 0.02; //toe numerator
+  float F = 0.30; //toe denominator
+  float W = 11.2; //linear hitepoint
+  r=((2*c.r * (A * 2*c.r + C * B) + D * E) / (2*c.r * (A * 2*c.r + B) + D * F)) - E / F;
+  g=((2*c.g * (A * 2*c.g + C * B) + D * E) / (2*c.g * (A * 2*c.g + B) + D * F)) - E / F;
+  b=((2*c.b * (A * 2*c.b + C * B) + D * E) / (2*c.b * (A * 2*c.b + B) + D * F)) - E / F;
+  r = r * (1 /  ((W * (A * W + C * B) + D * E) / (W * (A * W + B) + D * F)) - E / F);
+  g = g * (1 /  ((W * (A * W + C * B) + D * E) / (W * (A * W + B) + D * F)) - E / F);
+  b = b * (1 /  ((W * (A * W + C * B) + D * E) / (W * (A * W + B) + D * F)) - E / F);
+  return {r,g,b};
+  */
 }
 
 void Renderer::write(Pixel const& p)
