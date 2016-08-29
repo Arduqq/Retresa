@@ -5,13 +5,15 @@
 
 int main(int argc, char* argv[])
 {
-  unsigned const width = 600;
-  unsigned const height = 600;
-  std::string const OPfilename = "./checkerboard.ppm";
-  std::string const IPfilename = "./SCENE.sdf";
-
   Scene bigPicture;
+  std::string const IPfilename = "./SCENE.sdf";
+  
   bigPicture.loadscene(IPfilename);
+
+  unsigned    const width {bigPicture.width};
+  unsigned    const height{bigPicture.height};
+  std::string const OPfilename {bigPicture.OPfileName};
+  
   Renderer app(bigPicture, width, height, OPfilename);
   std::thread thr([&app]() { app.render(); });
 
@@ -21,11 +23,6 @@ int main(int argc, char* argv[])
     if (win.isKeyPressed(GLFW_KEY_ESCAPE)) {
       win.stop();
     }
-      if (win.isKeyPressed(GLFW_KEY_ENTER))
-      {
-          //aktualisieren
-      }
-      
 
     glDrawPixels( width, height, GL_RGB, GL_FLOAT
                 , app.colorbuffer().data());

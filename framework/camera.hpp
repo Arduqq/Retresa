@@ -7,7 +7,6 @@
 class Camera
 {
 public:
-	//camera <name> <fov-x> <eye> <dir> <up>
 	Camera(std::string const& name, float fovX, glm::vec3 const& e, glm::vec3 const& d, glm::vec3 const up, unsigned h, unsigned w):
 		name_{name},
 		fovX_{fovX},
@@ -41,25 +40,18 @@ public:
 
 		RayTrafDir = RayTrafDir * camMat;
 		RayTrafOri = RayTrafOri * camMat;
-		//std::cout<<ronny.direction.x<<" "<<ronny.direction.y<<" "<<ronny.direction.z<<std::endl;
 
-		/*glm::vec3 xyCentre{glm::vec3{dir_.x * 1000, dir_.y * 1000, dir_.z * 1000} + eye_ };
-
-		glm::vec3 colY{0,1,0};
-		glm::vec3 rowX{glm::normalize(glm::cross(dir_,colY))}; 
-		//std::cout<<xyCentre.x<<" "<<xyCentre.y<<" "<<xyCentre.z<<" "<<std::endl;
-		int x = xInp - (width_/2);
-		int y = yInp - (height_/2);
-
-		Ray ronny{eye_, glm::normalize((xyCentre + glm::vec3{x * rowX.x, x * rowX.y, x * rowX.z} + glm::vec3{y * colY.x, y * colY.y, y * colY.z}) - eye_)};/* glm::normalize(glm::vec3{x, y, 0} - eye)*/ 
-		return Ray{glm::vec3{RayTrafOri.x, RayTrafOri.y, RayTrafOri.z}, glm::vec3{RayTrafDir.x, RayTrafDir.y, RayTrafDir.z} };//ronny;
+		return Ray{glm::vec3{RayTrafOri.x, RayTrafOri.y, RayTrafOri.z}, glm::vec3{RayTrafDir.x, RayTrafDir.y, RayTrafDir.z} };
+	}
+	inline std::string name()
+	{
+		return name_; //getter
 	}
 
 private:
-	
+	std::string name_;
 	float fovX_;
 	float dist_;
-	std::string name_;
 	glm::vec3 eye_;
 	glm::vec3 dir_;
 	glm::vec3 up_;

@@ -24,6 +24,7 @@ struct Scene
 	unsigned int sizeLight;
 	unsigned int width;
 	unsigned int height;
+	std::string OPfileName;
 	std::vector<std::shared_ptr<Shape>> shapes;
 	std::vector<std::shared_ptr<Light>> lights;
 	std::shared_ptr<Composite> composite;

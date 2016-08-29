@@ -271,7 +271,20 @@ void Scene::loadscene(std::string const& input) {
         }
         else if (keyword == "render")
         {
-          //tbi
+          std::string nameCam,nameImg;
+          unsigned xRes, yRes;
+
+          ss>>nameCam;
+          ss>>OPfileName;
+
+          ss>>width;
+          ss>>height;
+
+          if(nameCam != cam->name())
+          {
+            std::cout<<"Nichtubereinstimmender name der Camera. \nEs wird '"<<cam->name()<<"' verwendet."<<std::endl;
+          }
+
         }
         else if(keyword == "transform")
         {
