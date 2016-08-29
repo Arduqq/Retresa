@@ -60,6 +60,18 @@ void Shape::rotate(float phi, glm::vec3 const& axis)
   world_transformation = rot * world_transformation;
 }
 
+void Shape::rotatead(float phi, glm::vec3 const& n)
+{
+  glm::mat4 rotad{n.x * n.x * (1-cos(phi)) + cos(phi)       , n.x * n.y * (1-cos(phi)) - n.z * sin(phi) , n.x * n.z * (1-cos(phi)) + n.y * sin(phi) , 0.0f ,
+                  n.y * n.x * (1-cos(phi)) + n.z * sin(phi) , n.y * n.y * (1-cos(phi)) + cos(phi)       , n.y * n.z * (1-cos(phi)) - n.x * sin(phi) , 0.0f ,
+                  n.z * n.x * (1-cos(phi)) - n.y * sin(phi) , n.z * n.y * (1-cos(phi)) + n.x * sin(phi) , n.z * n.z * (1-cos(phi)) + cos(phi)       , 0.0f , 
+                  0.0f                                      ,             0.0f                          ,                 0.0f                      , 1.0f};
+
+  world_transformation = rotad * world_transformation;
+
+
+}
+
 std::ostream& operator<<(std::ostream& os, Shape const& s)
 {
   return s.print(os);

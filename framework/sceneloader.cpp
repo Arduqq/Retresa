@@ -321,6 +321,20 @@ void Scene::loadscene(std::string const& input) {
                 it->second -> rotate(k, glm::vec3{x,y,z});
               }
           }
+          else if(transformation == "rotatead")
+          {
+            float x , y , z , k;
+            ss>>k;
+            ss>>x;
+            ss>>y;
+            ss>>z;
+
+            auto it = compositeBasin.find(name);
+              if(it != compositeBasin.end())
+              {
+                it->second -> rotatead(k, glm::vec3{x,y,z});
+              }
+          }
           else
           {
             std::cout<<"!! Transformationsbefehl unbekannt !! \n";
