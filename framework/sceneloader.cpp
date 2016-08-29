@@ -238,8 +238,13 @@ void Scene::loadscene(std::string const& input) {
         */
         else if(objClass == "camera")
           {
-            float ex, ey, ez, dx, dy, dz, u;
+            std::string name;
+            float fovX, ex, ey, ez, dx, dy, dz, ux, uy, uz;
             unsigned int h,w;
+
+            ss>>name;
+
+            ss>>fovX;
 
             ss>>ex;
             ss>>ey;
@@ -249,13 +254,18 @@ void Scene::loadscene(std::string const& input) {
             ss>>dy;
             ss>>dz;
 
-            ss>>u;
+            ss>>ux;
+            ss>>uy;
+            ss>>uz;
+
             ss>>h;
             ss>>w;
 
-            cam = std::make_shared<Camera>(glm::vec3{ex, ey, ez}, glm::vec3{dx, dy, dz}, u, h, w);
+            cam = std::make_shared<Camera>(name, fovX, glm::vec3{ex, ey, ez}, glm::vec3{dx, dy, dz}, glm::vec3{ux, uy, uz}, h, w);
 
-            std::cout<< "Loaded Camera. Eye: ("<<ex<<", "<<ey<<", "<<ez<<") Direction: ("<<dx<<", "<<dy<<", "<<dz<<") Up: "<<u<<" - Success"<<std::endl;
+            std::cout<< "Loaded Camera "<<name<<". FovX: "<<fovX<<". Eye: ("<<ex<<", "<<ey<<", "<<ez
+                     <<") Direction: ("<<dx<<", "<<dy<<", "<<dz
+                     <<") Up: "<<ux<<", "<<uy<<", "<<uz<<" - Success"<<std::endl;
           }
         else std::cout<< "Dinge hinter 'define' wurden nicht erkannt\n";
         }
@@ -304,7 +314,7 @@ void Scene::loadscene(std::string const& input) {
             ss>>x;
             ss>>y;
             ss>>z;
-            
+
             auto it = compositeBasin.find(name);
               if(it != compositeBasin.end())
               {
