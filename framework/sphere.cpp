@@ -60,7 +60,7 @@ Hit Sphere::intersect(Ray const& ray)
 			sphereHit.shape = this;
 			sphereHit.point = position;
 			sphereHit.normal = normal;
-			sphereHit.distance=absolute(sphereHit.point - ray.origin);
+			sphereHit.distance=t;
 		    return sphereHit;
 		}
 	}
