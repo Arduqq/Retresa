@@ -92,7 +92,7 @@ Hit Renderer::calculateHit(Ray const& rafa) const
 
       Hit newHit = scene_.shapes[i]->intersect(Ray{ray.origin,glm::normalize(ray.direction)});
 
-        if(!hit.impact || (newHit.impact && glm::length(newHit.point - rafa.origin) < glm::length(hit.point - rafa.origin)))
+        if(hit.impact && 0.0001 < newHit.distance && newHit.distance < hit.distance)
         {
           hit = newHit;
         }
