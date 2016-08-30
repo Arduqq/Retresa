@@ -49,13 +49,16 @@ Hit Sphere::intersect(Ray const& ray)
 	if( underroot > 0 )
 	{
 		float root = std::min(sqrt(underroot),-sqrt(underroot));
-		float d = (- skalar(l , (o - c))) + root;
-		if(d > 0) //strahl schneidet in positiver richtung
+		float t = (- skalar(l , (o - c))) + root;
+		if(t > 0) //strahl schneidet in positiver richtung
 		{
+			glm::vec3 position = o + t * l;
+			glm::vec3 normal = glm::normalize(position - ctr_);
+
 			sphereHit.impact = true;
 			sphereHit.shape = this;
-			sphereHit.point = glm::vec3{o + d * l};
-			sphereHit.normal = glm::normalize(sphereHit.point - ctr_);
+			sphereHit.point = position;
+			sphereHit.normal = normal;
 			sphereHit.distance=absolute(sphereHit.point - ray.origin);
 		}
 	}
