@@ -284,6 +284,7 @@ void Scene::loadscene(std::string const& input) {
           {
             std::cout<<"Nichtubereinstimmender name der Camera. \nEs wird '"<<cam->name()<<"' verwendet."<<std::endl;
           }
+          std::cout<<"Rendering '"<<cam->name()<<"' in "<<OPfileName<<".\nResolution: "<<width<<" x "<<height<<"\n"<<std::endl;
 
         }
         else if(keyword == "transform")
