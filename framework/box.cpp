@@ -100,7 +100,7 @@ Hit Box::surfacehit(Ray const& ray, Hit const& iHit, glm::vec3 const& a, glm::ve
 				{
 				hit.impact = true;
 				hit.normal = norm;
-				hit.distance=glm::length(hit.point - ray.origin);
+				hit.distance= distance; // glm::length(hit.point - ray.origin);
 				}
 			}
 		}
