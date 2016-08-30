@@ -80,26 +80,23 @@ Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 }
 Hit Renderer::calculateHit(Ray const& rafa) const
 {
-  Ray ray = scene_.shapes[0]->transformRay(rafa);
-
-  Hit hit = scene_.shapes[0]->intersect(Ray{ray.origin,glm::normalize(ray.direction)});
-  
-  for(unsigned int i = 1; i < scene_.sizeShape; i++)
+  Hit nearest;
+  for(auto const& shape: scene_.shapes)
   {
-    if(scene_.shapes[i] != nullptr)
+    if(shape != nullptr)
     {
-      ray = scene_.shapes[i]->transformRay(rafa);
+      Ray ray{rafa.origin,glm::normalize(rafa.direction)};
 
-      Hit newHit = scene_.shapes[i]->intersect(Ray{ray.origin,glm::normalize(ray.direction)});
+      Hit newHit = shape->intersect(ray);
 
-        if(hit.impact && 0.0001 < newHit.distance && newHit.distance < hit.distance)
+        if(newHit.impact && 0.0001 < newHit.distance && newHit.distance < nearest.distance)
         {
-          hit = newHit;
+          nearest = newHit;
         }
     }
-    else std::cout<< "scene_.shapes["<<i<<"] == nullptr"<<std::endl;
+    else std::cout<< "shape == nullptr"<<std::endl;
   }
-  return hit;
+  return nearest;
 }
 
 bool Renderer::illuminate(Hit const& hit, glm::vec3 const& lightPos) const
@@ -110,15 +107,7 @@ bool Renderer::illuminate(Hit const& hit, glm::vec3 const& lightPos) const
 
   Hit shadow = calculateHit(Ray{ point , lightPos - point});
 
-  if(!shadow.impact or glm::length( point - lightPos) < glm::length( point - shadow. point) )
-  { 
-    return true;
-  }
-  else
-  {
-    return false;
-  }
-  
+  return (!shadow.impact or glm::length( point - lightPos) < glm::length( point - shadow. point) );
 }
 
 Color Renderer::tonemap(Color c){
