@@ -21,41 +21,20 @@ void Renderer::render()
     {
       for (unsigned x = 0; x < width_; ++x) 
       {
-        Pixel p(x,y);
-        
+
         std::vector<Ray> rays;
-        
         rays.push_back({scene_.cam->calculateRay(x, y)});
-        //Kein AA
-
-        rays.push_back({scene_.cam->calculateRay(x + 0.5, y + 0.5)});
-        rays.push_back({scene_.cam->calculateRay(x - 0.5, y - 0.5)});
-        rays.push_back({scene_.cam->calculateRay(x - 0.5, y + 0.5)});
-        rays.push_back({scene_.cam->calculateRay(x + 0.5, y - 0.5)});
-
-        //AA T1
-        /*
         rays.push_back({scene_.cam->calculateRay(x + 0.5, y)});
         rays.push_back({scene_.cam->calculateRay(x, y + 0.5)});
-        rays.push_back({scene_.cam->calculateRay(x - 0.5, y)});
-        rays.push_back({scene_.cam->calculateRay(x, y - 0.5)});
-        */
-        //AA T2
+        rays.push_back({scene_.cam->calculateRay(x + 0.5, y + 0.5)});
 
-        /*Anti-Aliasing
-        -> Provisorisches Supersampling
-        -> statt einer Ray werden mehrere Rays auf einen Pixel von der Kamera gesendet
-        -> Der Durchschnitt der Rays ergibt die Intensität des Pixels
-        -> Verschiedene Pixelabtastungen https://de.wikipedia.org/wiki/Antialiasing_(Computergrafik)#Postfiltering_und_Punktabtastung
-        */
-        Color colorAA{0.0f,0.0f,0.0f};
-        for (auto ronny : rays) {
-            colorAA += raytrace(ronny, 1);
-        }
+        Color colorAA(0.0f,0.0f,0.0f);
+            for (auto ronny : rays) {
+                colorAA += raytrace(ronny, 1);
+            }
 
+        Pixel p(x,y);
         p.color = 1.0f / rays.size() * colorAA;
-
-        p.color = tonemap(p.color);
 
         //std::cout<<"Pixel ["<<x<<","<<y<<"]"<<" RGB ["<<p.color.r<<","<<p.color.g<<","<<p.color.b<<"]"<<std::endl;
 
@@ -73,61 +52,39 @@ void Renderer::render()
 
 Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 {
+  depth --;
+
   Hit hit = calculateHit(ronny);
-  Color c{0,0,0};
+
   if (hit.impact)
       {
-        if(depth < 1) 
-        {
-          Color s = shade(hit, ronny);
-          c.r += s.r;
-          c.g += s.g;
-          c.b += s.b;
-        }
-        else
-        {
-          depth --;
-          Ray mirrorRay{hit.point, mirror(ronny.origin , Ray{hit.point, hit.normal})};
-          Color g = shade(hit, ronny);
-          Color s = raytrace(mirrorRay, depth);
-          float mirrorFactor = (hit.shape->getmat().m_); 
-          c.r = g.r + (s.r * (mirrorFactor*0.2 / (1 + mirrorFactor*0.2)));
-          c.g = g.g + (s.g * (mirrorFactor*0.2 / (1 + mirrorFactor*0.2)));
-          c.b = g.b + (s.b * (mirrorFactor*0.2 / (1 + mirrorFactor*0.2)));          
-        }
+        Color c{1,0,0};
+        float ia = 0.10;
+        float ip = 0, LN = 0, RV = 0;
+        Material mat{hit.shape->getmat()};
+        c.r = ia * mat.ka_.r; //die abmienten
+        c.g = ia * mat.ka_.g; //terme werden
+        c.b = ia * mat.ka_.b; //zugewiesen
+        
+          for (unsigned int i = 0 ; i < scene_.sizeLight ; i++)
+          {
+            if(illuminate(hit, scene_.lights[i]->pos))
+            {
+              ip = scene_.lights[i]->intensity; //intensität des lichts
+              LN = skalar(glm::normalize(scene_.lights[i]->pos - hit.point) , glm::normalize(hit.normal)); //winkel normale / blickwinkel
+              RV = skalar(glm::normalize(mirror(scene_.lights[i]->pos , Ray{hit.point, hit.normal})) , glm::normalize(ronny.origin - hit.point));
+
+              if(LN < 0) LN = 0;
+              if(RV < 0) RV = 0;
+              c.r += ip * (LN * mat.kd_.r + mat.ks_.r * pow(RV,mat.m_));
+              c.g += ip * (LN * mat.kd_.g + mat.ks_.g * pow(RV,mat.m_));
+              c.b += ip * (LN * mat.kd_.b + mat.ks_.b * pow(RV,mat.m_));
+            }
+          }
+        return c;
       } 
-    return c;
+
 }
-
-Color Renderer::shade(Hit const& hit, Ray const& ray) const
-{
-  Color c{1,0,0};
-  float ia = 0.10;
-  float ip = 0, LN = 0, RV = 0;
-  Material mat{hit.shape->getmat()};
-  c.r = ia * mat.ka_.r; //die abmienten
-  c.g = ia * mat.ka_.g; //terme werden
-  c.b = ia * mat.ka_.b; //zugewiesen
-  
-    for (unsigned int i = 0 ; i < scene_.sizeLight ; i++)
-    {
-      if(illuminate(hit, scene_.lights[i]->pos))
-      {
-        ip = scene_.lights[i]->intensity; //intensität des lichts
-        LN = skalar(glm::normalize(scene_.lights[i]->pos - hit.point) , glm::normalize(hit.normal)); //winkel normale / blickwinkel
-        RV = skalar(glm::normalize(mirror(scene_.lights[i]->pos , Ray{hit.point, hit.normal})) , glm::normalize(ray.origin - hit.point));
-
-        if(LN < 0) LN = 0;
-        if(RV < 0) RV = 0;
-        c.r += ip * (LN * mat.kd_.r + mat.ks_.r * pow(RV,mat.m_));
-        c.g += ip * (LN * mat.kd_.g + mat.ks_.g * pow(RV,mat.m_));
-        c.b += ip * (LN * mat.kd_.b + mat.ks_.b * pow(RV,mat.m_));
-      }
-    }
-    //std::cout<<c.r<<" "<<c.g<<" "<<c.b<<"     ";
-  return c;
-}
-
 Hit Renderer::calculateHit(Ray const& rafa) const
 {
   Hit nearest;
@@ -172,12 +129,12 @@ Color Renderer::tonemap(Color c){
   g=(g*(6.2*g+0.5))/(g*(6.2*g+1.7)+0.06);
   b=(b*(6.2*b+0.5))/(b*(6.2*b+1.7)+0.06);
   return {r,g,b};
-  
-  *//*
-  //Simple Operator
-  return{c.r+0.1f,c.g+0.1f,c.b+0.1f};
   */
   
+  //Simple Operator
+  return{c.r+0.1f,c.g+0.1f,c.b+0.1f};
+
+  /*
   //Filmic Operator (http://filmicgames.com/archives/75)
   float A = 0.15; //shoulder strength
   float B = 0.50; //linear strength
@@ -193,7 +150,7 @@ Color Renderer::tonemap(Color c){
   g = g * (1 /  ((W * (A * W + C * B) + D * E) / (W * (A * W + B) + D * F)) - E / F);
   b = b * (1 /  ((W * (A * W + C * B) + D * E) / (W * (A * W + B) + D * F)) - E / F);
   return {r,g,b};
-  
+  */
 }
 
 void Renderer::write(Pixel const& p)

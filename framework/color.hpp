@@ -45,10 +45,27 @@ struct Color
     tmp -= b;
     return tmp;
   }
+
   friend bool operator==(const Color& a, const Color& b)
   {
     return (a.r == b.r and a.g == b.g and a.g == b.g);
   }
+
+  friend Color operator*( Color a, float factor) {
+    a.r *= factor;
+    a.g *= factor;
+    a.b *= factor;
+    return a;
+}
+
+  friend Color operator*(float factor, Color a) {
+    a.r *= factor;
+    a.g *= factor;
+    a.b *= factor;
+    return a;
+}
 };
+
+
 
 #endif //#define BUW_COLOR_HPP

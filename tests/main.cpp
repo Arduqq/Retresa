@@ -239,7 +239,8 @@ TEST_CASE("Composite","[composite]")
     std::shared_ptr<Shape> s2{};
     c1.addChild(s1);
     c1.addChild(s2);
-    REQUIRE(c1.getChild().size()==2);
+    c1.addChild(s1);
+    REQUIRE(c1.getChild().size()==3);
     c1.removeChild(s2);
     //REQUIRE(c1.getChild().size()==1);
 }

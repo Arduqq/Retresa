@@ -30,9 +30,8 @@ http://www.bogotobogo.com/DesignPatterns/composite.php
 -------------------------------------------------------------
 [X] Sceneloader muss um ein weiteres if erweitert werden
 [X] define shape composite [Knoten] [Blatt_1] ... [Blatt_n]
-[] Endboss: Composites müssen gerendert werden
 [X] Könnte vielleicht ein paar Tests vertragen (*)
-[] Composites aus Composites aus Composites möglich? (opt.)
+[X] Composites aus Composites aus Composites möglich? (opt.)
 
 
 ~WIP~
@@ -52,6 +51,9 @@ public:
 	std::vector<std::shared_ptr<Shape>> getChild() override; //*
 	Hit intersect(Ray const& ray) override;
 
+	void translate(glm::vec3 const& trans) override;
+	void scale(glm::vec3 const& sca) override;
+	void rotate(float phi , glm::vec3 const& axis) override;
 private:
 	std::string name_;
 	std::vector<std::shared_ptr<Shape>> shapes_;

@@ -180,9 +180,11 @@ void Scene::loadscene(std::string const& input) {
               if(it != compositeBasin.end())
               {
                 scene.composite->addChild(it->second);
+                std::cout<<"Added "<<it->first<<" to "<<nameComposite<<std::endl;
               }
             }
             std::cout<<"Loaded composite " << nameComposite <<" - Success\n"<<std::endl;
+            compositeBasin.insert(std::pair<std::string, std::shared_ptr<Shape>>(nameComposite, scene.composite));
           }
 
         }

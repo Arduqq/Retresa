@@ -31,9 +31,9 @@ public:
 
 	Ray transformRay(Ray const& ray);
 
-	void translate(glm::vec3 const& trans);
-	void scale    (glm::vec3 const& sca);
-	void rotate   (float phi , glm::vec3 const& axis);
+	virtual void translate(glm::vec3 const& trans);
+	virtual void scale    (glm::vec3 const& sca);
+	virtual void rotate   (float phi , glm::vec3 const& axis);
 
 	void rotatead(float phi , glm::vec3 const& n);
 
