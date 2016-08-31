@@ -25,7 +25,7 @@ void Renderer::render()
         
         Ray ronny = scene_.cam->calculateRay(x,y);
         
-        p.color = raytrace(ronny,1);
+        p.color = raytrace(ronny,3);
 
         p.color = tonemap(p.color);
 
@@ -45,39 +45,61 @@ void Renderer::render()
 
 Color Renderer::raytrace(Ray const& ronny,unsigned int depth) const
 {
-  depth --;
-
   Hit hit = calculateHit(ronny);
-
+  Color c{0,0,0};
   if (hit.impact)
       {
-        Color c{1,0,0};
-        float ia = 0.10;
-        float ip = 0, LN = 0, RV = 0;
-        Material mat{hit.shape->getmat()};
-        c.r = ia * mat.ka_.r; //die abmienten
-        c.g = ia * mat.ka_.g; //terme werden
-        c.b = ia * mat.ka_.b; //zugewiesen
-        
-          for (unsigned int i = 0 ; i < scene_.sizeLight ; i++)
-          {
-            if(illuminate(hit, scene_.lights[i]->pos))
-            {
-              ip = scene_.lights[i]->intensity; //intensität des lichts
-              LN = skalar(glm::normalize(scene_.lights[i]->pos - hit.point) , glm::normalize(hit.normal)); //winkel normale / blickwinkel
-              RV = skalar(glm::normalize(mirror(scene_.lights[i]->pos , Ray{hit.point, hit.normal})) , glm::normalize(ronny.origin - hit.point));
-
-              if(LN < 0) LN = 0;
-              if(RV < 0) RV = 0;
-              c.r += ip * (LN * mat.kd_.r + mat.ks_.r * pow(RV,mat.m_));
-              c.g += ip * (LN * mat.kd_.g + mat.ks_.g * pow(RV,mat.m_));
-              c.b += ip * (LN * mat.kd_.b + mat.ks_.b * pow(RV,mat.m_));
-            }
-          }
-        return c;
+        if(depth < 1) 
+        {
+          Color s = shade(hit, ronny);
+          c.r += s.r;
+          c.g += s.g;
+          c.b += s.b;
+        }
+        else
+        {
+          depth --;
+          Ray mirrorRay{hit.point, mirror(ronny.origin , Ray{hit.point, hit.normal})};
+          Color g = shade(hit, ronny);
+          Color s = raytrace(mirrorRay, depth);
+          float mirrorFactor = (hit.shape->getmat().m_); 
+          c.r = g.r + (s.r * (mirrorFactor*0.2 / (1 + mirrorFactor*0.2)));
+          c.g = g.g + (s.g * (mirrorFactor*0.2 / (1 + mirrorFactor*0.2)));
+          c.b = g.b + (s.b * (mirrorFactor*0.2 / (1 + mirrorFactor*0.2)));          
+        }
       } 
-
+    return c;
 }
+
+Color Renderer::shade(Hit const& hit, Ray const& ray) const
+{
+  Color c{1,0,0};
+  float ia = 0.10;
+  float ip = 0, LN = 0, RV = 0;
+  Material mat{hit.shape->getmat()};
+  c.r = ia * mat.ka_.r; //die abmienten
+  c.g = ia * mat.ka_.g; //terme werden
+  c.b = ia * mat.ka_.b; //zugewiesen
+  
+    for (unsigned int i = 0 ; i < scene_.sizeLight ; i++)
+    {
+      if(illuminate(hit, scene_.lights[i]->pos))
+      {
+        ip = scene_.lights[i]->intensity; //intensität des lichts
+        LN = skalar(glm::normalize(scene_.lights[i]->pos - hit.point) , glm::normalize(hit.normal)); //winkel normale / blickwinkel
+        RV = skalar(glm::normalize(mirror(scene_.lights[i]->pos , Ray{hit.point, hit.normal})) , glm::normalize(ray.origin - hit.point));
+
+        if(LN < 0) LN = 0;
+        if(RV < 0) RV = 0;
+        c.r += ip * (LN * mat.kd_.r + mat.ks_.r * pow(RV,mat.m_));
+        c.g += ip * (LN * mat.kd_.g + mat.ks_.g * pow(RV,mat.m_));
+        c.b += ip * (LN * mat.kd_.b + mat.ks_.b * pow(RV,mat.m_));
+      }
+    }
+    //std::cout<<c.r<<" "<<c.g<<" "<<c.b<<"     ";
+  return c;
+}
+
 Hit Renderer::calculateHit(Ray const& rafa) const
 {
   Hit nearest;
