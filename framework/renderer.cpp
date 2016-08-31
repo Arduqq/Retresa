@@ -101,7 +101,7 @@ Hit Renderer::calculateHit(Ray const& rafa) const
 
 bool Renderer::illuminate(Hit const& hit, glm::vec3 const& lightPos) const
 {
-  float epschilom = 0.003f;
+  float epschilom = 0.001f;
 
   glm::vec3 point = hit.point + (epschilom * glm::normalize(hit.normal));
 

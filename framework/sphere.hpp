@@ -20,7 +20,7 @@ public:
 	float     const& getrad() const;
 	void setctr(glm::vec3 ctr);
 	void setrad(float     rad);
-	Hit intersect(Ray const& ray) override;
+	Hit intersect(Ray const& inray) override;
 
 private: 
 	glm::vec3 ctr_;

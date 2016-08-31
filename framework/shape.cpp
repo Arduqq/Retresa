@@ -68,8 +68,6 @@ void Shape::rotatead(float phi, glm::vec3 const& n)
                   0.0f                                      ,             0.0f                          ,                 0.0f                      , 1.0f};
 
   world_transformation = rotad * world_transformation;
-
-
 }
 
 std::ostream& operator<<(std::ostream& os, Shape const& s)
@@ -86,7 +84,7 @@ std::ostream & Shape::print ( std :: ostream & os ) const
 Ray Shape::transformRay(Ray const& ray)
 {
 	glm::vec4 origin{ray.origin,1};
-	glm::vec4 direction{ray.direction,1};
+	glm::vec4 direction{ray.direction,0};
 
   world_transformation_inv = glm::inverse(world_transformation);
 
