@@ -31,7 +31,7 @@ public:
 		float yF = yInp;
 
 		float x = (xF / width_) - 0.5;
-		float y = (yF / height_) - 0.5;
+		float y = ((yF / height_)-0.5 ) * (height_/width_) ;
 
 		Ray ronny{glm::vec3{0, 0, 0}, glm::normalize(glm::vec3{x, y, -dist_})};
 
