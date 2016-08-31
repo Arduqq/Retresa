@@ -17,7 +17,7 @@ public:
 	~Box();
 
 	Hit intersect (Ray const& ray) override;
-	Hit surfacehit(Ray const& ray, Hit const& iHit, glm::vec3 const& a, glm::vec3 const& b, glm::vec3 const& c, glm::vec3 const& d)const;
+	Hit surfacehit(Ray const& ray, /*Hit const& iHit,*/ glm::vec3 const& a, glm::vec3 const& b, glm::vec3 const& c, glm::vec3 const& d)const;
 
 	const glm::vec3 &getmin() const;
 	const glm::vec3 &getmax() const;

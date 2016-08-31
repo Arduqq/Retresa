@@ -65,38 +65,50 @@ Hit Box::intersect(Ray const& ray)
 	if(min_.y > max_.y)std::swap(min_.y, max_.y);
 	if(min_.z > max_.z)std::swap(min_.z, max_.z);
 	//front:
-Hit hit = surfacehit (ray, hit, glm::vec3{max_.x,max_.y,max_.z}, glm::vec3{max_.x,min_.y,max_.z}, glm::vec3{min_.x,min_.y,max_.z}, glm::vec3{min_.x,max_.y,max_.z} );
+Hit hit[6];
+    hit[0] = surfacehit (ray, /*hit,*/ glm::vec3{max_.x,max_.y,max_.z}, glm::vec3{max_.x,min_.y,max_.z}, glm::vec3{min_.x,min_.y,max_.z}, glm::vec3{min_.x,max_.y,max_.z} );	
 	//back:
-	hit = surfacehit (ray, hit, glm::vec3{min_.x,min_.y,min_.z}, glm::vec3{max_.x,min_.y,min_.z}, glm::vec3{max_.x,max_.y,min_.z}, glm::vec3{min_.x,max_.y,min_.z} );
+	hit[1] = surfacehit (ray, /*hit,*/ glm::vec3{min_.x,min_.y,min_.z}, glm::vec3{max_.x,min_.y,min_.z}, glm::vec3{max_.x,max_.y,min_.z}, glm::vec3{min_.x,max_.y,min_.z} );
 	//right
-	hit = surfacehit (ray, hit, glm::vec3{max_.x,max_.y,max_.z}, glm::vec3{max_.x,max_.y,min_.z}, glm::vec3{max_.x,min_.y,min_.z}, glm::vec3{max_.x,min_.y,max_.z} );
+	hit[2] = surfacehit (ray, /*hit,*/ glm::vec3{max_.x,max_.y,max_.z}, glm::vec3{max_.x,max_.y,min_.z}, glm::vec3{max_.x,min_.y,min_.z}, glm::vec3{max_.x,min_.y,max_.z} );
 	//left
-	hit = surfacehit (ray, hit, glm::vec3{min_.x,min_.y,min_.z}, glm::vec3{min_.x,max_.y,min_.z}, glm::vec3{min_.x,max_.y,max_.z}, glm::vec3{min_.x,min_.y,max_.z} );
+	hit[3] = surfacehit (ray, /*hit,*/ glm::vec3{min_.x,min_.y,min_.z}, glm::vec3{min_.x,max_.y,min_.z}, glm::vec3{min_.x,max_.y,max_.z}, glm::vec3{min_.x,min_.y,max_.z} );
 	//top
-	hit = surfacehit (ray, hit, glm::vec3{max_.x,max_.y,max_.z}, glm::vec3{min_.x,max_.y,max_.z}, glm::vec3{min_.x,max_.y,min_.z}, glm::vec3{max_.x,max_.y,min_.z} );
+	hit[4] = surfacehit (ray, /*hit,*/ glm::vec3{max_.x,max_.y,max_.z}, glm::vec3{min_.x,max_.y,max_.z}, glm::vec3{min_.x,max_.y,min_.z}, glm::vec3{max_.x,max_.y,min_.z} );
 	//bottom
-	hit = surfacehit (ray, hit, glm::vec3{min_.x,min_.y,min_.z}, glm::vec3{min_.x,min_.y,max_.z}, glm::vec3{max_.x,min_.y,max_.z}, glm::vec3{max_.x,min_.y,min_.z} );
+	hit[5] = surfacehit (ray, /*hit,*/ glm::vec3{min_.x,min_.y,min_.z}, glm::vec3{min_.x,min_.y,max_.z}, glm::vec3{max_.x,min_.y,max_.z}, glm::vec3{max_.x,min_.y,min_.z} );
 
-	if(hit.impact)hit.shape  = this;
-	
-	return hit;
+	Hit nearest;
+
+	for (int i = 0; i < 6; i++)
+	{
+     if(hit[i].impact && 0.0001 < hit[i].distance && hit[i].distance < nearest.distance)
+        {
+          nearest = hit[i];
+        }
+	}
+
+	if(nearest.impact)
+	{
+		nearest.shape  = this;
+		return nearest;
+	}
+	else return Hit{};
 }
-Hit Box::surfacehit(Ray const& ray, Hit const& iHit, glm::vec3 const& a, glm::vec3 const& b, glm::vec3 const& c, glm::vec3 const& d) const
+Hit Box::surfacehit(Ray const& ray, /*Hit const& oldHit,*/ glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 const& p3, glm::vec3 const& p4) const
 {
 	Hit hit;
-
-	glm::vec3 norm {glm::normalize(cross(d - a,b - a))};
-
+	glm::vec3 norm {glm::normalize(cross(p4 - p1,p2 - p1))};
 	float denominator = skalar(norm , ray.direction);
 	if(denominator != 0)
 	{
-		float distance = (-(norm.x*(ray.origin.x - a.x))-(norm.y*(ray.origin.y - a.y))
-			-(norm.z*(ray.origin.z - a.z))) / denominator;
-		if(distance > 0)
+		float distance = (-(norm.x*(ray.origin.x - p1.x))-(norm.y*(ray.origin.y - p1.y))
+			-(norm.z*(ray.origin.z - p1.z))) / denominator;
+		if(distance > 0.001)
 		{ 
 			hit.point  = ray.origin + (distance * ray.direction);
 			{
-				if( skalar(b-a, hit.point-a) >= 0 and skalar(c-b, hit.point-b) >= 0 and skalar(d-c, hit.point-c) >= 0 and skalar(a-d, hit.point-d) >= 0)
+				if(skalar(p4-p1, p1 - hit.point) <= 0 and skalar(p1-p2, p2 - hit.point) <= 0 and skalar(p2-p3, p3 - hit.point) <= 0 and skalar(p3-p4, p4 - hit.point) <= 0)
 				{
 				hit.impact = true;
 				hit.normal = norm;
@@ -105,13 +117,44 @@ Hit Box::surfacehit(Ray const& ray, Hit const& iHit, glm::vec3 const& a, glm::ve
 			}
 		}
 	}
-	if(!iHit.impact or (hit.impact and glm::length(hit.point - ray.origin) < glm::length(iHit.point - ray.origin)))
+	if(hit.impact)
 	{
-		return hit; 
+		return hit;
+	}
+	else return Hit{};
+
+
+
+
+	/*Hit hit;
+
+	glm::vec3 norm {glm::normalize(cross(d - a,b - a))};
+
+	float denominator = skalar(norm , ray.direction);
+	if(denominator > 0.001f or denominator < -0.001f)
+	{
+		float distance = (-(norm.x*(ray.origin.x - a.x))-(norm.y*(ray.origin.y - a.y))
+			-(norm.z*(ray.origin.z - a.z))) / denominator;
+		if(distance > 0)
+		{ 
+			hit.point  = ray.origin + (distance * ray.direction);
+			{
+				if( skalar(b-a, hit.point-a) > 0.0f and skalar(c-b, hit.point-b) > 0.0f and skalar(d-c, hit.point-c) > 0.0f and skalar(a-d, hit.point-d) > 0.0f)
+				{
+				hit.impact = true;
+				hit.normal = norm;
+				hit.distance= distance; // glm::length(hit.point - ray.origin);
+				}
+			}
+		}
+	}
+	if(!iHit.impact or (0.0001 < iHit.distance && iHit.distance < hit.distance))
+	{
+		return iHit; 
 	}
 	else
 	{
-		return iHit;
-	}
+		return hit;
+	}*/
 }
 
