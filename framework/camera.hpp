@@ -16,9 +16,9 @@ public:
 		height_{h},
 		width_{w}
 		{
-			u_ = glm::normalize(glm::cross(dir_ , up_));
+			u_ = glm::normalize(glm::cross(dir_ , up_));//gemäß der Vorlesung
 			v_ = glm::normalize(glm::cross(u_  , dir_));
-			dist_ = 1 / (2 * (tan(fovX / 2)));
+			dist_ = 1 / (2 * (tan(fovX / 2))); //entfernung Bildfläche eye
 		}
 
 	inline Ray calculateRay(unsigned xInp, unsigned yInp)

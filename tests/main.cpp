@@ -1,4 +1,5 @@
 #define CATCH_CONFIG_RUNNER
+#define GLM_FORCE_RADIANS
 
 #include "box.hpp"
 #include "sphere.hpp"

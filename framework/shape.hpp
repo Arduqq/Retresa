@@ -1,5 +1,7 @@
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
+#define GLM_FORCE_RADIANS
+
 
 #include "ray.hpp"
 #include "color.hpp"
@@ -32,8 +34,7 @@ public:
 	virtual std::ostream & print ( std :: ostream & os ) const ;
 
 	//Ray transformRay(Ray const& ray);
-	virtual void Shape::translate(glm::vec3 const& t);
-	//virtual void translate(glm::vec3 const& trans);
+	virtual void translate(glm::vec3 const& t);
 	virtual void scale    (glm::vec3 const& sca);
 	virtual void rotate   (float phi , glm::vec3 const& axis);
 
