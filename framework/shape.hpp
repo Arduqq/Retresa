@@ -33,7 +33,7 @@ public:
 
 	virtual std::ostream & print ( std :: ostream & os ) const ;
 
-	//Ray transformRay(Ray const& ray);
+	//Ray transformation
 	virtual void translate(glm::vec3 const& t);
 	virtual void scale    (glm::vec3 const& sca);
 	virtual void rotate   (float phi , glm::vec3 const& axis);

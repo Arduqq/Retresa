@@ -11,7 +11,6 @@
 #include <iostream>
 #include <memory>
 
-
 /*
 Composite (7.2)
 -------------------------------------------------------------
@@ -49,7 +48,10 @@ public:
 	void print(std::ostream os) const;
 
 	std::vector<std::shared_ptr<Shape>> getChild() override; //*
-	Hit intersect(Ray const& ray) override;
+	inline Hit intersect(Ray const& ray) override
+	{
+		return Hit{};
+	}
 
 	void translate(glm::vec3 const& trans) override;
 	void scale(glm::vec3 const& sca) override;
