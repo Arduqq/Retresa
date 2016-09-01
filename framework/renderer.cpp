@@ -23,38 +23,7 @@ void Renderer::render()
       {
         Pixel p(x,y);
         
-        std::vector<Ray> rays;
-        
-        rays.push_back({scene_.cam->calculateRay(x, y)});
-        //Kein AA
-
-        rays.push_back({scene_.cam->calculateRay(x + 0.5, y + 0.5)});
-        rays.push_back({scene_.cam->calculateRay(x - 0.5, y - 0.5)});
-        rays.push_back({scene_.cam->calculateRay(x - 0.5, y + 0.5)});
-        rays.push_back({scene_.cam->calculateRay(x + 0.5, y - 0.5)});
-        
-        //AA T1
-        /*
-        rays.push_back({scene_.cam->calculateRay(x + 0.5, y)});
-        rays.push_back({scene_.cam->calculateRay(x, y + 0.5)});
-        rays.push_back({scene_.cam->calculateRay(x - 0.5, y)});
-        rays.push_back({scene_.cam->calculateRay(x, y - 0.5)});
-        */
-        //AA T2
-
-        /*Anti-Aliasing
-        -> Provisorisches Supersampling
-        -> statt einer Ray werden mehrere Rays auf einen Pixel von der Kamera gesendet
-        -> Der Durchschnitt der Rays ergibt die Intensität des Pixels
-        -> Verschiedene Pixelabtastungen https://de.wikipedia.org/wiki/Antialiasing_(Computergrafik)#Postfiltering_und_Punktabtastung
-        */
-        Color colorAA{0.0f,0.0f,0.0f};
-        for (auto ronny : rays) {
-            colorAA += raytrace(ronny, 2);
-        }
-
-        p.color = 1.0f / rays.size() * colorAA;
-
+        p.color = antialias(p);
         p.color = tonemap(p.color);
 
         write(p);
@@ -212,7 +181,20 @@ void Renderer::write(Pixel const& p)
   ppm_.write(p);
 }
 
-void Renderer::antialias()
-{
-//http://paulbourke.net/miscellaneous/aliasing/
+Color Renderer::antialias(Pixel p)
+{ 
+  std::vector<Ray> rays;
+  float x = p.x;
+  float y = p.y;
+  rays.push_back({scene_.cam->calculateRay(x, y)});
+  //Kein AA
+  rays.push_back({scene_.cam->calculateRay(x + 0.5, y + 0.5)});
+  rays.push_back({scene_.cam->calculateRay(x - 0.5, y - 0.5)});
+  rays.push_back({scene_.cam->calculateRay(x - 0.5, y + 0.5)});
+  rays.push_back({scene_.cam->calculateRay(x + 0.5, y - 0.5)});
+  Color colorAA{0.0f,0.0f,0.0f};
+        for (auto ronny : rays) {
+            colorAA += raytrace(ronny, 2);
+        }
+  return 1.0f / rays.size() * colorAA;;
 }

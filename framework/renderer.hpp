@@ -22,7 +22,7 @@ public:
   Color shade(Hit const& hit, Ray const& ray) const;
   void write(Pixel const& p);
   Color tonemap(Color c);
-  void antialias() ;
+  Color antialias(Pixel p) ;
 
   inline std::vector<Color> const& colorbuffer() const
   {
