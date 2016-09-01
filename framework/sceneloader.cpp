@@ -307,6 +307,7 @@ void Scene::loadscene(std::string const& input) {
               if(it != compositeBasin.end())
               {
                 it->second -> scale(glm::vec3{x,y,z});
+                std::cout<<"scaled "<<it->first<<std::endl;
               }
 
           }
@@ -321,6 +322,7 @@ void Scene::loadscene(std::string const& input) {
               if(it != compositeBasin.end())
               {
                 it->second -> translate(glm::vec3{x,y,z});
+                std::cout<<"translated "<<it->first<<std::endl;
               }
           }
           else if(transformation == "rotate")
@@ -335,6 +337,7 @@ void Scene::loadscene(std::string const& input) {
               if(it != compositeBasin.end())
               {
                 it->second -> rotate(k, glm::vec3{x,y,z});
+                std::cout<<"rotated "<<it->first<<std::endl;
               }
           }
           else if(transformation == "rotatead")

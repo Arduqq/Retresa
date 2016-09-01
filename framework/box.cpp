@@ -59,8 +59,9 @@ void Box::maximum(glm::vec3 const& max)
 }
  
 
-Hit Box::intersect(Ray const& ray) 
+Hit Box::intersect(Ray const& raytf) 
 {
+	Ray ray = raytf.transformRay(world_transformation_inv);
 	if(min_.x > max_.x)std::swap(min_.x, max_.x);
 	if(min_.y > max_.y)std::swap(min_.y, max_.y);
 	if(min_.z > max_.z)std::swap(min_.z, max_.z);
@@ -98,7 +99,9 @@ Hit hit[6];
 Hit Box::surfacehit(Ray const& ray, /*Hit const& oldHit,*/ glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 const& p3, glm::vec3 const& p4) const
 {
 	Hit hit;
+	
 	glm::vec3 norm {glm::normalize(cross(p4 - p1,p2 - p1))};
+
 	float denominator = skalar(norm , ray.direction);
 	if(denominator != 0)
 	{
@@ -106,12 +109,20 @@ Hit Box::surfacehit(Ray const& ray, /*Hit const& oldHit,*/ glm::vec3 const& p1, 
 			-(norm.z*(ray.origin.z - p1.z))) / denominator;
 		if(distance > 0.001)
 		{ 
-			hit.point  = ray.origin + (distance * ray.direction);
+			glm::vec3 object_position = ray.origin + (distance * ray.direction);
+            
+			
+
+			glm::vec3 world_position{world_transformation * glm::vec4{object_position,1} };
+			glm::vec4 world_normal{world_transformation_inv_tp * glm::vec4{norm  ,0} };
+
+			hit.point  = object_position;// glm::vec3{world_position.x, world_position.y, world_position.z};
 			{
 				if(skalar(p4-p1, p1 - hit.point) <= 0 and skalar(p1-p2, p2 - hit.point) <= 0 and skalar(p2-p3, p3 - hit.point) <= 0 and skalar(p3-p4, p4 - hit.point) <= 0)
 				{
+				hit.point  = world_position;// glm::vec3{world_position.x, world_position.y, world_position.z};
 				hit.impact = true;
-				hit.normal = norm;
+				hit.normal = glm::vec3{world_normal.x,world_normal.y,world_normal.z};
 				hit.distance= distance; // glm::length(hit.point - ray.origin);
 				}
 			}

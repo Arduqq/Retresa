@@ -39,7 +39,8 @@ float const& Sphere::getrad() const
 
 Hit Sphere::intersect(Ray const& inray) 
 {
-	Ray ray = transformRay(inray);
+	Ray ray = inray.transformRay(world_transformation_inv);
+	ray.direction = glm::normalize(ray.direction);
 	//kompatibilität mit der formel aus https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection schaffen
 	glm::vec3 l = ray.direction;
 	glm::vec3 o = ray.origin;
@@ -64,6 +65,8 @@ Hit Sphere::intersect(Ray const& inray)
 			sphereHit.point = glm::vec3{newPosition.x, newPosition.y, newPosition.z};
 			sphereHit.normal =glm::vec3{newNormal.x  , newNormal.y  , newNormal.z  };
 			sphereHit.distance=t;
+		    
+		    //sphereHit.transformHit(world_transformation, world_transformation_inv);
 		    return sphereHit;
 		}
 	}

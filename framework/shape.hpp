@@ -5,11 +5,13 @@
 #include "color.hpp"
 #include "material.hpp"
 #include "hit.hpp"
-
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
 #include <string>
 #include <memory>
 #include <glm/glm.hpp>
 #include <glm/gtx/intersect.hpp>
+
 #include <vector>
 
 class Shape
@@ -29,9 +31,9 @@ public:
 
 	virtual std::ostream & print ( std :: ostream & os ) const ;
 
-	Ray transformRay(Ray const& ray);
-
-	virtual void translate(glm::vec3 const& trans);
+	//Ray transformRay(Ray const& ray);
+	virtual void Shape::translate(glm::vec3 const& t);
+	//virtual void translate(glm::vec3 const& trans);
 	virtual void scale    (glm::vec3 const& sca);
 	virtual void rotate   (float phi , glm::vec3 const& axis);
 
@@ -48,6 +50,7 @@ protected:
 	Material mat_;
 	glm::mat4 world_transformation;
 	glm::mat4 world_transformation_inv;
+	glm::mat4 world_transformation_inv_tp;
 
 };
 

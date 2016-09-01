@@ -32,7 +32,16 @@ void  Shape::setmat( Material const&    m)
 	mat_=m;
 }
 
-void Shape::translate(glm::vec3 const& trans)
+
+void Shape::translate(glm::vec3 const& t){
+  glm::mat4 translateMat = glm::translate(t);
+  world_transformation = translateMat * world_transformation;
+  world_transformation_inv = glm::inverse(world_transformation); 
+  world_transformation_inv_tp = glm::transpose(world_transformation_inv);
+}
+
+
+/*void Shape::translate(glm::vec3 const& trans)
 {
   glm::mat4 tran{1.0f,0.0f,0.0f,trans.x,
                  0.0f,1.0f,0.0f,trans.y,
@@ -40,7 +49,10 @@ void Shape::translate(glm::vec3 const& trans)
                  0.0f,0.0f,0.0f,1.0f};
   
   world_transformation = tran * world_transformation;
-}
+  world_transformation_inv = glm::inverse(world_transformation);
+  world_transformation_inv_tp = glm::transpose(world_transformation_inv);
+
+}*/
 
 void Shape::scale(glm::vec3 const& sca)
 {
@@ -49,6 +61,10 @@ void Shape::scale(glm::vec3 const& sca)
                0.0f ,0.0f ,sca.z,0.0f,
                0.0f ,0.0f ,0.0f ,1.0f};
   world_transformation = sc * world_transformation;
+  world_transformation_inv = glm::inverse(world_transformation);
+  world_transformation_inv_tp = glm::transpose(world_transformation_inv);
+
+
 }
 
 void Shape::rotate(float phi, glm::vec3 const& axis)
@@ -58,6 +74,9 @@ void Shape::rotate(float phi, glm::vec3 const& axis)
                 0.0f,sin(phi), cos(phi),0.0f,
                 0.0f,  0.0f  ,  0.0f   ,1.0f};
   world_transformation = rot * world_transformation;
+  world_transformation_inv = glm::inverse(world_transformation);
+  world_transformation_inv_tp = glm::transpose(world_transformation_inv);
+
 }
 
 void Shape::rotatead(float phi, glm::vec3 const& n)
@@ -68,6 +87,9 @@ void Shape::rotatead(float phi, glm::vec3 const& n)
                   0.0f                                      ,             0.0f                          ,                 0.0f                      , 1.0f};
 
   world_transformation = rotad * world_transformation;
+  world_transformation_inv = glm::inverse(world_transformation);
+  world_transformation_inv_tp = glm::transpose(world_transformation_inv);
+
 }
 
 std::ostream& operator<<(std::ostream& os, Shape const& s)
@@ -81,15 +103,4 @@ std::ostream & Shape::print ( std :: ostream & os ) const
   return os;
 }
 
-Ray Shape::transformRay(Ray const& ray)
-{
-	glm::vec4 origin{ray.origin,1};
-	glm::vec4 direction{ray.direction,0};
 
-  world_transformation_inv = glm::inverse(world_transformation);
-
-  glm::vec4 newOrigin   {origin    * world_transformation_inv};
-  glm::vec4 newDirection{direction * world_transformation_inv};
-
-	return Ray{glm::vec3{newOrigin.x, newOrigin.y, newOrigin.z }, glm::vec3{newDirection.x, newDirection.y, newDirection.z}};
-}

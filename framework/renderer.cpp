@@ -32,7 +32,7 @@ void Renderer::render()
         rays.push_back({scene_.cam->calculateRay(x - 0.5, y - 0.5)});
         rays.push_back({scene_.cam->calculateRay(x - 0.5, y + 0.5)});
         rays.push_back({scene_.cam->calculateRay(x + 0.5, y - 0.5)});
-
+        
         //AA T1
         /*
         rays.push_back({scene_.cam->calculateRay(x + 0.5, y)});
@@ -50,7 +50,7 @@ void Renderer::render()
         */
         Color colorAA{0.0f,0.0f,0.0f};
         for (auto ronny : rays) {
-            colorAA += raytrace(ronny, 1);
+            colorAA += raytrace(ronny, 2);
         }
 
         p.color = 1.0f / rays.size() * colorAA;
@@ -173,13 +173,13 @@ Color Renderer::tonemap(Color c){
   b=(b*(6.2*b+0.5))/(b*(6.2*b+1.7)+0.06);
   return {r,g,b};
   
-  *//*
+  */
   //Simple Operator
   return{c.r+0.1f,c.g+0.1f,c.b+0.1f};
-  */
+  
   
   //Filmic Operator (http://filmicgames.com/archives/75)
-  float A = 0.15; //shoulder strength
+  /*float A = 0.15; //shoulder strength
   float B = 0.50; //linear strength
   float C = 0.10; //linear angle
   float D = 0.20; //toe strength
@@ -192,7 +192,7 @@ Color Renderer::tonemap(Color c){
   r = r * (1 /  ((W * (A * W + C * B) + D * E) / (W * (A * W + B) + D * F)) - E / F);
   g = g * (1 /  ((W * (A * W + C * B) + D * E) / (W * (A * W + B) + D * F)) - E / F);
   b = b * (1 /  ((W * (A * W + C * B) + D * E) / (W * (A * W + B) + D * F)) - E / F);
-  return {r,g,b};
+  return {r,g,b};*/
   
 }
 
