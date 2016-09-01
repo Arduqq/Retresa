@@ -1,27 +1,20 @@
 #include "box.hpp"
-//#include "vektoroperations.hpp"
 
 Box::Box():
 	Shape(),
 	min_{0.0f,0.0f,0.0f},
 	max_{0.0f,0.0f,0.0f}
-	{
-
-	}
+	{}
 Box::Box(glm::vec3 const& min, glm::vec3 const& max):
 	Shape(),
 	min_{min},
 	max_{max}
-	{
-
-	}
+	{}
 Box::Box(glm::vec3 const& min, glm::vec3 const& max, std::string const& name, Material const& mat):
 	Shape(name, mat),
 	min_{min},
 	max_{max}
-	{
-
-	}
+	{}
 Box::~Box()
 {
 	std::cout<<"Delete Box"<<std::endl;
@@ -62,6 +55,7 @@ void Box::maximum(glm::vec3 const& max)
 Hit Box::intersect(Ray const& raytf) 
 {
 	Ray ray = raytf.transformRay(world_transformation_inv);
+
 	if(min_.x > max_.x)std::swap(min_.x, max_.x);
 	if(min_.y > max_.y)std::swap(min_.y, max_.y);
 	if(min_.z > max_.z)std::swap(min_.z, max_.z);
@@ -96,7 +90,7 @@ Hit hit[6];
 	}
 	else return Hit{};
 }
-Hit Box::surfacehit(Ray const& ray, /*Hit const& oldHit,*/ glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 const& p3, glm::vec3 const& p4) const
+Hit Box::surfacehit(Ray const& ray, glm::vec3 const& p1, glm::vec3 const& p2, glm::vec3 const& p3, glm::vec3 const& p4) const
 {
 	Hit hit;
 	
@@ -106,24 +100,23 @@ Hit Box::surfacehit(Ray const& ray, /*Hit const& oldHit,*/ glm::vec3 const& p1, 
 	if(denominator != 0)
 	{
 		float distance = (-(norm.x*(ray.origin.x - p1.x))-(norm.y*(ray.origin.y - p1.y))
-			-(norm.z*(ray.origin.z - p1.z))) / denominator;
+			-(norm.z*(ray.origin.z - p1.z))) / denominator;//ebenenintersect
+
 		if(distance > 0.001)
 		{ 
 			glm::vec3 object_position = ray.origin + (distance * ray.direction);
-            
-			
 
 			glm::vec3 world_position{world_transformation * glm::vec4{object_position,1} };
 			glm::vec4 world_normal{world_transformation_inv_tp * glm::vec4{norm  ,0} };
 
-			hit.point  = object_position;// glm::vec3{world_position.x, world_position.y, world_position.z};
+			hit.point  = object_position;
 			{
 				if(skalar(p4-p1, p1 - hit.point) <= 0 and skalar(p1-p2, p2 - hit.point) <= 0 and skalar(p2-p3, p3 - hit.point) <= 0 and skalar(p3-p4, p4 - hit.point) <= 0)
-				{
-				hit.point  = world_position;// glm::vec3{world_position.x, world_position.y, world_position.z};
-				hit.impact = true;
-				hit.normal = glm::vec3{world_normal.x,world_normal.y,world_normal.z};
-				hit.distance= distance; // glm::length(hit.point - ray.origin);
+				{//flächenbegrenzung
+					hit.point  = world_position;
+					hit.impact = true;
+					hit.normal = glm::vec3{world_normal.x,world_normal.y,world_normal.z};
+					hit.distance= distance;
 				}
 			}
 		}
@@ -133,39 +126,5 @@ Hit Box::surfacehit(Ray const& ray, /*Hit const& oldHit,*/ glm::vec3 const& p1, 
 		return hit;
 	}
 	else return Hit{};
-
-
-
-
-	/*Hit hit;
-
-	glm::vec3 norm {glm::normalize(cross(d - a,b - a))};
-
-	float denominator = skalar(norm , ray.direction);
-	if(denominator > 0.001f or denominator < -0.001f)
-	{
-		float distance = (-(norm.x*(ray.origin.x - a.x))-(norm.y*(ray.origin.y - a.y))
-			-(norm.z*(ray.origin.z - a.z))) / denominator;
-		if(distance > 0)
-		{ 
-			hit.point  = ray.origin + (distance * ray.direction);
-			{
-				if( skalar(b-a, hit.point-a) > 0.0f and skalar(c-b, hit.point-b) > 0.0f and skalar(d-c, hit.point-c) > 0.0f and skalar(a-d, hit.point-d) > 0.0f)
-				{
-				hit.impact = true;
-				hit.normal = norm;
-				hit.distance= distance; // glm::length(hit.point - ray.origin);
-				}
-			}
-		}
-	}
-	if(!iHit.impact or (0.0001 < iHit.distance && iHit.distance < hit.distance))
-	{
-		return iHit; 
-	}
-	else
-	{
-		return hit;
-	}*/
 }
 

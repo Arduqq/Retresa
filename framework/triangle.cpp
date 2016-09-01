@@ -1,5 +1,4 @@
 #include "triangle.hpp"
-//#include "vektoroperations.hpp"
 
 Triangle::Triangle(glm::vec3 const& _p1, glm::vec3 const& _p2, glm::vec3 const& _p3):
 	p1{_p1},
@@ -58,7 +57,7 @@ Hit Triangle::intersect(Ray const& raytf)
 				hit.impact = true;
 				hit.normal = norm;
 				hit.shape  = this;
-				hit.distance= distance; // glm::length(hit.point - ray.origin);
+				hit.distance= distance;
 				}
 			}
 		}

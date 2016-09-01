@@ -8,11 +8,9 @@ class Triangle: public Shape
 {
 public:
 	Triangle(glm::vec3 const& _p1, glm::vec3 const& _p2, glm::vec3 const& _p3);
-
 	Triangle(glm::vec3 const& _p1, glm::vec3 const& _p2, glm::vec3 const& _p3, std::string const& name, Material const& mat);
-
+	
 	Hit intersect(Ray const& ronny) override;
-
 	std::ostream & print ( std :: ostream & os ) const override;
 
 private:

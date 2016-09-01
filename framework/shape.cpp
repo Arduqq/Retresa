@@ -32,27 +32,14 @@ void  Shape::setmat( Material const&    m)
 	mat_=m;
 }
 
-
-void Shape::translate(glm::vec3 const& t){
+void Shape::translate(glm::vec3 const& t)
+{
   glm::mat4 translateMat = glm::translate(t);
+
   world_transformation = translateMat * world_transformation;
   world_transformation_inv = glm::inverse(world_transformation); 
   world_transformation_inv_tp = glm::transpose(world_transformation_inv);
 }
-
-
-/*void Shape::translate(glm::vec3 const& trans)
-{
-  glm::mat4 tran{1.0f,0.0f,0.0f,trans.x,
-                 0.0f,1.0f,0.0f,trans.y,
-                 0.0f,0.0f,1.0f,trans.z, 
-                 0.0f,0.0f,0.0f,1.0f};
-  
-  world_transformation = tran * world_transformation;
-  world_transformation_inv = glm::inverse(world_transformation);
-  world_transformation_inv_tp = glm::transpose(world_transformation_inv);
-
-}*/
 
 void Shape::scale(glm::vec3 const& sca)
 {
@@ -63,8 +50,6 @@ void Shape::scale(glm::vec3 const& sca)
   world_transformation = sc * world_transformation;
   world_transformation_inv = glm::inverse(world_transformation);
   world_transformation_inv_tp = glm::transpose(world_transformation_inv);
-
-
 }
 
 void Shape::rotate(float phi, glm::vec3 const& axis)
@@ -85,7 +70,6 @@ void Shape::rotatead(float phi, glm::vec3 const& n)
                   n.y * n.x * (1-cos(phi)) + n.z * sin(phi) , n.y * n.y * (1-cos(phi)) + cos(phi)       , n.y * n.z * (1-cos(phi)) - n.x * sin(phi) , 0.0f ,
                   n.z * n.x * (1-cos(phi)) - n.y * sin(phi) , n.z * n.y * (1-cos(phi)) + n.x * sin(phi) , n.z * n.z * (1-cos(phi)) + cos(phi)       , 0.0f , 
                   0.0f                                      ,             0.0f                          ,                 0.0f                      , 1.0f};
-
   world_transformation = rotad * world_transformation;
   world_transformation_inv = glm::inverse(world_transformation);
   world_transformation_inv_tp = glm::transpose(world_transformation_inv);
