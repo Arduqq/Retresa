@@ -57,12 +57,9 @@ void Renderer::render()
 
         p.color = tonemap(p.color);
 
-        //std::cout<<"Pixel ["<<x<<","<<y<<"]"<<" RGB ["<<p.color.r<<","<<p.color.g<<","<<p.color.b<<"]"<<std::endl;
-
         write(p);
       }
     }//hier ist der colorbuffer geladen
-    //antialias();
   }
   else
   {

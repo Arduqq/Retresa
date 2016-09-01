@@ -14,18 +14,13 @@ inline glm::vec3 cross(glm::vec3 const& v1, glm::vec3 const& v2)
 	return res;
 }
 
-// Das ist equivalent zu glm::length
-inline float absolute(glm::vec3 const& v)
-{
-	return std::sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
-}
 inline float skalar(glm::vec3 const& a,glm::vec3 const& b)
 {
 	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
 }
 inline float winkel(glm::vec3 const& a,glm::vec3 const& b)
 {
-	return acos(skalar(a,b)/(absolute(a)*absolute(b)));
+	return acos(skalar(a,b)/(glm::length(a)*glm::length(b)));
 }
 inline glm::vec3 operator/(glm::vec3 const& v, float a)
 {

@@ -46,7 +46,7 @@ Hit Sphere::intersect(Ray const& inray)
 	glm::vec3 o = ray.origin;
 	glm::vec3 c = ctr_;
 	float	  r = rad_;
-	float underroot = ( skalar(l , (o - c)) * skalar(l , (o - c))) - ((absolute(o - c) * absolute(o - c))) + (r*r); //=der bums unter der wurzel
+	float underroot = ( skalar(l , (o - c)) * skalar(l , (o - c))) - ((glm::length(o - c) * glm::length(o - c))) + (r*r); //=der bums unter der wurzel
 	if( underroot > 0 )
 	{
 		float root = std::min(sqrt(underroot),-sqrt(underroot));
