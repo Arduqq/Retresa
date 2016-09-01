@@ -181,6 +181,12 @@ void Renderer::write(Pixel const& p)
   ppm_.write(p);
 }
 
+/*Anti-Aliasing
+-> Provisorisches Supersampling
+-> statt einer Ray werden mehrere Rays auf einen Pixel von der Kamera gesendet
+-> Der Durchschnitt der Rays ergibt die Intensität des Pixels
+-> Verschiedene Pixelabtastungen https://de.wikipedia.org/wiki/Antialiasing_(Computergrafik)#Postfiltering_und_Punktabtastung   
+*/
 Color Renderer::antialias(Pixel p)
 { 
   std::vector<Ray> rays;
